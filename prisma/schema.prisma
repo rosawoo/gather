@@ -1,0 +1,298 @@
+// Gather — core data model (SQLite for local dev; swap URL for Postgres in production)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ——— Auth.js adapter models ———
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  phone           String?
+  phoneVerified   Boolean   @default(false)
+  phoneVerifiedAt DateTime?
+
+  plan            Plan      @default(NONE)
+  planStartedAt   DateTime?
+  profileComplete Boolean   @default(false)
+
+  tokensAvailable Int @default(0)
+  tokensHeld      Int @default(0)
+
+  accounts Account[]
+  sessions Session[]
+
+  profile          Profile?
+  photos           ProfilePhoto[]
+  promptAnswers    ProfilePromptAnswer[]
+  hostedGatherings Gathering[]           @relation("HostGatherings")
+  gatheringRequests GatheringRequest[]
+  tokenLedger      TokenLedgerEntry[]
+  notifications    Notification[]
+  reportsFiled     Report[]              @relation("ReportsByUser")
+  expenseSubmissions ExpenseSubmission[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ——— Profile ———
+
+model Profile {
+  userId        String   @id
+  firstName     String
+  dateOfBirth   DateTime
+  neighborhood  String?
+  college       String?
+  job           String?
+  bio           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProfilePhoto {
+  id        String  @id @default(cuid())
+  userId    String
+  url       String
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ProfilePromptAnswer {
+  id        String @id @default(cuid())
+  userId    String
+  promptKey String
+  body      String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, promptKey])
+}
+
+// ——— Gatherings ———
+
+model Gathering {
+  id                  String          @id @default(cuid())
+  hostId              String
+  title               String
+  coverImageUrl       String?
+  description         String
+  gatheringType       GatheringType   @default(HOME)
+  neighborhood        String
+  addressSecret       String
+  startsAt            DateTime
+  applicantQuestion   String?
+  tokenCost           Int             @default(0)
+  budgetExplanation   String?
+  minTotalSize        Int
+  maxTotalSize        Int
+  hostFriendsCount    Int             @default(0)
+  status              GatheringStatus @default(PUBLISHED)
+  cancelledAt         DateTime?
+  autoCancelCheckedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  host                User                @relation("HostGatherings", fields: [hostId], references: [id], onDelete: Cascade)
+  requests            GatheringRequest[]
+  expenseSubmissions  ExpenseSubmission[]
+
+  @@index([hostId])
+  @@index([startsAt])
+  @@index([status])
+}
+
+model GatheringRequest {
+  id           String                @id @default(cuid())
+  gatheringId  String
+  guestId      String
+  status       GatheringRequestStatus @default(PENDING)
+  comment      String?
+  tokensAmount Int                   @default(0)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+
+  gathering Gathering @relation(fields: [gatheringId], references: [id], onDelete: Cascade)
+  guest     User      @relation(fields: [guestId], references: [id], onDelete: Cascade)
+
+  @@unique([gatheringId, guestId])
+  @@index([guestId])
+}
+
+// ——— Tokens & money trail ———
+
+model TokenLedgerEntry {
+  id           String           @id @default(cuid())
+  userId       String
+  delta        Int
+  type         TokenLedgerType
+  gatheringId  String?
+  requestId    String?
+  note         String?
+  createdAt    DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([gatheringId])
+}
+
+// ——— Notifications (in-app) ———
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  kind      String
+  meta      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+}
+
+// ——— Reimbursements ———
+
+model ExpenseSubmission {
+  id             String         @id @default(cuid())
+  gatheringId    String
+  hostId         String
+  receiptUrl     String
+  description    String
+  payoutHandle   String
+  status         ReimbursementStatus @default(PENDING)
+  createdAt      DateTime       @default(now())
+
+  gathering Gathering @relation(fields: [gatheringId], references: [id], onDelete: Cascade)
+  host      User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
+
+  @@index([gatheringId])
+}
+
+// ——— Safety ———
+
+model Report {
+  id           String     @id @default(cuid())
+  reporterId   String
+  targetType   ReportTarget
+  targetUserId String?
+  gatheringId  String?
+  body         String
+  createdAt    DateTime   @default(now())
+
+  reporter User @relation("ReportsByUser", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([reporterId])
+}
+
+// ——— Phone OTP (SMS verification stub / production) ———
+
+model PhoneOtp {
+  id        String   @id @default(cuid())
+  phone     String
+  code      String
+  expiresAt DateTime
+  consumed  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([phone, consumed])
+}
+
+// ——— Enums (SQLite stores as string) ———
+
+enum Plan {
+  NONE
+  OG
+  OBSERVER
+  MEMBER
+}
+
+enum GatheringType {
+  HOME
+  PUBLIC
+  OTHER
+}
+
+enum GatheringStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+  AUTO_CANCELLED
+}
+
+enum GatheringRequestStatus {
+  PENDING
+  APPROVED
+  NOT_SELECTED
+  WITHDRAWN
+}
+
+enum TokenLedgerType {
+  GRANT
+  HOLD
+  RELEASE
+  USE
+  REFUND
+}
+
+enum ReimbursementStatus {
+  PENDING
+  SUBMITTED
+  SENT
+}
+
+enum ReportTarget {
+  USER
+  GATHERING
+}
