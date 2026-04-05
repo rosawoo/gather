@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:3001": "next dev -p 3001",
+    "dev:3001": "next dev -p 3001 --webpack",
+    "dev:3001:turbo": "next dev -p 3001 --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
