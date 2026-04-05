@@ -15,8 +15,8 @@ if (process.env.NODE_ENV === "development") {
       "\n[Gather] Missing Google OAuth env vars. Add to .env:\n" +
         "  AUTH_GOOGLE_ID=...     (Client ID from Google Cloud Console)\n" +
         "  AUTH_GOOGLE_SECRET=... (Client secret)\n" +
-        "Authorized redirect URI must include:\n" +
-        "  http://localhost:3001/api/auth/callback/google\n",
+        "Authorized redirect URI must match your dev port, e.g.\n" +
+        "  http://localhost:3000/api/auth/callback/google\n",
     );
   }
 }
