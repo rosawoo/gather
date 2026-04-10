@@ -3,11 +3,13 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import {
-  GatheringStatus,
+  type GatheringStatus,
+  GatheringStatus as GatheringStatusEnum,
   GatheringType,
   Plan,
   TokenLedgerType,
 } from "@prisma/client";
+import { sendSmsToUser } from "@/lib/sms";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -67,7 +69,7 @@ export async function createGathering(formData: FormData) {
       maxTotalSize,
       hostFriendsCount,
       coverImageUrl,
-      status: GatheringStatus.PUBLISHED,
+      status: GatheringStatusEnum.PUBLISHED,
     },
   });
 
@@ -76,15 +78,18 @@ export async function createGathering(formData: FormData) {
   redirect("/host");
 }
 
-export async function cancelGatheringAsHost(gatheringId: string) {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
+/**
+ * Refunds guests and closes a gathering. Used by host cancel and auto-cancel cron.
+ */
+export async function finalizeGatheringWithRefunds(
+  gatheringId: string,
+  finalStatus: Extract<GatheringStatus, "CANCELLED" | "AUTO_CANCELLED">,
+  options?: { setAutoCancelCheckedAt?: boolean },
+) {
   const g = await prisma.gathering.findUniqueOrThrow({
     where: { id: gatheringId },
     include: { requests: true },
   });
-  if (g.hostId !== session.user.id) throw new Error("Not host");
 
   await prisma.$transaction(async (tx) => {
     for (const r of g.requests) {
@@ -105,7 +110,10 @@ export async function cancelGatheringAsHost(gatheringId: string) {
                 type: TokenLedgerType.RELEASE,
                 gatheringId,
                 requestId: r.id,
-                note: "Host cancelled — held tokens returned",
+                note:
+                  finalStatus === GatheringStatusEnum.AUTO_CANCELLED
+                    ? "Auto-cancelled — minimum not met — held tokens returned"
+                    : "Host cancelled — held tokens returned",
               },
             });
           } else {
@@ -120,7 +128,10 @@ export async function cancelGatheringAsHost(gatheringId: string) {
                 type: TokenLedgerType.REFUND,
                 gatheringId,
                 requestId: r.id,
-                note: "Host cancelled — used tokens refunded",
+                note:
+                  finalStatus === GatheringStatusEnum.AUTO_CANCELLED
+                    ? "Auto-cancelled — minimum not met — tokens refunded"
+                    : "Host cancelled — used tokens refunded",
               },
             });
           }
@@ -133,12 +144,80 @@ export async function cancelGatheringAsHost(gatheringId: string) {
     }
     await tx.gathering.update({
       where: { id: gatheringId },
-      data: { status: GatheringStatus.CANCELLED, cancelledAt: new Date() },
+      data: {
+        status: finalStatus,
+        cancelledAt: new Date(),
+        ...(options?.setAutoCancelCheckedAt
+          ? { autoCancelCheckedAt: new Date() }
+          : {}),
+      },
     });
   });
 
+  const title = g.title;
+  const guestIds = g.requests
+    .filter((r) => r.status === "PENDING" || r.status === "APPROVED")
+    .map((r) => r.guestId);
+
+  const reason =
+    finalStatus === GatheringStatusEnum.AUTO_CANCELLED
+      ? "was cancelled — the minimum group size wasn’t met in time."
+      : "was cancelled by the host.";
+
+  await prisma.notification.createMany({
+    data: [
+      {
+        userId: g.hostId,
+        title: "Gathering cancelled",
+        body: `“${title}” ${reason}`,
+        kind:
+          finalStatus === GatheringStatusEnum.AUTO_CANCELLED
+            ? "gathering_auto_cancelled_host"
+            : "gathering_cancelled_host",
+        meta: JSON.stringify({ gatheringId }),
+      },
+      ...guestIds.map((guestId) => ({
+        userId: guestId,
+        title: "Gathering cancelled",
+        body: `“${title}” ${reason} Any held tokens were returned.`,
+        kind:
+          finalStatus === GatheringStatusEnum.AUTO_CANCELLED
+            ? "gathering_auto_cancelled_guest"
+            : "gathering_cancelled_guest",
+        meta: JSON.stringify({ gatheringId }),
+      })),
+    ],
+  });
+
+  const smsNote =
+    finalStatus === GatheringStatusEnum.AUTO_CANCELLED
+      ? "cancelled — minimum group size wasn’t met in time."
+      : "cancelled by the host.";
+  void sendSmsToUser(
+    g.hostId,
+    `Gather: “${title}” ${smsNote}`,
+  ).catch(() => {});
+  for (const guestId of guestIds) {
+    void sendSmsToUser(
+      guestId,
+      `Gather: “${title}” ${smsNote} Tokens were returned where applicable.`,
+    ).catch(() => {});
+  }
+
   revalidatePath("/gatherings");
   revalidatePath("/host");
+}
+
+export async function cancelGatheringAsHost(gatheringId: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  const g = await prisma.gathering.findUniqueOrThrow({
+    where: { id: gatheringId },
+  });
+  if (g.hostId !== session.user.id) throw new Error("Not host");
+
+  await finalizeGatheringWithRefunds(gatheringId, GatheringStatusEnum.CANCELLED);
 }
 
 export async function cancelGatheringAsHostAction(formData: FormData) {

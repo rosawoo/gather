@@ -88,6 +88,11 @@ export default async function ProfilePage() {
 
       <ul className="mt-8 space-y-3 text-sm">
         <li>
+          <Link href="/profile/edit" className="text-gather-brown hover:underline">
+            Edit profile
+          </Link>
+        </li>
+        <li>
           <Link href="/profile/notifications" className="text-gather-brown hover:underline">
             Notifications
           </Link>

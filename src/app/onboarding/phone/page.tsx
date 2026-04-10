@@ -20,8 +20,10 @@ export default async function PhonePage() {
       <div className="mx-auto max-w-md">
         <h1 className="text-2xl font-medium tracking-tight">Verify your phone</h1>
         <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-          We use your number for notifications and trust &amp; safety. In
-          development, use code <strong>202600</strong> after requesting a code.
+          We use your number for notifications and trust &amp; safety. With{" "}
+          <strong>Twilio</strong> configured in <code className="text-xs">.env</code>
+          , you&apos;ll get a real SMS. Without Twilio in development, check the
+          terminal for the code, or use <strong>202600</strong> as a bypass.
         </p>
         <PhoneForm />
       </div>

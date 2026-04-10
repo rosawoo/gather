@@ -29,6 +29,8 @@ model User {
   tokensAvailable Int @default(0)
   tokensHeld      Int @default(0)
 
+  smsOptOut Boolean @default(false)
+
   accounts Account[]
   sessions Session[]
 

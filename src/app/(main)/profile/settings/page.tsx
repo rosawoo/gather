@@ -13,16 +13,18 @@ export default function SettingsPage() {
           portal (coming soon).
         </li>
         <li>
-          <span className="font-medium">Edit profile</span> — re-use onboarding
-          fields (coming soon).
+          <Link href="/profile/edit" className="font-medium text-gather-brown hover:underline">
+            Edit profile
+          </Link>
         </li>
         <li>
           <span className="font-medium">Policies</span> — cancellation &amp;
           token rules are enforced in-app; legal pages TBD.
         </li>
         <li>
-          <span className="font-medium">SMS</span> — Reply STOP to opt out;
-          Twilio webhook to sync preference (coming soon).
+          <span className="font-medium">SMS</span> — Reply STOP to opt out.
+          Configure Twilio inbound webhook to{" "}
+          <code className="text-xs">/api/twilio/sms</code> on your deployed URL.
         </li>
       </ul>
     </div>

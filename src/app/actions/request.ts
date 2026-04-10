@@ -8,6 +8,7 @@ import {
   Plan,
   TokenLedgerType,
 } from "@prisma/client";
+import { sendSmsToUser } from "@/lib/sms";
 import { revalidatePath } from "next/cache";
 
 function canSeeTokenCost(plan: Plan, tokenCost: number) {
@@ -96,6 +97,11 @@ export async function requestToJoin(gatheringId: string, comment: string) {
     });
   });
 
+  void sendSmsToUser(
+    g.hostId,
+    `Gather: New request to join “${g.title}”. Open the app to approve or decline.`,
+  ).catch(() => {});
+
   revalidatePath("/gatherings");
   revalidatePath(`/gatherings/${gatheringId}`);
 }
@@ -150,6 +156,11 @@ export async function approveRequest(requestId: string) {
     });
   });
 
+  void sendSmsToUser(
+    req.guestId,
+    `Gather: You’re in! “${req.gathering.title}” — check the app for address and details.`,
+  ).catch(() => {});
+
   revalidatePath("/host");
   revalidatePath(`/host/${req.gatheringId}`);
 }
@@ -203,6 +214,11 @@ export async function denyRequest(requestId: string) {
       },
     });
   });
+
+  void sendSmsToUser(
+    req.guestId,
+    `Gather: Update on “${req.gathering.title}” — the host chose other guests. Held tokens were returned.`,
+  ).catch(() => {});
 
   revalidatePath("/host");
   revalidatePath(`/host/${req.gatheringId}`);
