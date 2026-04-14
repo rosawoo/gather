@@ -35,7 +35,7 @@ export default async function HostHubPage() {
   );
 
   return (
-    <div className="pb-28">
+    <div className="pb-10">
       <section>
         {canHost ? (
           <Link

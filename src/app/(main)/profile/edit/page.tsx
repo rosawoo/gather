@@ -26,7 +26,7 @@ export default async function EditProfilePage() {
   const photoUrls = user.photos.map((ph) => ph.url).join("\n");
 
   return (
-    <div className="pb-28">
+    <div className="pb-10">
       <p className="text-sm text-neutral-600">
         Update how you show up to hosts and guests.
       </p>

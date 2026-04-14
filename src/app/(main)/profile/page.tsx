@@ -32,7 +32,7 @@ export default async function ProfilePage() {
   const meta = [p.neighborhood, p.college, p.job].filter(Boolean);
 
   return (
-    <div className="space-y-8 px-1 pb-28 sm:px-0">
+    <div className="space-y-8 px-1 pb-10 sm:px-0">
       {/* Hero */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-white via-gather-cream/40 to-gather-cream/20 px-5 pb-8 pt-10 shadow-md ring-1 ring-black/[0.06]">
         <div

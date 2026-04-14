@@ -56,7 +56,7 @@ export default async function GatheringDetailPage({
   const budgetDollars = (approvedCount * 7.5).toFixed(2);
 
   return (
-    <div className="pb-28">
+    <div className="pb-10">
       <Link
         href="/gatherings"
         className="mb-4 inline-block text-sm text-gather-brown hover:underline"

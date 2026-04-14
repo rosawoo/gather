@@ -20,7 +20,7 @@ export default async function NotificationsPage() {
   }
 
   return (
-    <div className="pb-28">
+    <div className="pb-10">
       <p className="text-sm text-neutral-600">
         In-app copies of important updates. SMS uses the welcome / STOP flow
         from your phone step.

@@ -19,7 +19,7 @@ export default async function SettingsPage() {
   });
 
   return (
-    <div className="pb-28 space-y-8">
+    <div className="pb-10 space-y-8">
       {/* ── Account ── */}
       <section className="rounded-xl border border-neutral-200 bg-white p-4">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
