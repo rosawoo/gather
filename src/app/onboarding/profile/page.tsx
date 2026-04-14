@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
 import { PERSONALITY_PROMPTS } from "@/lib/prompts";
+import { getUsedNeighborhoods } from "@/lib/neighborhoods";
+import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { redirect } from "next/navigation";
 import { completeProfile } from "@/app/actions/profile";
 
@@ -16,6 +18,8 @@ export default async function ProfileOnboardingPage() {
   if (!user) redirect("/");
   if (!user.phoneVerified) redirect("/onboarding/phone");
   if (user.profileComplete) redirect(nextAppPath(user));
+
+  const usedNeighborhoods = await getUsedNeighborhoods();
 
   return (
     <div className="min-h-full bg-gather-paper px-6 py-12 pb-28 text-gather-ink">
@@ -72,9 +76,9 @@ export default async function ProfileOnboardingPage() {
             <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
               Optional
             </h2>
-            <input
+            <NeighborhoodInput
               name="neighborhood"
-              placeholder="Neighborhood"
+              extras={usedNeighborhoods}
               className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
             />
             <input

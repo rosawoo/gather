@@ -2,10 +2,10 @@
 
 export function SectionHeader({ title }: { title: string }) {
   return (
-    <div className="mb-6 flex border-b border-neutral-200">
-      <div className="flex-1 border-b-2 border-gather-brown py-3 text-center text-sm font-medium text-gather-brown">
+    <div className="mb-6 border-b border-neutral-200 pb-3">
+      <h1 className="text-center text-lg font-semibold text-gather-ink">
         {title}
-      </div>
+      </h1>
     </div>
   );
 }

@@ -28,8 +28,9 @@ export default async function PublicProfilePage({
 
   return (
     <div className="px-4 pb-28">
-      <Link href="/gatherings" className="text-sm text-gather-brown hover:underline">
-        ← Back
+      <Link href="/gatherings" className="inline-flex items-center gap-1 text-sm text-gather-brown hover:underline">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4"><path fillRule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" /></svg>
+        Back
       </Link>
       <div className="mt-6 flex flex-col items-center text-center">
         {primary?.url || u.image ? (

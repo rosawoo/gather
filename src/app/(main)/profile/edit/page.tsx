@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import { updateProfile } from "@/app/actions/profile";
 import { prisma } from "@/lib/prisma";
 import { PERSONALITY_PROMPTS } from "@/lib/prompts";
+import { getUsedNeighborhoods } from "@/lib/neighborhoods";
+import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { redirect } from "next/navigation";
 
 export default async function EditProfilePage() {
@@ -20,6 +22,7 @@ export default async function EditProfilePage() {
 
   const p = user.profile;
   const dob = p.dateOfBirth.toISOString().slice(0, 10);
+  const usedNeighborhoods = await getUsedNeighborhoods();
   const photoUrls = user.photos.map((ph) => ph.url).join("\n");
 
   return (
@@ -72,10 +75,10 @@ export default async function EditProfilePage() {
           <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
             Optional
           </h2>
-          <input
+          <NeighborhoodInput
             name="neighborhood"
-            placeholder="Neighborhood"
             defaultValue={p.neighborhood ?? ""}
+            extras={usedNeighborhoods}
             className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
           />
           <input
