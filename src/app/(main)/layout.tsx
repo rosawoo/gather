@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { BottomNav } from "@/components/bottom-nav";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
+import { getUnreadCount } from "@/app/actions/notification";
 import { redirect } from "next/navigation";
 
 export default async function MainAppLayout({
@@ -21,10 +22,12 @@ export default async function MainAppLayout({
   const resume = nextAppPath(user);
   if (resume.startsWith("/onboarding")) redirect(resume);
 
+  const unreadNotifs = await getUnreadCount(session.user.id);
+
   return (
     <div className="min-h-full bg-gather-paper text-gather-ink">
       <div className="mx-auto max-w-lg pb-24 pt-4">{children}</div>
-      <BottomNav />
+      <BottomNav unreadNotifs={unreadNotifs} />
     </div>
   );
 }

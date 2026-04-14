@@ -161,7 +161,7 @@ export async function finalizeGatheringWithRefunds(
 
   const reason =
     finalStatus === GatheringStatusEnum.AUTO_CANCELLED
-      ? "was cancelled — the minimum group size wasn’t met in time."
+      ? "was cancelled — the minimum group size wasn't met in time."
       : "was cancelled by the host.";
 
   await prisma.notification.createMany({
@@ -169,7 +169,7 @@ export async function finalizeGatheringWithRefunds(
       {
         userId: g.hostId,
         title: "Gathering cancelled",
-        body: `“${title}” ${reason}`,
+        body: `"${title}" ${reason}`,
         kind:
           finalStatus === GatheringStatusEnum.AUTO_CANCELLED
             ? "gathering_auto_cancelled_host"
@@ -179,7 +179,7 @@ export async function finalizeGatheringWithRefunds(
       ...guestIds.map((guestId) => ({
         userId: guestId,
         title: "Gathering cancelled",
-        body: `“${title}” ${reason} Any held tokens were returned.`,
+        body: `"${title}" ${reason} Any held tokens were returned.`,
         kind:
           finalStatus === GatheringStatusEnum.AUTO_CANCELLED
             ? "gathering_auto_cancelled_guest"
@@ -191,17 +191,17 @@ export async function finalizeGatheringWithRefunds(
 
   const smsNote =
     finalStatus === GatheringStatusEnum.AUTO_CANCELLED
-      ? "cancelled — minimum group size wasn’t met in time."
+      ? "cancelled — minimum group size wasn't met in time."
       : "cancelled by the host.";
   void sendSmsToUser(
     g.hostId,
-    `Gather: “${title}” ${smsNote}`,
-  ).catch(() => {});
+    `Gather: "${title}" ${smsNote}`,
+  ).catch((e) => console.error("[sms:cancel-host]", e));
   for (const guestId of guestIds) {
     void sendSmsToUser(
       guestId,
-      `Gather: “${title}” ${smsNote} Tokens were returned where applicable.`,
-    ).catch(() => {});
+      `Gather: "${title}" ${smsNote} Tokens were returned where applicable.`,
+    ).catch((e) => console.error("[sms:cancel-guest]", e));
   }
 
   revalidatePath("/gatherings");

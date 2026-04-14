@@ -4,9 +4,9 @@ import { purchaseTokensStub } from "@/app/actions/tokens";
 
 export default function BuyTokensPage() {
   return (
-    <div className="px-4 pb-28">
+    <div className="pb-28">
       <Link href="/profile" className="text-sm text-gather-brown hover:underline">
-        ← Profile
+        ← Back
       </Link>
       <h1 className="mt-4 text-xl font-semibold">Buy tokens</h1>
       <TokenExplainer className="mt-4" />

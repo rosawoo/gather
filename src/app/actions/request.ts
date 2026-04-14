@@ -90,7 +90,7 @@ export async function requestToJoin(gatheringId: string, comment: string) {
       data: {
         userId: g.hostId,
         title: "New join request",
-        body: `Someone requested to join “${g.title}”.`,
+        body: `Someone requested to join "${g.title}".`,
         kind: "host_new_request",
         meta: JSON.stringify({ gatheringId }),
       },
@@ -99,8 +99,8 @@ export async function requestToJoin(gatheringId: string, comment: string) {
 
   void sendSmsToUser(
     g.hostId,
-    `Gather: New request to join “${g.title}”. Open the app to approve or decline.`,
-  ).catch(() => {});
+    `Gather: New request to join "${g.title}". Open the app to approve or decline.`,
+  ).catch((e) => console.error("[sms:new-request]", e));
 
   revalidatePath("/gatherings");
   revalidatePath(`/gatherings/${gatheringId}`);
@@ -148,8 +148,8 @@ export async function approveRequest(requestId: string) {
     await tx.notification.create({
       data: {
         userId: req.guestId,
-        title: "You’re in!",
-        body: `Your request for “${req.gathering.title}” was approved.`,
+        title: "You're in!",
+        body: `Your request for "${req.gathering.title}" was approved.`,
         kind: "guest_approved",
         meta: JSON.stringify({ gatheringId: req.gatheringId }),
       },
@@ -158,8 +158,8 @@ export async function approveRequest(requestId: string) {
 
   void sendSmsToUser(
     req.guestId,
-    `Gather: You’re in! “${req.gathering.title}” — check the app for address and details.`,
-  ).catch(() => {});
+    `Gather: You're in! "${req.gathering.title}" — check the app for address and details.`,
+  ).catch((e) => console.error("[sms:approved]", e));
 
   revalidatePath("/host");
   revalidatePath(`/host/${req.gatheringId}`);
@@ -208,7 +208,7 @@ export async function denyRequest(requestId: string) {
       data: {
         userId: req.guestId,
         title: "Update on your request",
-        body: `The host chose other guests for “${req.gathering.title}”.`,
+        body: `The host chose other guests for "${req.gathering.title}".`,
         kind: "guest_not_selected",
         meta: JSON.stringify({ gatheringId: req.gatheringId }),
       },
@@ -217,8 +217,8 @@ export async function denyRequest(requestId: string) {
 
   void sendSmsToUser(
     req.guestId,
-    `Gather: Update on “${req.gathering.title}” — the host chose other guests. Held tokens were returned.`,
-  ).catch(() => {});
+    `Gather: Update on "${req.gathering.title}" — the host chose other guests. Held tokens were returned.`,
+  ).catch((e) => console.error("[sms:not-selected]", e));
 
   revalidatePath("/host");
   revalidatePath(`/host/${req.gatheringId}`);
@@ -267,7 +267,20 @@ export async function guestCancelRequest(gatheringId: string) {
         where: { id: req.id },
         data: { status: GatheringRequestStatus.WITHDRAWN },
       });
+      await tx.notification.create({
+        data: {
+          userId: g.hostId,
+          title: "Request withdrawn",
+          body: `A guest withdrew their request for "${g.title}".`,
+          kind: "host_guest_withdrew",
+          meta: JSON.stringify({ gatheringId }),
+        },
+      });
     });
+    void sendSmsToUser(
+      g.hostId,
+      `Gather: A guest withdrew their pending request for "${g.title}".`,
+    ).catch((e) => console.error("[sms:withdraw-pending]", e));
     revalidatePath("/gatherings/upcoming");
     return;
   }
@@ -296,7 +309,20 @@ export async function guestCancelRequest(gatheringId: string) {
         where: { id: req.id },
         data: { status: GatheringRequestStatus.WITHDRAWN },
       });
+      await tx.notification.create({
+        data: {
+          userId: g.hostId,
+          title: "Approved guest dropped out",
+          body: `An approved guest withdrew from "${g.title}".`,
+          kind: "host_guest_withdrew",
+          meta: JSON.stringify({ gatheringId }),
+        },
+      });
     });
+    void sendSmsToUser(
+      g.hostId,
+      `Gather: An approved guest withdrew from "${g.title}". You may want to approve another request.`,
+    ).catch((e) => console.error("[sms:withdraw-approved]", e));
     revalidatePath("/gatherings/upcoming");
     return;
   }

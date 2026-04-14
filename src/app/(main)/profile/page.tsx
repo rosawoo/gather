@@ -22,10 +22,8 @@ export default async function ProfilePage() {
   const p = u.profile!;
 
   return (
-    <div className="px-4 pb-28">
-      <h1 className="text-xl font-semibold">Profile</h1>
-
-      <div className="mt-6 flex flex-col items-center text-center">
+    <div className="pb-28">
+      <div className="flex flex-col items-center text-center">
         {primary?.url || u.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -86,23 +84,12 @@ export default async function ProfilePage() {
         Plan: <strong>{u.plan}</strong>
       </p>
 
-      <ul className="mt-8 space-y-3 text-sm">
-        <li>
-          <Link href="/profile/edit" className="text-gather-brown hover:underline">
-            Edit profile
-          </Link>
-        </li>
-        <li>
-          <Link href="/profile/notifications" className="text-gather-brown hover:underline">
-            Notifications
-          </Link>
-        </li>
-        <li>
-          <Link href="/profile/settings" className="text-gather-brown hover:underline">
-            Settings
-          </Link>
-        </li>
-      </ul>
+      <Link
+        href="/profile/edit"
+        className="mt-6 inline-block rounded-full bg-gather-brown px-5 py-2.5 text-sm font-medium text-gather-cream"
+      >
+        Edit profile
+      </Link>
     </div>
   );
 }

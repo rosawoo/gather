@@ -9,7 +9,7 @@ const tabs = [
   { href: "/profile", label: "Profile" },
 ] as const;
 
-export function BottomNav() {
+export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
   const pathname = usePathname();
 
   return (
@@ -24,13 +24,18 @@ export function BottomNav() {
             <Link
               key={t.href}
               href={t.href}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`relative rounded-full px-4 py-2 text-sm font-medium transition ${
                 active
                   ? "bg-gather-brown text-gather-cream"
                   : "text-neutral-600 hover:text-gather-ink"
               }`}
             >
               {t.label}
+              {t.href === "/profile" && unreadNotifs > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                  {unreadNotifs > 99 ? "99+" : unreadNotifs}
+                </span>
+              )}
             </Link>
           );
         })}

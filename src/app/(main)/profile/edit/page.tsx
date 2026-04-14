@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { updateProfile } from "@/app/actions/profile";
 import { prisma } from "@/lib/prisma";
 import { PERSONALITY_PROMPTS } from "@/lib/prompts";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function EditProfilePage() {
@@ -24,12 +23,8 @@ export default async function EditProfilePage() {
   const photoUrls = user.photos.map((ph) => ph.url).join("\n");
 
   return (
-    <div className="px-4 pb-28">
-      <Link href="/profile" className="text-sm text-gather-brown hover:underline">
-        ← Profile
-      </Link>
-      <h1 className="mt-4 text-xl font-semibold">Edit profile</h1>
-      <p className="mt-2 text-sm text-neutral-600">
+    <div className="pb-28">
+      <p className="text-sm text-neutral-600">
         Update how you show up to hosts and guests.
       </p>
 

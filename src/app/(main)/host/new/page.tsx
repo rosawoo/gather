@@ -10,9 +10,9 @@ const types: GatheringType[] = [
 
 export default function NewGatheringPage() {
   return (
-    <div className="px-4 pb-28">
+    <div className="pb-28">
       <Link href="/host" className="text-sm text-gather-brown hover:underline">
-        ← Host
+        ← Back
       </Link>
       <h1 className="mt-4 text-xl font-semibold">Host a gathering</h1>
       <p className="mt-2 text-sm text-neutral-600">

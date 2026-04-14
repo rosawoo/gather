@@ -36,10 +36,8 @@ export default async function HostHubPage() {
   );
 
   return (
-    <div className="px-4 pb-28">
-      <h1 className="text-xl font-semibold">Host</h1>
-
-      <section className="mt-8">
+    <div className="pb-28">
+      <section>
         <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
           Host a gathering
         </h2>

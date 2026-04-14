@@ -54,9 +54,9 @@ export default async function HostManageGatheringPage({
   const isPast = g.startsAt <= now;
 
   return (
-    <div className="px-4 pb-28">
+    <div className="pb-28">
       <Link href="/host" className="text-sm text-gather-brown hover:underline">
-        ← Host
+        ← Back
       </Link>
 
       <div className="mt-4 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
