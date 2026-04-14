@@ -6,10 +6,9 @@ import { usePathname } from "next/navigation";
 const tabs = [
   { href: "/gatherings", label: "Gatherings" },
   { href: "/host", label: "Host" },
-  { href: "/profile", label: "Profile" },
 ] as const;
 
-export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
+export function MainTopNav() {
   const pathname = usePathname();
 
   return (
@@ -31,11 +30,6 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               }`}
             >
               {t.label}
-              {t.href === "/profile" && unreadNotifs > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-gather-paper">
-                  {unreadNotifs > 99 ? "99+" : unreadNotifs}
-                </span>
-              )}
             </Link>
           );
         })}
