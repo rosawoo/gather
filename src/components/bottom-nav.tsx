@@ -13,7 +13,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-gather-paper/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md">
+    <nav className="fixed left-0 right-0 top-0 z-40 border-b border-neutral-200 bg-gather-paper/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md">
       <div className="mx-auto flex max-w-lg gap-1 px-2 py-2">
         {tabs.map((t) => {
           const active =
