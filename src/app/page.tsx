@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { signInWithGoogle } from "@/app/actions/auth";
 
 export default async function LandingPage() {
   const session = await auth();
@@ -23,22 +23,18 @@ export default async function LandingPage() {
         A cozier way to meet people. Sign in to browse gatherings.
       </p>
       <div className="mt-14 flex w-full max-w-xs flex-col gap-4">
-        <form action={signInWithGoogle}>
-          <button
-            type="submit"
-            className="w-full rounded-full bg-gather-cream px-6 py-3.5 text-sm font-medium text-gather-brown transition hover:bg-white"
-          >
-            Log In
-          </button>
-        </form>
-        <form action={signInWithGoogle}>
-          <button
-            type="submit"
-            className="w-full rounded-full border border-gather-cream/40 bg-transparent px-6 py-3.5 text-sm font-medium text-gather-cream transition hover:border-gather-cream hover:bg-gather-brown-mid/50"
-          >
-            Create Account
-          </button>
-        </form>
+        <Link
+          href="/sign-in"
+          className="block w-full rounded-full bg-gather-cream px-6 py-3.5 text-center text-sm font-medium text-gather-brown transition hover:bg-white"
+        >
+          Sign in
+        </Link>
+        <Link
+          href="/sign-in"
+          className="block w-full rounded-full border border-gather-cream/40 bg-transparent px-6 py-3.5 text-center text-sm font-medium text-gather-cream transition hover:border-gather-cream hover:bg-gather-brown-mid/50"
+        >
+          Create account
+        </Link>
       </div>
     </div>
   );

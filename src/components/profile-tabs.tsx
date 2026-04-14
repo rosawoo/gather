@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const tabs = [
-  { href: "/profile", label: "Profile", exact: true },
-  { href: "/profile/notifications", label: "Notifications" },
-  { href: "/profile/settings", label: "Settings" },
+  { href: "/profile", label: "Profile", exact: true as const },
+  { href: "/profile/notifications", label: "Notifications", exact: false as const },
+  { href: "/profile/settings", label: "Settings", exact: false as const },
 ] as const;
 
 export function ProfileTabs({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
