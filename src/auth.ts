@@ -17,7 +17,8 @@ if (process.env.NODE_ENV === "development") {
         "  AUTH_GOOGLE_SECRET=... (Client secret)\n" +
         "Authorized redirect URIs should include e.g.\n" +
         "  http://127.0.0.1:3001/api/auth/callback/google\n" +
-        "  http://localhost:3001/api/auth/callback/google\n",
+        "  http://localhost:3001/api/auth/callback/google\n" +
+        "If you used a LAN URL (192.168…), set AUTH_URL=http://localhost:3001 in .env and open localhost.\n",
     );
   }
 }
