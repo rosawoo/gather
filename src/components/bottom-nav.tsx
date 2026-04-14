@@ -14,7 +14,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-gather-paper/95 backdrop-blur-md safe-area-pb">
-      <div className="mx-auto flex max-w-lg justify-around py-2">
+      <div className="mx-auto flex max-w-lg gap-1 px-2 py-2">
         {tabs.map((t) => {
           const active =
             t.href === "/gatherings"
@@ -24,10 +24,10 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
             <Link
               key={t.href}
               href={t.href}
-              className={`relative rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`relative flex min-h-10 flex-1 items-center justify-center rounded-xl px-2 text-center text-sm font-medium transition ${
                 active
-                  ? "bg-gather-brown text-gather-cream"
-                  : "text-neutral-600 hover:text-gather-ink"
+                  ? "bg-gather-brown text-gather-cream shadow-sm"
+                  : "text-neutral-600 hover:bg-neutral-200/60 hover:text-gather-ink"
               }`}
             >
               {t.label}
