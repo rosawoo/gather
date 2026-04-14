@@ -54,7 +54,7 @@ export default async function ProfilePage() {
               </div>
             )}
           </div>
-          <h1 className="mt-5 font-serif text-3xl font-light tracking-tight text-gather-ink">
+          <h1 className="mt-5 text-3xl font-semibold tracking-tight text-gather-ink">
             {p.firstName}
           </h1>
           <p className="mt-1 text-sm font-medium text-gather-brown-mid">
