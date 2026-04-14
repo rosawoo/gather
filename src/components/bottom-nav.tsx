@@ -6,19 +6,22 @@ import { usePathname } from "next/navigation";
 const tabs = [
   { href: "/gatherings", label: "Gatherings" },
   { href: "/host", label: "Host" },
+  { href: "/profile", label: "Profile" },
 ] as const;
 
-export function MainTopNav() {
+export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed left-0 right-0 top-0 z-40 border-b border-neutral-200 bg-gather-paper/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-gather-paper/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md">
       <div className="mx-auto flex max-w-lg gap-1 px-2 py-2">
         {tabs.map((t) => {
           const active =
             t.href === "/gatherings"
               ? pathname.startsWith("/gatherings")
-              : pathname.startsWith(t.href);
+              : t.href === "/profile"
+                ? pathname.startsWith("/profile")
+                : pathname.startsWith(t.href);
           return (
             <Link
               key={t.href}
@@ -30,6 +33,11 @@ export function MainTopNav() {
               }`}
             >
               {t.label}
+              {t.href === "/profile" && unreadNotifs > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-gather-paper">
+                  {unreadNotifs > 99 ? "99+" : unreadNotifs}
+                </span>
+              )}
             </Link>
           );
         })}
