@@ -6,9 +6,9 @@ export default function HostSectionLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="px-4">
+    <div>
       <SectionHeader title="Host" />
-      {children}
+      <div className="px-4">{children}</div>
     </div>
   );
 }

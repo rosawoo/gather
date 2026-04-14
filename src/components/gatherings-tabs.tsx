@@ -8,23 +8,23 @@ export function GatheringsTabs() {
   const isUpcoming = pathname.startsWith("/gatherings/upcoming");
 
   return (
-    <div className="mb-6 flex gap-2 rounded-full bg-white/80 p-1 shadow-sm ring-1 ring-neutral-200/80">
+    <div className="mb-6 flex border-b border-neutral-200">
       <Link
         href="/gatherings"
-        className={`flex-1 rounded-full py-2.5 text-center text-sm font-medium transition ${
+        className={`flex-1 py-3 text-center text-sm font-medium transition ${
           !isUpcoming
-            ? "bg-gather-brown text-gather-cream"
-            : "text-neutral-600 hover:text-gather-ink"
+            ? "border-b-2 border-gather-brown text-gather-brown"
+            : "text-neutral-400 hover:text-neutral-600"
         }`}
       >
         Discover
       </Link>
       <Link
         href="/gatherings/upcoming"
-        className={`flex-1 rounded-full py-2.5 text-center text-sm font-medium transition ${
+        className={`flex-1 py-3 text-center text-sm font-medium transition ${
           isUpcoming
-            ? "bg-gather-brown text-gather-cream"
-            : "text-neutral-600 hover:text-gather-ink"
+            ? "border-b-2 border-gather-brown text-gather-brown"
+            : "text-neutral-400 hover:text-neutral-600"
         }`}
       >
         Upcoming

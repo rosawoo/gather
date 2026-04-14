@@ -11,9 +11,9 @@ export default async function ProfileSectionLayout({
   const unreadNotifs = await getUnreadCount(session!.user!.id);
 
   return (
-    <div className="px-4">
+    <div>
       <ProfileTabs unreadNotifs={unreadNotifs} />
-      {children}
+      <div className="px-4">{children}</div>
     </div>
   );
 }

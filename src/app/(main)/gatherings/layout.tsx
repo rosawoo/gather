@@ -6,9 +6,9 @@ export default function GatheringsSectionLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="px-4">
+    <div>
       <GatheringsTabs />
-      {children}
+      <div className="px-4">{children}</div>
     </div>
   );
 }
