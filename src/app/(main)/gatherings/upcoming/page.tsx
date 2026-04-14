@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { GatheringRequestStatus } from "@prisma/client";
 import Link from "next/link";
-import { capacityLine, ageFromDob } from "@/lib/gathering-display";
+import { ageFromDob } from "@/lib/gathering-display";
 import { cancelGuestRequestAction } from "@/app/actions/request";
 
 function Section({
@@ -14,7 +14,11 @@ function Section({
 }) {
   return (
     <section className="mb-10">
-      <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <h2 className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-gather-brown-mid">
+        <span
+          className="h-1 w-4 rounded-full bg-gather-accent/80"
+          aria-hidden
+        />
         {title}
       </h2>
       {children}
@@ -62,8 +66,15 @@ export default async function UpcomingGatheringsPage() {
   const past = requests.filter((r) => r.gathering.startsAt <= now);
 
   return (
-    <div>
-      <h1 className="mb-6 text-xl font-semibold text-gather-ink">Upcoming</h1>
+    <div className="pb-8">
+      <div className="mb-8">
+        <h1 className="font-serif text-2xl font-light tracking-tight text-gather-ink">
+          Upcoming
+        </h1>
+        <p className="mt-1 text-sm text-neutral-600">
+          Requests, confirmed plans, and past gatherings.
+        </p>
+      </div>
 
       <Section title="Pending requests">
         {pending.length === 0 ? (
@@ -73,11 +84,11 @@ export default async function UpcomingGatheringsPage() {
             {pending.map((r) => (
               <li
                 key={r.id}
-                className="rounded-xl border border-neutral-200 bg-white p-4 text-sm"
+                className="rounded-2xl border border-neutral-200/90 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md"
               >
                 <Link
                   href={`/gatherings/${r.gatheringId}`}
-                  className="font-medium text-gather-brown hover:underline"
+                  className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
                 >
                   {r.gathering.title}
                 </Link>
@@ -114,11 +125,11 @@ export default async function UpcomingGatheringsPage() {
               return (
                 <li
                   key={r.id}
-                  className="rounded-xl border border-neutral-200 bg-white p-4 text-sm"
+                  className="rounded-2xl border border-neutral-200/90 bg-white p-5 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md"
                 >
                   <Link
                     href={`/gatherings/${g.id}`}
-                    className="font-medium text-gather-brown hover:underline"
+                    className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
                   >
                     {g.title}
                   </Link>
@@ -129,25 +140,27 @@ export default async function UpcomingGatheringsPage() {
                     Exact address is visible on the gathering page.
                   </p>
 
-                  <div className="mt-4 border-t border-neutral-100 pt-3">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                  <div className="mt-4 rounded-xl bg-gather-paper/80 px-3 py-3 ring-1 ring-neutral-200/60">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-gather-brown-mid">
                       Who&apos;s coming
                     </p>
-                    <ul className="mt-2 space-y-2">
-                      <li className="flex items-center gap-2">
+                    <ul className="mt-2 space-y-2.5">
+                      <li className="flex items-center gap-2.5">
                         {hostPrimary?.url || host.image ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={hostPrimary?.url ?? host.image!}
                             alt=""
-                            className="h-8 w-8 rounded-full object-cover"
+                            className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
                           />
                         ) : (
-                          <div className="h-8 w-8 rounded-full bg-neutral-200" />
+                          <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
                         )}
-                        <span>
+                        <span className="text-[15px]">
                           {host.profile?.firstName ?? host.name ?? "Host"}{" "}
-                          <span className="text-neutral-400">(host)</span>
+                          <span className="text-xs font-medium text-gather-brown-mid">
+                            (host)
+                          </span>
                         </span>
                       </li>
                       {approvedGuests.map((gr) => {
@@ -163,14 +176,14 @@ export default async function UpcomingGatheringsPage() {
                               <img
                                 src={ph.url}
                                 alt=""
-                                className="h-8 w-8 rounded-full object-cover"
+                                className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
                               />
                             ) : (
-                              <div className="h-8 w-8 rounded-full bg-neutral-200" />
+                              <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
                             )}
-                            <span>
+                            <span className="text-[15px]">
                               {gp.firstName}{" "}
-                              <span className="text-neutral-400">
+                              <span className="text-xs text-neutral-500">
                                 · {ageFromDob(gp.dateOfBirth)}
                               </span>
                             </span>
@@ -208,12 +221,20 @@ export default async function UpcomingGatheringsPage() {
         ) : (
           <ul className="space-y-2">
             {past.map((r) => (
-              <li key={r.id} className="text-sm text-neutral-600">
-                {r.gathering.title} ·{" "}
-                {r.gathering.startsAt.toLocaleDateString()} ·{" "}
-                {r.status === GatheringRequestStatus.APPROVED
-                  ? "Attended"
-                  : r.status}
+              <li
+                key={r.id}
+                className="rounded-xl border border-neutral-200/60 bg-gather-paper/50 px-3 py-2.5 text-sm text-neutral-700"
+              >
+                <span className="font-medium text-gather-ink">
+                  {r.gathering.title}
+                </span>
+                <span className="text-neutral-500">
+                  {" "}
+                  · {r.gathering.startsAt.toLocaleDateString()} ·{" "}
+                  {r.status === GatheringRequestStatus.APPROVED
+                    ? "Attended"
+                    : r.status}
+                </span>
               </li>
             ))}
           </ul>
