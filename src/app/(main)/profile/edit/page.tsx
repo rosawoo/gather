@@ -5,6 +5,10 @@ import { PERSONALITY_PROMPTS } from "@/lib/prompts";
 import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { redirect } from "next/navigation";
+import { PageHeader, SectionTitle } from "@/components/ui/page-header";
+
+const inputCls =
+  "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
 
 export default async function EditProfilePage() {
   const session = await auth();
@@ -27,114 +31,159 @@ export default async function EditProfilePage() {
 
   return (
     <div className="pb-10">
-      <p className="text-sm text-neutral-600">
-        Update how you show up to hosts and guests.
-      </p>
+      <PageHeader
+        title="Edit profile"
+        subtitle="Update how you show up to hosts and guests."
+      />
 
-      <form action={updateProfile} className="mt-8 space-y-10">
-        <section className="space-y-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Basics
-          </h2>
-          <div>
-            <label className="text-xs text-neutral-500">First name *</label>
+      <form action={updateProfile} className="space-y-8">
+        <Group title="Basics">
+          <Field label="First name" required>
             <input
               name="firstName"
               required
               defaultValue={p.firstName}
-              className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+              className={inputCls}
             />
-          </div>
-          <div>
-            <label className="text-xs text-neutral-500">Date of birth * (18+)</label>
+          </Field>
+          <Field label="Date of birth" hint="Must be 18 or older." required>
             <input
               name="dateOfBirth"
               type="date"
               required
               defaultValue={dob}
-              className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+              className={inputCls}
             />
-          </div>
-        </section>
+          </Field>
+        </Group>
 
-        <section className="space-y-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Photos *
-          </h2>
+        <Group title="Photos" hint="One URL per line. First photo is your primary.">
           <textarea
             name="photoUrls"
             required
             rows={3}
             defaultValue={photoUrls}
             placeholder="https://…"
-            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+            className={inputCls}
           />
-        </section>
+        </Group>
 
-        <section className="space-y-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Optional
-          </h2>
-          <NeighborhoodInput
-            name="neighborhood"
-            defaultValue={p.neighborhood ?? ""}
-            extras={usedNeighborhoods}
-            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-          />
-          <input
-            name="college"
-            placeholder="College"
-            defaultValue={p.college ?? ""}
-            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-          />
-          <input
-            name="job"
-            placeholder="Job"
-            defaultValue={p.job ?? ""}
-            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-          />
-        </section>
+        <Group title="Optional">
+          <Field label="Neighborhood">
+            <NeighborhoodInput
+              name="neighborhood"
+              defaultValue={p.neighborhood ?? ""}
+              extras={usedNeighborhoods}
+              className={inputCls}
+            />
+          </Field>
+          <Field label="College">
+            <input
+              name="college"
+              placeholder="Where'd you go?"
+              defaultValue={p.college ?? ""}
+              className={inputCls}
+            />
+          </Field>
+          <Field label="Job">
+            <input
+              name="job"
+              placeholder="What do you do?"
+              defaultValue={p.job ?? ""}
+              className={inputCls}
+            />
+          </Field>
+        </Group>
 
-        <section className="space-y-2">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Bio *
-          </h2>
+        <Group title="Bio" hint="A sentence or two. What are you like around a table?">
           <textarea
             name="bio"
             required
             rows={4}
             defaultValue={p.bio ?? ""}
-            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+            className={inputCls}
           />
-        </section>
+        </Group>
 
-        <section className="space-y-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Personality prompts * (at least 2)
-          </h2>
+        <Group
+          title="Personality prompts"
+          hint="Answer at least two. These show on your profile."
+        >
           {PERSONALITY_PROMPTS.map((pr) => {
-            const existing = user.promptAnswers.find((a) => a.promptKey === pr.key);
+            const existing = user.promptAnswers.find(
+              (a) => a.promptKey === pr.key,
+            );
             return (
-              <div key={pr.key}>
-                <label className="text-sm text-neutral-700">{pr.label}</label>
+              <Field key={pr.key} label={pr.label}>
                 <textarea
                   name={`prompt_${pr.key}`}
                   rows={2}
                   defaultValue={existing?.body ?? ""}
-                  className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+                  className={inputCls}
                 />
-              </div>
+              </Field>
             );
           })}
-        </section>
+        </Group>
 
         <button
           type="submit"
-          className="w-full rounded-full bg-gather-brown py-3.5 text-sm font-medium text-gather-cream"
+          className="w-full rounded-full bg-gather-brown py-3.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.99]"
         >
           Save changes
         </button>
       </form>
+    </div>
+  );
+}
+
+function Group({
+  title,
+  hint,
+  children,
+}: {
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <SectionTitle title={title} />
+      {hint ? (
+        <p className="-mt-2 mb-3 text-xs text-neutral-500">{hint}</p>
+      ) : null}
+      <div className="space-y-4 rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function Field({
+  label,
+  hint,
+  required,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label className="flex items-baseline gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+        <span>{label}</span>
+        {required ? (
+          <span className="text-gather-accent" aria-hidden>
+            *
+          </span>
+        ) : null}
+      </label>
+      {hint ? (
+        <p className="mt-0.5 text-xs text-neutral-500">{hint}</p>
+      ) : null}
+      <div className="mt-1.5">{children}</div>
     </div>
   );
 }

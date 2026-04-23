@@ -8,7 +8,7 @@ export default function GatheringsSectionLayout({
   return (
     <div>
       <GatheringsTabs />
-      <div className="px-4">{children}</div>
+      {children}
     </div>
   );
 }

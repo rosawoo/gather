@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { GatheringRequestStatus, GatheringStatus, Plan } from "@prisma/client";
 import Link from "next/link";
+import { SectionTitle } from "@/components/ui/page-header";
 
 export default async function HostHubPage() {
   const session = await auth();
@@ -35,31 +36,37 @@ export default async function HostHubPage() {
   );
 
   return (
-    <div className="pb-10">
-      <section>
+    <div className="pb-8">
+      <div className="mb-8 flex items-start justify-between gap-4">
+        <p className="text-sm text-neutral-600">
+          Plan small, warm gatherings for your neighbors.
+        </p>
         {canHost ? (
           <Link
             href="/host/new"
-            className="inline-flex rounded-full bg-gather-brown px-5 py-3 text-sm font-medium text-gather-cream"
+            className="shrink-0 inline-flex items-center gap-1 rounded-full bg-gather-brown px-4 py-2 text-[13px] font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.98]"
           >
-            + New gathering
+            <span aria-hidden>+</span> New
           </Link>
-        ) : (
-          <p className="text-sm text-neutral-600">
-            Your plan doesn&apos;t include hosting. Upgrade when Member is
-            available.
-          </p>
-        )}
-      </section>
+        ) : null}
+      </div>
 
-      <section className="mt-8">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-          Upcoming
-        </h2>
+      {!canHost ? (
+        <div className="mb-6 rounded-2xl border border-neutral-200/70 bg-white p-4 text-sm text-neutral-600 shadow-sm">
+          Your plan doesn&apos;t include hosting yet. Upgrade when Member is
+          available.
+        </div>
+      ) : null}
+
+      <section className="mb-10">
+        <SectionTitle title="Upcoming" />
         {upcoming.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-500">None scheduled.</p>
+          <EmptyState
+            title="Nothing scheduled"
+            body="Your next gathering will live here once you publish it."
+          />
         ) : (
-          <ul className="mt-3 space-y-3">
+          <ul className="space-y-3">
             {upcoming.map((g) => {
               const approved = g.requests.filter(
                 (r) => r.status === GatheringRequestStatus.APPROVED,
@@ -77,19 +84,19 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className="block rounded-xl border border-neutral-200 bg-white p-4 text-sm shadow-sm transition hover:border-gather-accent/50"
+                    className="block rounded-2xl border border-neutral-200/80 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:border-gather-accent/40 hover:shadow-md"
                   >
-                    <div className="flex items-center justify-between">
-                      <p className="font-medium text-gather-ink">{g.title}</p>
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="font-semibold text-gather-ink">{g.title}</p>
                       {pending > 0 && (
-                        <span className="rounded-full bg-gather-brown px-2 py-0.5 text-[11px] font-semibold text-gather-cream">
+                        <span className="shrink-0 rounded-full bg-gather-brown px-2 py-0.5 text-[11px] font-semibold text-gather-cream shadow-sm">
                           {pending} new
                         </span>
                       )}
                     </div>
                     <p className="mt-1 text-xs text-neutral-500">{dateStr}</p>
-                    <p className="mt-2 text-xs text-neutral-600">
-                      {attending}/{g.maxTotalSize} attending
+                    <p className="mt-2 text-xs text-gather-brown-mid">
+                      {attending} / {g.maxTotalSize} attending
                     </p>
                   </Link>
                 </li>
@@ -100,11 +107,9 @@ export default async function HostHubPage() {
       </section>
 
       {past.length > 0 && (
-        <section className="mt-8">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            Past
-          </h2>
-          <ul className="mt-3 space-y-3">
+        <section>
+          <SectionTitle title="Past" />
+          <ul className="space-y-2">
             {past.map((g) => {
               const approved = g.requests.filter(
                 (r) => r.status === GatheringRequestStatus.APPROVED,
@@ -120,14 +125,14 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className="block rounded-xl border border-neutral-200 bg-white p-4 text-sm"
+                    className="block rounded-xl border border-neutral-200/60 bg-gather-paper/50 px-3 py-2.5 text-sm transition hover:bg-white"
                   >
-                    <p className="font-medium">{g.title}</p>
-                    <p className="mt-1 text-xs text-neutral-500">
+                    <p className="font-medium text-gather-ink">{g.title}</p>
+                    <p className="mt-0.5 text-xs text-neutral-500">
                       {g.startsAt.toLocaleDateString()} · {approved} attended ·
                       ${budget}
                     </p>
-                    <p className="mt-1 text-xs font-medium text-gather-brown-mid">
+                    <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-gather-brown-mid">
                       {reimburseLabel}
                     </p>
                   </Link>
@@ -137,6 +142,15 @@ export default async function HostHubPage() {
           </ul>
         </section>
       )}
+    </div>
+  );
+}
+
+function EmptyState({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/40 px-4 py-8 text-center">
+      <p className="text-sm font-semibold text-gather-ink">{title}</p>
+      <p className="mt-1 text-xs text-neutral-500">{body}</p>
     </div>
   );
 }

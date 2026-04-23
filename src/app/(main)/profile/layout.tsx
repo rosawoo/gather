@@ -13,7 +13,7 @@ export default async function ProfileSectionLayout({
   return (
     <div>
       <ProfileTabs unreadNotifs={unreadNotifs} />
-      <div className="px-4">{children}</div>
+      {children}
     </div>
   );
 }

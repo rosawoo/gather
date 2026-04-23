@@ -15,7 +15,7 @@ function normalizeCallback(raw: string | undefined): string {
   return raw;
 }
 
-export default async function SignInPage({ searchParams }: Props) {
+export default async function SignUpPage({ searchParams }: Props) {
   const session = await auth();
   if (session?.user?.id) {
     const user = await prisma.user.findUnique({
@@ -30,7 +30,7 @@ export default async function SignInPage({ searchParams }: Props) {
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-gather-brown px-6 py-12 text-gather-cream sm:py-16">
-      <AuthPanel mode="sign-in" callbackUrl={callbackUrl} />
+      <AuthPanel mode="sign-up" callbackUrl={callbackUrl} />
     </div>
   );
 }

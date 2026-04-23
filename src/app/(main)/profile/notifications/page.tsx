@@ -14,42 +14,47 @@ export default async function NotificationsPage() {
 
   const unreadIds = new Set(items.filter((n) => !n.read).map((n) => n.id));
 
-  // Mark everything as read now that the user is viewing
   if (unreadIds.size > 0) {
     await markAllRead();
   }
 
   return (
     <div className="pb-10">
-      <p className="text-sm text-neutral-600">
+      <p className="mb-8 text-sm text-neutral-600">
         In-app copies of important updates. SMS uses the welcome / STOP flow
         from your phone step.
       </p>
-      <ul className="mt-6 space-y-3">
+
+      <ul className="space-y-3">
         {items.length === 0 ? (
-          <li className="text-sm text-neutral-500">You&apos;re all caught up.</li>
+          <li className="rounded-2xl border border-dashed border-neutral-300 bg-white/50 px-4 py-8 text-center text-sm text-neutral-500">
+            You&apos;re all caught up.
+          </li>
         ) : (
-          items.map((n) => (
-            <li
-              key={n.id}
-              className={`rounded-xl border p-3 text-sm ${
-                unreadIds.has(n.id)
-                  ? "border-gather-brown/30 bg-gather-cream"
-                  : "border-neutral-200 bg-white"
-              }`}
-            >
-              {unreadIds.has(n.id) && (
-                <span className="mb-1 inline-block rounded-full bg-gather-brown px-2 py-0.5 text-[10px] font-semibold text-gather-cream">
-                  New
-                </span>
-              )}
-              <p className="font-medium">{n.title}</p>
-              <p className="mt-1 text-neutral-600">{n.body}</p>
-              <p className="mt-2 text-xs text-neutral-400">
-                {n.createdAt.toLocaleString()}
-              </p>
-            </li>
-          ))
+          items.map((n) => {
+            const isUnread = unreadIds.has(n.id);
+            return (
+              <li
+                key={n.id}
+                className={`rounded-2xl border p-4 text-sm shadow-sm transition ${
+                  isUnread
+                    ? "border-gather-brown/25 bg-gather-cream/60 ring-1 ring-gather-accent/20"
+                    : "border-neutral-200/70 bg-white ring-1 ring-black/[0.02]"
+                }`}
+              >
+                {isUnread && (
+                  <span className="mb-2 inline-flex items-center rounded-full bg-gather-brown px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-cream shadow-sm">
+                    New
+                  </span>
+                )}
+                <p className="font-semibold text-gather-ink">{n.title}</p>
+                <p className="mt-1 leading-relaxed text-neutral-700">{n.body}</p>
+                <p className="mt-2 text-xs text-neutral-400">
+                  {n.createdAt.toLocaleString()}
+                </p>
+              </li>
+            );
+          })
         )}
       </ul>
     </div>

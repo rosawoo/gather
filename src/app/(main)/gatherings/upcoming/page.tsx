@@ -4,27 +4,7 @@ import { GatheringRequestStatus } from "@prisma/client";
 import Link from "next/link";
 import { ageFromDob } from "@/lib/gathering-display";
 import { cancelGuestRequestAction } from "@/app/actions/request";
-
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="mb-10">
-      <h2 className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-gather-brown-mid">
-        <span
-          className="h-1 w-4 rounded-full bg-gather-accent/80"
-          aria-hidden
-        />
-        {title}
-      </h2>
-      {children}
-    </section>
-  );
-}
+import { SectionTitle } from "@/components/ui/page-header";
 
 export default async function UpcomingGatheringsPage() {
   const session = await auth();
@@ -67,16 +47,12 @@ export default async function UpcomingGatheringsPage() {
 
   return (
     <div className="pb-8">
-      <div className="mb-8">
-        <h1 className="font-serif text-2xl font-light tracking-tight text-gather-ink">
-          Upcoming
-        </h1>
-        <p className="mt-1 text-sm text-neutral-600">
-          Requests, confirmed plans, and past gatherings.
-        </p>
-      </div>
+      <p className="mb-8 text-sm text-neutral-600">
+        Requests, confirmed plans, and past gatherings.
+      </p>
 
-      <Section title="Pending requests">
+      <section className="mb-10">
+        <SectionTitle title="Pending requests" />
         {pending.length === 0 ? (
           <p className="text-sm text-neutral-500">None right now.</p>
         ) : (
@@ -99,7 +75,7 @@ export default async function UpcomingGatheringsPage() {
                   <input type="hidden" name="gatheringId" value={r.gatheringId} />
                   <button
                     type="submit"
-                    className="text-xs font-medium text-red-700 hover:underline"
+                    className="text-xs font-semibold text-red-700 transition hover:text-red-800 hover:underline"
                   >
                     Cancel request (tokens return)
                   </button>
@@ -108,9 +84,10 @@ export default async function UpcomingGatheringsPage() {
             ))}
           </ul>
         )}
-      </Section>
+      </section>
 
-      <Section title="Approved">
+      <section className="mb-10">
+        <SectionTitle title="Approved" />
         {approved.length === 0 ? (
           <p className="text-sm text-neutral-500">Nothing on your calendar yet.</p>
         ) : (
@@ -203,7 +180,7 @@ export default async function UpcomingGatheringsPage() {
                     <input type="hidden" name="gatheringId" value={g.id} />
                     <button
                       type="submit"
-                      className="text-xs font-medium text-neutral-600 hover:underline"
+                      className="text-xs font-medium text-neutral-600 transition hover:text-gather-ink hover:underline"
                     >
                       Withdraw (&gt;24h before start returns tokens)
                     </button>
@@ -213,9 +190,10 @@ export default async function UpcomingGatheringsPage() {
             })}
           </ul>
         )}
-      </Section>
+      </section>
 
-      <Section title="Past">
+      <section>
+        <SectionTitle title="Past" />
         {past.length === 0 ? (
           <p className="text-sm text-neutral-500">No past gatherings yet.</p>
         ) : (
@@ -239,7 +217,7 @@ export default async function UpcomingGatheringsPage() {
             ))}
           </ul>
         )}
-      </Section>
+      </section>
     </div>
   );
 }

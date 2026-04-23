@@ -30,14 +30,22 @@ export default async function DiscoverGatheringsPage() {
   });
 
   return (
-    <div>
-      <h1 className="mb-6 text-xl font-semibold text-gather-ink">Discover</h1>
+    <div className="pb-8">
+      <p className="mb-8 text-sm text-neutral-600">
+        Small gatherings open for requests this week.
+      </p>
+
       {visible.length === 0 ? (
-        <p className="text-sm text-neutral-600">
-          No gatherings yet. Check back soon — or host one from the Host tab.
-        </p>
+        <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-5 py-10 text-center">
+          <p className="text-sm font-semibold text-gather-ink">
+            Nothing open right now
+          </p>
+          <p className="mt-1 text-xs text-neutral-500">
+            New gatherings drop regularly. Or host one from the Host tab.
+          </p>
+        </div>
       ) : (
-        <div className="flex flex-col items-center gap-10 pb-8">
+        <div className="flex flex-col items-center gap-10">
           {visible.map((g) => (
             <PolaroidCard
               key={g.id}

@@ -6,6 +6,11 @@ import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { redirect } from "next/navigation";
 import { completeProfile } from "@/app/actions/profile";
+import { OnboardingScaffold } from "@/components/auth/onboarding-scaffold";
+import { SectionTitle } from "@/components/ui/page-header";
+
+const inputCls =
+  "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
 
 export default async function ProfileOnboardingPage() {
   const session = await auth();
@@ -22,116 +27,135 @@ export default async function ProfileOnboardingPage() {
   const usedNeighborhoods = await getUsedNeighborhoods();
 
   return (
-    <div className="min-h-full bg-gather-paper px-6 py-12 pb-28 text-gather-ink">
-      <div className="mx-auto max-w-lg">
-        <h1 className="text-2xl font-medium tracking-tight">Your profile</h1>
-        <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-          A few thoughtful details — like a dating app, but for gatherings.
-        </p>
-
-        <form action={completeProfile} className="mt-10 space-y-10">
-          <section className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Basics
-            </h2>
-            <div>
-              <label className="text-xs text-neutral-500">First name *</label>
-              <input
-                name="firstName"
-                required
-                className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-neutral-500">
-                Date of birth * (18+)
-              </label>
-              <input
-                name="dateOfBirth"
-                type="date"
-                required
-                className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-              />
-            </div>
-          </section>
-
-          <section className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Photos *
-            </h2>
-            <p className="text-xs text-neutral-500">
-              Paste image URLs (comma or newline separated). First is your main
-              photo. Replace with uploads when storage is wired.
-            </p>
-            <textarea
-              name="photoUrls"
+    <OnboardingScaffold
+      step="profile"
+      title="Your profile"
+      subtitle="A few thoughtful details — like a dating app, but for gatherings."
+    >
+      <form action={completeProfile} className="space-y-8 pb-16">
+        <Group title="Basics">
+          <Field label="First name" required>
+            <input name="firstName" required className={inputCls} />
+          </Field>
+          <Field label="Date of birth" hint="Must be 18 or older." required>
+            <input
+              name="dateOfBirth"
+              type="date"
               required
-              rows={3}
-              placeholder="https://…"
-              className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+              className={inputCls}
             />
-          </section>
+          </Field>
+        </Group>
 
-          <section className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Optional
-            </h2>
+        <Group
+          title="Photos"
+          hint="Paste image URLs (newline or comma separated). First is your primary."
+        >
+          <textarea
+            name="photoUrls"
+            required
+            rows={3}
+            placeholder="https://…"
+            className={inputCls}
+          />
+        </Group>
+
+        <Group title="Optional">
+          <Field label="Neighborhood">
             <NeighborhoodInput
               name="neighborhood"
               extras={usedNeighborhoods}
-              className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+              className={inputCls}
             />
-            <input
-              name="college"
-              placeholder="College"
-              className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-            />
-            <input
-              name="job"
-              placeholder="Job"
-              className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-            />
-          </section>
+          </Field>
+          <Field label="College">
+            <input name="college" placeholder="Where'd you go?" className={inputCls} />
+          </Field>
+          <Field label="Job">
+            <input name="job" placeholder="What do you do?" className={inputCls} />
+          </Field>
+        </Group>
 
-          <section className="space-y-2">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Bio *
-            </h2>
-            <p className="text-sm text-neutral-600">
-              Introduce yourself. What should people know about you?
-            </p>
-            <textarea
-              name="bio"
-              required
-              rows={4}
-              className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-            />
-          </section>
+        <Group
+          title="Bio"
+          hint="Introduce yourself. What should people know?"
+        >
+          <textarea name="bio" required rows={4} className={inputCls} />
+        </Group>
 
-          <section className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Personality prompts * (at least 2)
-            </h2>
-            {PERSONALITY_PROMPTS.map((p) => (
-              <div key={p.key}>
-                <label className="text-sm text-neutral-700">{p.label}</label>
-                <textarea
-                  name={`prompt_${p.key}`}
-                  rows={2}
-                  className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
-                />
-              </div>
-            ))}
-          </section>
+        <Group
+          title="Personality prompts"
+          hint="Answer at least two. These show on your profile."
+        >
+          {PERSONALITY_PROMPTS.map((p) => (
+            <Field key={p.key} label={p.label}>
+              <textarea
+                name={`prompt_${p.key}`}
+                rows={2}
+                className={inputCls}
+              />
+            </Field>
+          ))}
+        </Group>
 
-          <button
-            type="submit"
-            className="w-full rounded-full bg-gather-brown py-3.5 text-sm font-medium text-gather-cream"
-          >
-            Complete profile
-          </button>
-        </form>
+        <button
+          type="submit"
+          className="w-full rounded-full bg-gather-brown py-3.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.99]"
+        >
+          Complete profile
+        </button>
+      </form>
+    </OnboardingScaffold>
+  );
+}
+
+function Group({
+  title,
+  hint,
+  children,
+}: {
+  title: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <SectionTitle title={title} />
+      {hint ? (
+        <p className="-mt-2 mb-3 text-xs text-neutral-500">{hint}</p>
+      ) : null}
+      <div className="space-y-4 rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+        {children}
       </div>
+    </section>
+  );
+}
+
+function Field({
+  label,
+  hint,
+  required,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label className="flex items-baseline gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+        <span>{label}</span>
+        {required ? (
+          <span className="text-gather-accent" aria-hidden>
+            *
+          </span>
+        ) : null}
+      </label>
+      {hint ? (
+        <p className="mt-0.5 text-xs text-neutral-500">{hint}</p>
+      ) : null}
+      <div className="mt-1.5">{children}</div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { createGathering } from "@/app/actions/gathering";
 import { GatheringType } from "@prisma/client";
 import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
+import { PageHeader, SectionTitle } from "@/components/ui/page-header";
 
 const types: GatheringType[] = [
   GatheringType.HOME,
@@ -15,93 +16,135 @@ export default async function NewGatheringPage() {
 
   return (
     <div className="pb-10">
-      <Link href="/host" className="inline-flex items-center gap-1 text-sm text-gather-brown hover:underline">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4"><path fillRule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" /></svg>
+      <Link
+        href="/host"
+        className="inline-flex items-center gap-1 text-sm text-gather-brown-mid transition hover:text-gather-brown"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className="h-4 w-4"
+          aria-hidden
+        >
+          <path
+            fillRule="evenodd"
+            d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
+            clipRule="evenodd"
+          />
+        </svg>
         Back
       </Link>
-      <h1 className="mt-4 text-xl font-semibold">Host a gathering</h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        Cover photo: paste an image URL for now. Template editor (Partiful-style)
-        can layer on later.
-      </p>
 
-      <form action={createGathering} className="mt-8 space-y-5">
-        <Field label="Title *">
-          <input name="title" required className={input} />
-        </Field>
-        <Field label="Cover image URL">
-          <input name="coverImageUrl" type="url" className={input} />
-        </Field>
-        <Field label="Description *">
-          <textarea name="description" required rows={4} className={input} />
-        </Field>
-        <Field label="Type *">
-          <select name="gatheringType" required className={input}>
-            {types.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Neighborhood (public) *">
-          <NeighborhoodInput name="neighborhood" required extras={usedNeighborhoods} className={input} />
-        </Field>
-        <Field label="Full address (hidden until approval) *">
-          <input name="addressSecret" required className={input} />
-        </Field>
-        <Field label="Starts at *">
-          <input name="startsAt" type="datetime-local" required className={input} />
-        </Field>
-        <Field label="Optional question for applicants">
-          <input name="applicantQuestion" className={input} />
-        </Field>
-        <Field label="Token cost (0 for free) *">
-          <input
-            name="tokenCost"
-            type="number"
-            min={0}
-            defaultValue={1}
+      <div className="mt-5">
+        <PageHeader
+          title="Host a gathering"
+          subtitle="Set the stage. You can refine details after publishing."
+        />
+      </div>
+
+      <form action={createGathering} className="space-y-8">
+        <Group title="The basics">
+          <Field label="Title" required>
+            <input name="title" required className={input} />
+          </Field>
+          <Field label="Cover image URL" hint="Paste a URL — uploader coming later.">
+            <input name="coverImageUrl" type="url" className={input} />
+          </Field>
+          <Field label="Description" required>
+            <textarea name="description" required rows={4} className={input} />
+          </Field>
+          <Field label="Type" required>
+            <select name="gatheringType" required className={input}>
+              {types.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </Field>
+        </Group>
+
+        <Group title="Where & when">
+          <Field label="Neighborhood (public)" required>
+            <NeighborhoodInput
+              name="neighborhood"
+              required
+              extras={usedNeighborhoods}
+              className={input}
+            />
+          </Field>
+          <Field label="Full address" hint="Hidden until a guest is approved." required>
+            <input name="addressSecret" required className={input} />
+          </Field>
+          <Field label="Starts at" required>
+            <input
+              name="startsAt"
+              type="datetime-local"
+              required
+              className={input}
+            />
+          </Field>
+        </Group>
+
+        <Group title="Who & how">
+          <Field label="Optional question for applicants">
+            <input name="applicantQuestion" className={input} />
+          </Field>
+          <Field label="Token cost" hint="0 for free." required>
+            <input
+              name="tokenCost"
+              type="number"
+              min={0}
+              defaultValue={1}
+              required
+              className={input}
+            />
+          </Field>
+          <Field label="Event budget explanation">
+            <textarea name="budgetExplanation" rows={2} className={input} />
+          </Field>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Min group size" required>
+              <input
+                name="minTotalSize"
+                type="number"
+                min={1}
+                defaultValue={5}
+                required
+                className={input}
+              />
+            </Field>
+            <Field label="Max group size" required>
+              <input
+                name="maxTotalSize"
+                type="number"
+                min={1}
+                defaultValue={7}
+                required
+                className={input}
+              />
+            </Field>
+          </div>
+          <Field
+            label="Friends already coming"
+            hint="No tokens required from them."
             required
-            className={input}
-          />
-        </Field>
-        <Field label="Event budget explanation">
-          <textarea name="budgetExplanation" rows={2} className={input} />
-        </Field>
-        <Field label="Min total group size *">
-          <input
-            name="minTotalSize"
-            type="number"
-            min={1}
-            defaultValue={5}
-            required
-            className={input}
-          />
-        </Field>
-        <Field label="Max total group size *">
-          <input
-            name="maxTotalSize"
-            type="number"
-            min={1}
-            defaultValue={7}
-            required
-            className={input}
-          />
-        </Field>
-        <Field label="Friends already coming (no tokens) *">
-          <input
-            name="hostFriendsCount"
-            type="number"
-            min={0}
-            defaultValue={0}
-            required
-            className={input}
-          />
-        </Field>
+          >
+            <input
+              name="hostFriendsCount"
+              type="number"
+              min={0}
+              defaultValue={0}
+              required
+              className={input}
+            />
+          </Field>
+        </Group>
+
         <button
           type="submit"
-          className="w-full rounded-full bg-gather-brown py-3.5 text-sm font-medium text-gather-cream"
+          className="w-full rounded-full bg-gather-brown py-3.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.99]"
         >
           Post gathering
         </button>
@@ -110,22 +153,51 @@ export default async function NewGatheringPage() {
   );
 }
 
+function Group({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <SectionTitle title={title} />
+      <div className="space-y-4 rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+        {children}
+      </div>
+    </section>
+  );
+}
+
 function Field({
   label,
+  hint,
+  required,
   children,
 }: {
   label: string;
+  hint?: string;
+  required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium uppercase tracking-wide text-neutral-500">
-        {label}
+      <label className="flex items-baseline gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+        <span>{label}</span>
+        {required ? (
+          <span className="text-gather-accent" aria-hidden>
+            *
+          </span>
+        ) : null}
       </label>
-      <div className="mt-1">{children}</div>
+      {hint ? (
+        <p className="mt-0.5 text-xs text-neutral-500">{hint}</p>
+      ) : null}
+      <div className="mt-1.5">{children}</div>
     </div>
   );
 }
 
 const input =
-  "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2";
+  "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
