@@ -87,7 +87,6 @@ export default async function PlanPage() {
     include: { profile: true },
   });
   if (!user) redirect("/");
-  if (!user.phoneVerified) redirect("/onboarding/phone");
   if (!user.profileComplete) redirect("/onboarding/profile");
   if (user.plan !== Plan.NONE) redirect("/gatherings");
 

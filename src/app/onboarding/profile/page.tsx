@@ -22,7 +22,6 @@ export default async function ProfileOnboardingPage() {
     include: { profile: true },
   });
   if (!user) redirect("/");
-  if (!user.phoneVerified) redirect("/onboarding/phone");
   if (user.profileComplete) redirect(nextAppPath(user));
 
   const usedNeighborhoods = await getUsedNeighborhoods();

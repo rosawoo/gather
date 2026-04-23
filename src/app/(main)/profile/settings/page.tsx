@@ -34,10 +34,17 @@ export default async function SettingsPage() {
           <Row label="Email">{user.email ?? "—"}</Row>
           <Row label="Phone">
             <span>{user.phone ?? "Not set"}</span>
-            {user.phoneVerified && (
+            {user.phoneVerified ? (
               <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-700 ring-1 ring-emerald-200">
                 Verified
               </span>
+            ) : (
+              <a
+                href="/onboarding/phone"
+                className="ml-2 text-xs font-medium text-gather-brown underline-offset-4 hover:underline"
+              >
+                Add for SMS alerts (US only)
+              </a>
             )}
           </Row>
         </Card>

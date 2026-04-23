@@ -19,8 +19,8 @@ export default async function PhonePage() {
   return (
     <OnboardingScaffold
       step="phone"
-      title="Verify your phone"
-      subtitle="We use your number for notifications and trust & safety."
+      title="Add your phone (optional)"
+      subtitle="US numbers only. Adds SMS alerts for requests and reminders — you'll still get everything in-app without it."
     >
       <div className="rounded-2xl border border-gather-accent/30 bg-gather-cream/50 px-4 py-3 text-xs leading-relaxed text-gather-brown-mid">
         With <strong>Twilio</strong> configured in{" "}
@@ -29,6 +29,14 @@ export default async function PhonePage() {
         terminal for the code — or use <strong>202600</strong> as a bypass.
       </div>
       <PhoneForm />
+      <div className="mt-6 text-center">
+        <a
+          href="/onboarding/profile"
+          className="text-sm font-medium text-gather-brown-mid underline-offset-4 hover:underline"
+        >
+          Skip for now
+        </a>
+      </div>
     </OnboardingScaffold>
   );
 }
