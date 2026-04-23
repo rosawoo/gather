@@ -7,6 +7,16 @@ type Photo = { id: string; url: string };
 
 const ALLOWED = /^image\/(jpeg|png|webp|gif|heic)$/i;
 const MAX_BYTES = 8 * 1024 * 1024;
+const INLINE_FALLBACK_MAX_BYTES = 2 * 1024 * 1024;
+
+function readAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ""));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
 
 export function PhotoUpload({
   name = "photoUrls",
@@ -25,12 +35,35 @@ export function PhotoUpload({
   const [dragging, setDragging] = useState(false);
   const [pasted, setPasted] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [inlineMode, setInlineMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const value = photos.map((p) => p.url).join("\n");
 
+  function newId() {
+    return typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random()}`;
+  }
+
+  async function inlineFallback(files: File[]): Promise<Photo[]> {
+    const accepted: Photo[] = [];
+    for (const file of files) {
+      if (file.size > INLINE_FALLBACK_MAX_BYTES) {
+        throw new Error(
+          "In local preview each image must be under 2 MB. Connect Vercel Blob for larger uploads.",
+        );
+      }
+      const dataUrl = await readAsDataUrl(file);
+      accepted.push({ id: newId(), url: dataUrl });
+    }
+    return accepted;
+  }
+
   async function uploadFiles(files: File[]) {
     setError(null);
+    setNotice(null);
     const valid = files.filter((f) => {
       if (!ALLOWED.test(f.type)) {
         setError("Only image files please.");
@@ -46,6 +79,20 @@ export function PhotoUpload({
 
     setUploading(true);
     setProgress({ done: 0, total: valid.length });
+
+    if (inlineMode) {
+      try {
+        const accepted = await inlineFallback(valid);
+        setPhotos((p) => [...p, ...accepted]);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Couldn't read image.");
+      } finally {
+        setUploading(false);
+        setProgress(null);
+      }
+      return;
+    }
+
     const accepted: Photo[] = [];
     try {
       for (const file of valid) {
@@ -53,23 +100,28 @@ export function PhotoUpload({
           access: "public",
           handleUploadUrl: "/api/blob-upload",
         });
-        accepted.push({
-          id:
-            typeof crypto !== "undefined" && crypto.randomUUID
-              ? crypto.randomUUID()
-              : `${Date.now()}-${Math.random()}`,
-          url: blob.url,
-        });
+        accepted.push({ id: newId(), url: blob.url });
         setProgress((p) => (p ? { ...p, done: p.done + 1 } : null));
       }
       setPhotos((p) => [...p, ...accepted]);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Upload failed.";
-      setError(
-        /unauthorized|token|BLOB/i.test(msg)
-          ? "Upload isn't available — paste a URL below instead."
-          : msg,
-      );
+      const blobUnavailable =
+        /unauthorized|token|BLOB|501|not configured/i.test(msg);
+      if (blobUnavailable) {
+        try {
+          const fallback = await inlineFallback(valid);
+          setPhotos((p) => [...p, ...fallback]);
+          setInlineMode(true);
+          setNotice(
+            "Blob storage isn't configured, so photos are stored inline for now. Fine for local previewing; connect Vercel Blob before going live.",
+          );
+        } catch (fe) {
+          setError(fe instanceof Error ? fe.message : "Couldn't read image.");
+        }
+      } else {
+        setError(msg);
+      }
     } finally {
       setUploading(false);
       setProgress(null);
@@ -215,6 +267,12 @@ export function PhotoUpload({
       {error ? (
         <p className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-200">
           {error}
+        </p>
+      ) : null}
+
+      {notice ? (
+        <p className="mt-3 rounded-xl bg-gather-cream/60 px-3 py-2 text-xs leading-relaxed text-gather-brown-mid ring-1 ring-gather-accent/20">
+          {notice}
         </p>
       ) : null}
 

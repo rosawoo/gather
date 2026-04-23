@@ -3,6 +3,16 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 
 export async function POST(request: Request): Promise<NextResponse> {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json(
+      {
+        error:
+          "Blob storage isn't configured. Connect Vercel Blob or run `vercel env pull`.",
+      },
+      { status: 501 },
+    );
+  }
+
   const body = (await request.json()) as HandleUploadBody;
 
   try {
