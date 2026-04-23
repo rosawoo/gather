@@ -7,13 +7,14 @@ import {
 import { NextResponse } from "next/server";
 
 /**
- * Run every few minutes via Vercel Cron / external scheduler.
- * POST with header: Authorization: Bearer ${CRON_SECRET}
+ * Run on a schedule via Vercel Cron (configured in vercel.json) — Vercel
+ * attaches `Authorization: Bearer ${CRON_SECRET}` automatically when the
+ * CRON_SECRET env var is set. Also works as a manual POST for testing.
  *
  * Cancels published gatherings that are &lt;2h away if
  * hostFriends + approved guests &lt; minTotalSize.
  */
-export async function POST(req: Request) {
+async function handler(req: Request) {
   const secret = process.env.CRON_SECRET;
   if (!secret) {
     return NextResponse.json(
@@ -69,3 +70,6 @@ export async function POST(req: Request) {
     results,
   });
 }
+
+export const GET = handler;
+export const POST = handler;
