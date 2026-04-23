@@ -6,6 +6,7 @@ import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { redirect } from "next/navigation";
 import { PageHeader, SectionTitle } from "@/components/ui/page-header";
+import { PhotoUpload } from "@/components/photo-upload";
 
 const inputCls =
   "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
@@ -27,7 +28,7 @@ export default async function EditProfilePage() {
   const p = user.profile;
   const dob = p.dateOfBirth.toISOString().slice(0, 10);
   const usedNeighborhoods = await getUsedNeighborhoods();
-  const photoUrls = user.photos.map((ph) => ph.url).join("\n");
+  const initialPhotoUrls = user.photos.map((ph) => ph.url);
 
   return (
     <div className="pb-10">
@@ -57,15 +58,11 @@ export default async function EditProfilePage() {
           </Field>
         </Group>
 
-        <Group title="Photos" hint="One URL per line. First photo is your primary.">
-          <textarea
-            name="photoUrls"
-            required
-            rows={3}
-            defaultValue={photoUrls}
-            placeholder="https://…"
-            className={inputCls}
-          />
+        <Group
+          title="Photos"
+          hint="Drop images here or pick from your device. First photo is your primary."
+        >
+          <PhotoUpload initialUrls={initialPhotoUrls} />
         </Group>
 
         <Group title="Optional">

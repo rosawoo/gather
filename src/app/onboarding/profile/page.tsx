@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import { completeProfile } from "@/app/actions/profile";
 import { OnboardingScaffold } from "@/components/auth/onboarding-scaffold";
 import { SectionTitle } from "@/components/ui/page-header";
+import { PhotoUpload } from "@/components/photo-upload";
 
 const inputCls =
   "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
@@ -49,15 +50,9 @@ export default async function ProfileOnboardingPage() {
 
         <Group
           title="Photos"
-          hint="Paste image URLs (newline or comma separated). First is your primary."
+          hint="Drop images here or pick from your device. First photo is your primary."
         >
-          <textarea
-            name="photoUrls"
-            required
-            rows={3}
-            placeholder="https://…"
-            className={inputCls}
-          />
+          <PhotoUpload />
         </Group>
 
         <Group title="Optional">

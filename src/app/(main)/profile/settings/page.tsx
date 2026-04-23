@@ -174,8 +174,8 @@ function Policy({
 }) {
   return (
     <li>
-      <span className="font-semibold text-gather-ink">{title}</span>{" "}
-      <span className="text-neutral-600">— {children}</span>
+      <span className="font-semibold text-gather-ink">{title}:</span>{" "}
+      <span className="text-neutral-600">{children}</span>
     </li>
   );
 }

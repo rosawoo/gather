@@ -7,7 +7,7 @@
     "dev:3000": "next dev -p 3000 --webpack",
     "dev:3001": "next dev -p 3001 --webpack",
     "dev:3001:turbo": "next dev -p 3001 --turbopack",
-    "build": "next build",
+    "build": "prisma generate && prisma db push --skip-generate && next build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "prisma generate",
@@ -20,6 +20,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
     "@prisma/client": "^6.19.0",
+    "@vercel/blob": "^2.3.3",
     "next": "16.2.2",
     "next-auth": "^5.0.0-beta.30",
     "prisma": "^6.19.0",

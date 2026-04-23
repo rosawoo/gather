@@ -1,11 +1,11 @@
-// Gather — core data model (SQLite for local dev; swap URL for Postgres in production)
+// Gather — core data model (Postgres via Neon on Vercel)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
