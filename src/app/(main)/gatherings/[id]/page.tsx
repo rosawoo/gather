@@ -7,6 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JoinRequestForm } from "./join-form";
 import { SectionTitle } from "@/components/ui/page-header";
+import { CoverArt } from "@/components/cover-art";
 
 export default async function GatheringDetailPage({
   params,
@@ -89,18 +90,9 @@ export default async function GatheringDetailPage({
       </Link>
 
       <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.04]">
-        {g.coverImageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={g.coverImageUrl}
-            alt=""
-            className="aspect-[16/9] w-full object-cover"
-          />
-        ) : (
-          <div className="flex aspect-[16/9] items-center justify-center bg-neutral-100 text-xs font-medium uppercase tracking-[0.12em] text-neutral-400">
-            No cover image
-          </div>
-        )}
+        <div className="aspect-[16/9] w-full bg-neutral-100">
+          <CoverArt cover={g.coverImageUrl} title={g.title} eager />
+        </div>
         <div className="space-y-4 p-5">
           <div>
             <h1 className="font-serif text-2xl font-light leading-tight tracking-tight text-gather-ink sm:text-3xl">
@@ -121,9 +113,10 @@ export default async function GatheringDetailPage({
               {g.addressSecret}
             </p>
           ) : (
-            <p className="text-sm italic text-neutral-500">
-              Exact address shared after approval.
-            </p>
+            <ul className="space-y-1 text-sm italic text-neutral-500">
+              <li>Exact address shared after approval.</li>
+              <li>View list of other gatherers after approval.</li>
+            </ul>
           )}
 
           <div className="grid grid-cols-2 gap-3 pt-1">

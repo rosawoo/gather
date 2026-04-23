@@ -294,7 +294,11 @@ export default async function HostManageGatheringPage({
             </p>
             {g.expenseSubmissions[0] ? (
               <p className="mt-4 text-sm font-semibold text-gather-brown">
-                Status: {g.expenseSubmissions[0].status}
+                {g.expenseSubmissions[0].status === "SENT"
+                  ? "Reimbursement sent"
+                  : g.expenseSubmissions[0].status === "SUBMITTED"
+                    ? "Expense submitted — awaiting payout"
+                    : "Reimbursement pending"}
               </p>
             ) : (
               <form action={submitExpense} className="mt-4 space-y-3">

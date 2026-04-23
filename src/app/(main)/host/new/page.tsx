@@ -4,6 +4,7 @@ import { GatheringType } from "@prisma/client";
 import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { PageHeader, SectionTitle } from "@/components/ui/page-header";
+import { CoverEditor } from "@/components/cover-editor";
 
 const types: GatheringType[] = [
   GatheringType.HOME,
@@ -48,8 +49,8 @@ export default async function NewGatheringPage() {
           <Field label="Title" required>
             <input name="title" required className={input} />
           </Field>
-          <Field label="Cover image URL" hint="Paste a URL — uploader coming later.">
-            <input name="coverImageUrl" type="url" className={input} />
+          <Field label="Cover art" hint="Pick a template or paste a URL.">
+            <CoverEditor />
           </Field>
           <Field label="Description" required>
             <textarea name="description" required rows={4} className={input} />

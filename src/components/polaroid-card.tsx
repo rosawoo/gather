@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { capacityLine } from "@/lib/gathering-display";
+import { CoverArt } from "@/components/cover-art";
 
 type PolaroidCardProps = {
   id: string;
@@ -33,18 +34,7 @@ export function PolaroidCard(props: PolaroidCardProps) {
     >
       <div className="rounded-xl bg-white p-3 pb-14 shadow-lg shadow-black/10 ring-1 ring-black/[0.07] transition duration-300 group-hover:shadow-xl group-hover:ring-gather-accent/25">
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-neutral-200">
-          {props.coverImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={props.coverImageUrl}
-              alt=""
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-xs text-neutral-400">
-              No cover
-            </div>
-          )}
+          <CoverArt cover={props.coverImageUrl} title={props.title} />
           <span className="absolute bottom-2 right-2 inline-flex rounded-full bg-gather-cream/95 px-2.5 py-0.5 text-[11px] font-semibold text-gather-brown shadow-sm ring-1 ring-black/5">
             {tokenLabel}
           </span>

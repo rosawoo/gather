@@ -37,29 +37,39 @@ export default async function HostHubPage() {
 
   return (
     <div className="pb-8">
-      <div className="mb-8 flex items-start justify-between gap-4">
-        <p className="text-sm text-neutral-600">
-          Plan small, warm gatherings for your neighbors.
-        </p>
+      <p className="mb-8 text-sm text-neutral-600">
+        Plan small, warm gatherings for your neighbors.
+      </p>
+
+      <section className="mb-10">
+        <SectionTitle title="Host a gathering" />
         {canHost ? (
           <Link
             href="/host/new"
-            className="shrink-0 inline-flex items-center gap-1 rounded-full bg-gather-brown px-4 py-2 text-[13px] font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.98]"
+            className="group flex items-center justify-between gap-3 rounded-2xl border border-gather-accent/40 bg-white p-4 shadow-sm ring-1 ring-gather-accent/10 transition hover:border-gather-accent hover:shadow-md"
           >
-            <span aria-hidden>+</span> New
+            <div>
+              <p className="text-sm font-semibold text-gather-ink">
+                Start a new gathering
+              </p>
+              <p className="mt-0.5 text-xs text-neutral-500">
+                Pick a template or upload your own cover — takes a minute.
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full bg-gather-brown px-4 py-2 text-[13px] font-semibold text-gather-cream shadow-sm transition group-hover:bg-gather-brown-mid">
+              + New
+            </span>
           </Link>
-        ) : null}
-      </div>
-
-      {!canHost ? (
-        <div className="mb-6 rounded-2xl border border-neutral-200/70 bg-white p-4 text-sm text-neutral-600 shadow-sm">
-          Your plan doesn&apos;t include hosting yet. Upgrade when Member is
-          available.
-        </div>
-      ) : null}
+        ) : (
+          <div className="rounded-2xl border border-neutral-200/70 bg-white p-4 text-sm text-neutral-600 shadow-sm">
+            Your plan doesn&apos;t include hosting yet. Upgrade when Member is
+            available.
+          </div>
+        )}
+      </section>
 
       <section className="mb-10">
-        <SectionTitle title="Upcoming" />
+        <SectionTitle title="Current gatherings" />
         {upcoming.length === 0 ? (
           <EmptyState
             title="Nothing scheduled"
@@ -90,7 +100,7 @@ export default async function HostHubPage() {
                       <p className="font-semibold text-gather-ink">{g.title}</p>
                       {pending > 0 && (
                         <span className="shrink-0 rounded-full bg-gather-brown px-2 py-0.5 text-[11px] font-semibold text-gather-cream shadow-sm">
-                          {pending} new
+                          {pending} pending
                         </span>
                       )}
                     </div>
@@ -106,9 +116,14 @@ export default async function HostHubPage() {
         )}
       </section>
 
-      {past.length > 0 && (
-        <section>
-          <SectionTitle title="Past" />
+      <section>
+        <SectionTitle title="Past gatherings & reimbursements" />
+        {past.length === 0 ? (
+          <EmptyState
+            title="Nothing yet"
+            body="Finished gatherings and their reimbursement status appear here."
+          />
+        ) : (
           <ul className="space-y-2">
             {past.map((g) => {
               const approved = g.requests.filter(
@@ -116,10 +131,11 @@ export default async function HostHubPage() {
               ).length;
               const budget = (approved * 7.5).toFixed(2);
               const sub = g.expenseSubmissions[0];
-              let reimburseLabel = "Submit expense";
+              let reimburseLabel = "Reimbursement pending";
               if (sub) {
-                if (sub.status === "SUBMITTED") reimburseLabel = "Submitted";
-                if (sub.status === "SENT") reimburseLabel = "Paid";
+                if (sub.status === "SUBMITTED")
+                  reimburseLabel = "Expense submitted";
+                if (sub.status === "SENT") reimburseLabel = "Reimbursement sent";
               }
               return (
                 <li key={g.id}>
@@ -140,8 +156,8 @@ export default async function HostHubPage() {
               );
             })}
           </ul>
-        </section>
-      )}
+        )}
+      </section>
     </div>
   );
 }

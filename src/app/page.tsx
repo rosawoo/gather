@@ -44,16 +44,16 @@ export default async function LandingPage() {
 
       <div className="relative mt-14 flex w-full max-w-xs flex-col gap-3">
         <Link
-          href="/sign-up"
+          href="/sign-in"
           className="block w-full rounded-full bg-gather-cream px-6 py-3.5 text-center text-sm font-semibold text-gather-brown shadow-md transition hover:bg-white hover:shadow-lg active:scale-[0.99]"
         >
-          Create account
+          Log In
         </Link>
         <Link
-          href="/sign-in"
+          href="/sign-up"
           className="block w-full rounded-full border border-gather-cream/35 bg-transparent px-6 py-3.5 text-center text-sm font-medium text-gather-cream transition hover:border-gather-cream hover:bg-gather-brown-mid/50"
         >
-          I already have an account
+          Create Account
         </Link>
       </div>
 
