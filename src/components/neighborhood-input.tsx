@@ -1,39 +1,219 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 
+/** Curated fallback — a few neighborhoods and many cities. Used when offline
+ *  or before the user types, and to seed the first characters. */
 const DEFAULTS = [
-  "East Village",
-  "West Village",
-  "Williamsburg",
-  "Bushwick",
-  "Park Slope",
-  "Lower East Side",
-  "Upper West Side",
-  "Upper East Side",
-  "Chelsea",
-  "SoHo",
-  "Tribeca",
-  "Greenpoint",
-  "Astoria",
-  "DUMBO",
-  "Bed-Stuy",
-  "Crown Heights",
-  "Harlem",
-  "Midtown",
-  "Nolita",
-  "Prospect Heights",
-  "Cobble Hill",
-  "Carroll Gardens",
-  "Fort Greene",
-  "Clinton Hill",
-  "Hell's Kitchen",
-  "Murray Hill",
-  "Gramercy",
-  "Flatiron",
-  "Financial District",
-  "Brooklyn Heights",
+  // NYC neighborhoods
+  "East Village, Manhattan",
+  "West Village, Manhattan",
+  "SoHo, Manhattan",
+  "Tribeca, Manhattan",
+  "Upper West Side, Manhattan",
+  "Upper East Side, Manhattan",
+  "Harlem, Manhattan",
+  "Williamsburg, Brooklyn",
+  "Bushwick, Brooklyn",
+  "Park Slope, Brooklyn",
+  "Bed-Stuy, Brooklyn",
+  "Greenpoint, Brooklyn",
+  "Astoria, Queens",
+  // US cities
+  "Boston, MA",
+  "Cambridge, MA",
+  "New York, NY",
+  "Brooklyn, NY",
+  "San Francisco, CA",
+  "Oakland, CA",
+  "Berkeley, CA",
+  "Los Angeles, CA",
+  "Santa Monica, CA",
+  "San Diego, CA",
+  "Chicago, IL",
+  "Austin, TX",
+  "Dallas, TX",
+  "Houston, TX",
+  "Seattle, WA",
+  "Portland, OR",
+  "Denver, CO",
+  "Washington, DC",
+  "Philadelphia, PA",
+  "Miami, FL",
+  "Atlanta, GA",
+  "Nashville, TN",
+  "Minneapolis, MN",
+  "Detroit, MI",
+  "Pittsburgh, PA",
+  "New Orleans, LA",
+  "Phoenix, AZ",
+  "Las Vegas, NV",
+  "Salt Lake City, UT",
+  // International
+  "Toronto, ON",
+  "Vancouver, BC",
+  "Montreal, QC",
+  "London, UK",
+  "Paris, FR",
+  "Berlin, DE",
+  "Amsterdam, NL",
+  "Lisbon, PT",
+  "Madrid, ES",
+  "Barcelona, ES",
+  "Mexico City, MX",
+  "Tokyo, JP",
+  "Seoul, KR",
+  "Singapore",
+  "Sydney, AU",
 ];
+
+type NominatimAddress = {
+  city?: string;
+  town?: string;
+  village?: string;
+  suburb?: string;
+  neighbourhood?: string;
+  city_district?: string;
+  state?: string;
+  country_code?: string;
+  country?: string;
+};
+
+type NominatimResult = {
+  place_id: number;
+  display_name: string;
+  address?: NominatimAddress;
+  type?: string;
+  class?: string;
+};
+
+const USA = new Set(["us", "gb", "ca", "au", "nz", "ie"]);
+
+function stateAbbr(state: string, country?: string): string {
+  // Very small mapping — fine when Nominatim returns full state names for US.
+  const map: Record<string, string> = {
+    Alabama: "AL",
+    Alaska: "AK",
+    Arizona: "AZ",
+    Arkansas: "AR",
+    California: "CA",
+    Colorado: "CO",
+    Connecticut: "CT",
+    Delaware: "DE",
+    Florida: "FL",
+    Georgia: "GA",
+    Hawaii: "HI",
+    Idaho: "ID",
+    Illinois: "IL",
+    Indiana: "IN",
+    Iowa: "IA",
+    Kansas: "KS",
+    Kentucky: "KY",
+    Louisiana: "LA",
+    Maine: "ME",
+    Maryland: "MD",
+    Massachusetts: "MA",
+    Michigan: "MI",
+    Minnesota: "MN",
+    Mississippi: "MS",
+    Missouri: "MO",
+    Montana: "MT",
+    Nebraska: "NE",
+    Nevada: "NV",
+    "New Hampshire": "NH",
+    "New Jersey": "NJ",
+    "New Mexico": "NM",
+    "New York": "NY",
+    "North Carolina": "NC",
+    "North Dakota": "ND",
+    Ohio: "OH",
+    Oklahoma: "OK",
+    Oregon: "OR",
+    Pennsylvania: "PA",
+    "Rhode Island": "RI",
+    "South Carolina": "SC",
+    "South Dakota": "SD",
+    Tennessee: "TN",
+    Texas: "TX",
+    Utah: "UT",
+    Vermont: "VT",
+    Virginia: "VA",
+    Washington: "WA",
+    "West Virginia": "WV",
+    Wisconsin: "WI",
+    Wyoming: "WY",
+    "Washington, D.C.": "DC",
+    "District of Columbia": "DC",
+  };
+  if (country === "us" || country === "US") return map[state] ?? state;
+  return state;
+}
+
+function formatResult(r: NominatimResult): string | null {
+  const a = r.address ?? {};
+  const name =
+    a.neighbourhood ??
+    a.suburb ??
+    a.city_district ??
+    a.city ??
+    a.town ??
+    a.village ??
+    r.display_name.split(",")[0].trim();
+  if (!name) return null;
+
+  const cc = a.country_code?.toLowerCase();
+  const parts: string[] = [name];
+
+  // For neighborhood/suburb results, include parent city
+  const parentCity = a.city ?? a.town ?? a.village ?? null;
+  if (parentCity && parentCity !== name) parts.push(parentCity);
+
+  if (a.state && (cc === "us" || cc === "au" || cc === "ca")) {
+    parts.push(stateAbbr(a.state, cc));
+  } else if (!USA.has(cc ?? "") && a.country) {
+    parts.push(a.country);
+  }
+
+  return Array.from(new Set(parts)).join(", ");
+}
+
+async function nominatimSearch(
+  query: string,
+  signal: AbortSignal,
+): Promise<string[]> {
+  const url = new URL("https://nominatim.openstreetmap.org/search");
+  url.searchParams.set("q", query);
+  url.searchParams.set("format", "jsonv2");
+  url.searchParams.set("addressdetails", "1");
+  url.searchParams.set("limit", "8");
+  url.searchParams.set(
+    "featuretype",
+    "city",
+  );
+  const res = await fetch(url, {
+    signal,
+    headers: { Accept: "application/json" },
+  });
+  if (!res.ok) throw new Error(`Nominatim ${res.status}`);
+  const data = (await res.json()) as NominatimResult[];
+  const kept = data.filter((r) => {
+    const t = r.type ?? "";
+    const c = r.class ?? "";
+    return (
+      c === "place" ||
+      c === "boundary" ||
+      t === "city" ||
+      t === "town" ||
+      t === "village" ||
+      t === "suburb" ||
+      t === "neighbourhood"
+    );
+  });
+  const formatted = kept
+    .map(formatResult)
+    .filter((s): s is string => Boolean(s));
+  return Array.from(new Set(formatted));
+}
 
 export function NeighborhoodInput({
   name,
@@ -48,26 +228,81 @@ export function NeighborhoodInput({
   defaultValue?: string;
   placeholder?: string;
   className?: string;
-  /** Additional suggestions (e.g. from the database). */
+  /** Additional suggestions from the database (recent values). */
   extras?: string[];
 }) {
   const [value, setValue] = useState(defaultValue ?? "");
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
+  const [remote, setRemote] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  const all = Array.from(new Set([...extras, ...DEFAULTS])).sort((a, b) =>
-    a.localeCompare(b),
+  const localAll = useMemo(
+    () =>
+      Array.from(new Set([...extras, ...DEFAULTS])).sort((a, b) =>
+        a.localeCompare(b),
+      ),
+    [extras],
   );
 
-  const filtered = value.trim()
-    ? all.filter((n) => n.toLowerCase().includes(value.toLowerCase()))
-    : all;
+  const trimmed = value.trim();
+  const localMatches = useMemo(() => {
+    if (!trimmed) return localAll.slice(0, 12);
+    const q = trimmed.toLowerCase();
+    return localAll.filter((n) => n.toLowerCase().includes(q)).slice(0, 6);
+  }, [trimmed, localAll]);
 
-  const showList = open && filtered.length > 0;
+  const combined = useMemo(() => {
+    const seen = new Set<string>();
+    const out: { label: string; source: "local" | "api" }[] = [];
+    for (const m of localMatches) {
+      const k = m.toLowerCase();
+      if (!seen.has(k)) {
+        seen.add(k);
+        out.push({ label: m, source: "local" });
+      }
+    }
+    for (const r of remote) {
+      const k = r.toLowerCase();
+      if (!seen.has(k)) {
+        seen.add(k);
+        out.push({ label: r, source: "api" });
+      }
+    }
+    return out;
+  }, [localMatches, remote]);
 
-  // Close on outside click
+  const showList = open && combined.length > 0;
+
+  useEffect(() => {
+    if (!trimmed || trimmed.length < 2) {
+      setRemote([]);
+      setLoading(false);
+      setError(false);
+      return;
+    }
+    const controller = new AbortController();
+    setLoading(true);
+    setError(false);
+    const t = setTimeout(async () => {
+      try {
+        const r = await nominatimSearch(trimmed, controller.signal);
+        setRemote(r);
+      } catch (e) {
+        if ((e as Error).name !== "AbortError") setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }, 350);
+    return () => {
+      controller.abort();
+      clearTimeout(t);
+    };
+  }, [trimmed]);
+
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -78,7 +313,6 @@ export function NeighborhoodInput({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Scroll active item into view
   useEffect(() => {
     if (activeIdx >= 0 && listRef.current) {
       const item = listRef.current.children[activeIdx] as HTMLElement | undefined;
@@ -90,13 +324,13 @@ export function NeighborhoodInput({
     if (!showList) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setActiveIdx((i) => Math.min(i + 1, filtered.length - 1));
+      setActiveIdx((i) => Math.min(i + 1, combined.length - 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActiveIdx((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter" && activeIdx >= 0) {
       e.preventDefault();
-      setValue(filtered[activeIdx]);
+      setValue(combined[activeIdx].label);
       setOpen(false);
       setActiveIdx(-1);
     } else if (e.key === "Escape") {
@@ -111,7 +345,7 @@ export function NeighborhoodInput({
         name={name}
         required={required}
         value={value}
-        placeholder={placeholder ?? "Neighborhood"}
+        placeholder={placeholder ?? "Neighborhood or city"}
         autoComplete="off"
         onChange={(e) => {
           setValue(e.target.value);
@@ -122,27 +356,42 @@ export function NeighborhoodInput({
         onKeyDown={handleKeyDown}
         className={className}
       />
+      {loading ? (
+        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid/70">
+          …
+        </span>
+      ) : null}
       {showList && (
         <ul
           ref={listRef}
-          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-48 overflow-y-auto rounded-xl border border-neutral-200 bg-white py-1 shadow-lg"
+          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-56 overflow-y-auto rounded-xl border border-neutral-200 bg-white py-1 shadow-lg"
         >
-          {filtered.map((n, i) => (
+          {combined.map((item, i) => (
             <li
-              key={n}
+              key={`${item.source}:${item.label}`}
               onMouseDown={() => {
-                setValue(n);
+                setValue(item.label);
                 setOpen(false);
               }}
-              className={`cursor-pointer px-4 py-2 text-sm ${
+              className={`flex cursor-pointer items-center justify-between gap-2 px-4 py-2 text-sm ${
                 i === activeIdx
                   ? "bg-gather-cream text-gather-brown"
                   : "text-neutral-700 hover:bg-neutral-50"
               }`}
             >
-              {n}
+              <span className="truncate">{item.label}</span>
+              {item.source === "api" ? (
+                <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+                  OSM
+                </span>
+              ) : null}
             </li>
           ))}
+          {error ? (
+            <li className="px-4 py-1.5 text-[11px] text-neutral-500">
+              Live search unavailable — suggestions from your local list only.
+            </li>
+          ) : null}
         </ul>
       )}
     </div>
