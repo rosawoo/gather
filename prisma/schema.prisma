@@ -43,6 +43,20 @@ model User {
   notifications    Notification[]
   reportsFiled     Report[]              @relation("ReportsByUser")
   expenseSubmissions ExpenseSubmission[]
+  stripeTokenPurchases StripeTokenPurchase[]
+}
+
+/// One row per fulfilled Checkout Session so webhooks remain idempotent.
+model StripeTokenPurchase {
+  id                      String   @id @default(cuid())
+  stripeCheckoutSessionId String   @unique
+  userId                  String
+  tokenCount              Int
+  createdAt               DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Account {

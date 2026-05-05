@@ -1,34 +1,55 @@
 "use server";
 
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
-import { TokenLedgerType } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { getSiteUrl } from "@/lib/site-url";
+import { getStripe } from "@/lib/stripe";
+import { getTokenPack } from "@/lib/token-packs";
+import { redirect } from "next/navigation";
 
-export async function purchaseTokensStub(formData: FormData) {
+// Tokens are credited when Stripe sends `checkout.session.completed` to /api/stripe/webhook.
+export async function purchaseTokensCheckout(formData: FormData) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
 
   const pack = Number(formData.get("pack") ?? 0);
-  const grant = pack === 3 ? 3 : pack === 1 ? 1 : 0;
-  if (!grant) throw new Error("Invalid pack");
+  const def = getTokenPack(pack);
+  if (!def) {
+    throw new Error("Invalid pack");
+  }
 
-  // TODO: Stripe Checkout; this stub credits tokens for local testing only.
-  await prisma.$transaction([
-    prisma.user.update({
-      where: { id: session.user.id },
-      data: { tokensAvailable: { increment: grant } },
-    }),
-    prisma.tokenLedgerEntry.create({
-      data: {
-        userId: session.user.id,
-        delta: grant,
-        type: TokenLedgerType.GRANT,
-        note: `Stub purchase: ${grant} token(s)`,
+  const stripe = getStripe();
+  const site = getSiteUrl();
+
+  const checkoutSession = await stripe.checkout.sessions.create({
+    mode: "payment",
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: `${def.tokens} Gather token${def.tokens === 1 ? "" : "s"}`,
+            description: def.description,
+          },
+          unit_amount: def.amountCents,
+        },
+        quantity: 1,
       },
-    }),
-  ]);
+    ],
+    success_url: `${site}/profile/tokens?checkout=success`,
+    cancel_url: `${site}/profile/tokens?checkout=cancelled`,
+    client_reference_id: session.user.id,
+    metadata: {
+      userId: session.user.id,
+      tokens: String(def.tokens),
+      pack: String(def.pack),
+    },
+  });
 
-  revalidatePath("/profile");
-  revalidatePath("/profile/tokens");
+  if (!checkoutSession.url) {
+    throw new Error("Stripe Checkout did not return a URL");
+  }
+
+  redirect(checkoutSession.url);
 }

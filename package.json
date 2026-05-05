@@ -14,6 +14,7 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "setup": "node scripts/setup.js",
+    "verify:stripe": "node scripts/stripe-e2e.cjs",
     "postinstall": "prisma generate",
     "claude": "claude"
   },
@@ -22,10 +23,11 @@
     "@prisma/client": "^6.19.0",
     "@vercel/blob": "^2.3.3",
     "next": "16.2.2",
-    "next-auth": "^5.0.0-beta.30",
+    "next-auth": "^5.0.0-beta.31",
     "prisma": "^6.19.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "stripe": "^22.1.0",
     "twilio": "^5.13.1",
     "zod": "^4.3.6"
   },
