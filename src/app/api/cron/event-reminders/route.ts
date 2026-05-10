@@ -12,6 +12,9 @@ import { NextResponse } from "next/server";
  *
  * Sends one in-app notification + SMS per user (host + approved guests)
  * when startsAt is within the next 24 hours, idempotent via reminderNotifiedAt.
+ *
+ * On Vercel Hobby, crons may run at most once per day — schedule accordingly in
+ * vercel.json (a daily sweep still catches every gathering in the window).
  */
 async function handler(req: Request) {
   const secret = process.env.CRON_SECRET;
