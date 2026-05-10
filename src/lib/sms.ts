@@ -2,11 +2,11 @@ import twilio from "twilio";
 import { prisma } from "@/lib/prisma";
 
 export function isSmsConfigured(): boolean {
-  return Boolean(
-    process.env.TWILIO_ACCOUNT_SID &&
-      process.env.TWILIO_AUTH_TOKEN &&
-      (process.env.TWILIO_FROM_NUMBER || process.env.TWILIO_MESSAGING_SERVICE_SID),
-  );
+  const sid = process.env.TWILIO_ACCOUNT_SID?.trim();
+  const token = process.env.TWILIO_AUTH_TOKEN?.trim();
+  const from = process.env.TWILIO_FROM_NUMBER?.trim();
+  const msid = process.env.TWILIO_MESSAGING_SERVICE_SID?.trim();
+  return Boolean(sid && token && (from || msid));
 }
 
 const gatherFooter =
@@ -29,18 +29,18 @@ export async function sendSmsToE164(
   }
 
   try {
-    const client = twilio(
-      process.env.TWILIO_ACCOUNT_SID!,
-      process.env.TWILIO_AUTH_TOKEN!,
-    );
+    const sid = process.env.TWILIO_ACCOUNT_SID!.trim();
+    const token = process.env.TWILIO_AUTH_TOKEN!.trim();
+    const client = twilio(sid, token);
     const text = appendFooter ? body + gatherFooter : body;
-    const msid = process.env.TWILIO_MESSAGING_SERVICE_SID;
+    const msid = process.env.TWILIO_MESSAGING_SERVICE_SID?.trim();
+    const from = process.env.TWILIO_FROM_NUMBER?.trim();
     await client.messages.create({
       to: toE164,
       body: text,
       ...(msid
         ? { messagingServiceSid: msid }
-        : { from: process.env.TWILIO_FROM_NUMBER! }),
+        : { from: from! }),
     });
     return { ok: true };
   } catch (e) {

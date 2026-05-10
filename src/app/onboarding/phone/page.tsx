@@ -23,10 +23,13 @@ export default async function PhonePage() {
       subtitle="US numbers only. Adds SMS alerts for requests and reminders — you'll still get everything in-app without it."
     >
       <div className="rounded-2xl border border-gather-accent/30 bg-gather-cream/50 px-4 py-3 text-xs leading-relaxed text-gather-brown-mid">
-        With <strong>Twilio</strong> configured in{" "}
-        <code className="rounded bg-white/70 px-1 py-0.5 text-[11px]">.env</code>
-        , you&apos;ll get a real SMS. Without Twilio in development, check the
-        terminal for the code — or use <strong>202600</strong> as a bypass.
+        With <strong>Twilio</strong> env vars on the server (
+        <code className="rounded bg-white/70 px-1 py-0.5 text-[11px]">.env</code>{" "}
+        locally, <strong>Vercel → Environment Variables</strong> in production),
+        you&apos;ll get a real SMS. If SMS still fails, the error under the form
+        explains why (trial limits, wrong &quot;From&quot; number, etc.). In local
+        dev without Twilio, the code is printed in the dev server terminal — or
+        use <strong>202600</strong> as a bypass.
       </div>
       <PhoneForm />
       <div className="mt-6 text-center">

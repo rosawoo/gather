@@ -6,7 +6,13 @@ import { normalizeToE164 } from "@/lib/phone-e164";
 import { isSmsConfigured, sendSmsToE164 } from "@/lib/sms";
 import { redirect } from "next/navigation";
 
-export async function requestPhoneCode(phoneRaw: string) {
+export type RequestPhoneCodeResult =
+  | { ok: true; channel: "sms" }
+  | { ok: true; channel: "console"; detail: string };
+
+export async function requestPhoneCode(
+  phoneRaw: string,
+): Promise<RequestPhoneCodeResult> {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 
@@ -33,16 +39,28 @@ export async function requestPhoneCode(phoneRaw: string) {
     const result = await sendSmsToE164(phoneE164, otpBody, false);
     if (!result.ok) {
       throw new Error(
-        result.error ?? "Could not send SMS. Check Twilio credentials and trial limits.",
+        result.error ??
+          "Could not send SMS. Check Twilio credentials, trial verified numbers, and server logs.",
       );
     }
-  } else if (process.env.NODE_ENV !== "production") {
-    console.info(`[dev] No Twilio — OTP for ${phoneE164}: ${code} (or use 202600)`);
-  } else {
-    throw new Error(
-      "SMS is not configured. Set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_FROM_NUMBER (or TWILIO_MESSAGING_SERVICE_SID) in .env",
-    );
+    return { ok: true, channel: "sms" };
   }
+
+  if (process.env.NODE_ENV !== "production") {
+    console.info(
+      `[dev] No Twilio — OTP for ${phoneE164}: ${code} (or use bypass 202600)`,
+    );
+    return {
+      ok: true,
+      channel: "console",
+      detail:
+        "SMS isn’t configured (Twilio env vars missing on this server). Open the terminal where you run `npm run dev` to see the 6-digit code, or enter 202600.",
+    };
+  }
+
+  throw new Error(
+    "SMS is not configured on the server. In Vercel: Project → Settings → Environment Variables → add TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_FROM_NUMBER (or TWILIO_MESSAGING_SERVICE_SID) for Production, then redeploy.",
+  );
 }
 
 export async function verifyPhoneCode(phoneRaw: string, code: string) {

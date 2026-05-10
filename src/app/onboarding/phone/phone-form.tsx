@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { requestPhoneCode, verifyPhoneCode } from "@/app/actions/phone";
+import { isRedirectError } from "next/navigation";
 
 const inputCls =
   "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
+
+function errMessage(e: unknown) {
+  return e instanceof Error ? e.message : "Something went wrong";
+}
 
 export function PhoneForm() {
   const [phone, setPhone] = useState("");
@@ -18,12 +23,16 @@ export function PhoneForm() {
     setPending(true);
     setMsg(null);
     try {
-      await requestPhoneCode(phone);
+      const result = await requestPhoneCode(phone);
       setTone("info");
-      setMsg("Code sent. Check your phone — or use 202600 in dev.");
-    } catch {
+      if (result.channel === "sms") {
+        setMsg("Code sent. Check your phone for the text.");
+      } else {
+        setMsg(result.detail);
+      }
+    } catch (e) {
       setTone("error");
-      setMsg("Could not send code. Try again.");
+      setMsg(errMessage(e));
     } finally {
       setPending(false);
     }
@@ -35,9 +44,10 @@ export function PhoneForm() {
     setMsg(null);
     try {
       await verifyPhoneCode(phone, code);
-    } catch {
+    } catch (e) {
+      if (isRedirectError(e)) throw e;
       setTone("error");
-      setMsg("Invalid or expired code.");
+      setMsg(errMessage(e));
     } finally {
       setPending(false);
     }
