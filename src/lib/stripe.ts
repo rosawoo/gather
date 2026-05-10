@@ -4,7 +4,7 @@ let stripeClient: Stripe | null = null;
 
 export function getStripe(): Stripe {
   if (!stripeClient) {
-    const key = process.env.STRIPE_SECRET_KEY;
+    const key = process.env.STRIPE_SECRET_KEY?.trim();
     if (!key?.startsWith("sk_")) {
       throw new Error(
         "STRIPE_SECRET_KEY is missing or invalid — use your dashboard secret key (sk_test_… or sk_live_…).",
@@ -16,5 +16,6 @@ export function getStripe(): Stripe {
 }
 
 export function isStripeConfigured(): boolean {
-  return Boolean(process.env.STRIPE_SECRET_KEY?.startsWith("sk_"));
+  const key = process.env.STRIPE_SECRET_KEY?.trim();
+  return Boolean(key?.startsWith("sk_"));
 }

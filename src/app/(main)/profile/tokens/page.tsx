@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { purchaseTokensCheckout } from "@/app/actions/tokens";
+
+/** Read Stripe env at request time (Vercel env after deploy, not build-only cache). */
+export const dynamic = "force-dynamic";
 import type { TokenPack } from "@/lib/token-packs";
 import { TOKEN_PACKS } from "@/lib/token-packs";
 import { isStripeConfigured } from "@/lib/stripe";
@@ -133,13 +136,18 @@ export default async function BuyTokensPage({ searchParams }: Props) {
           className="mt-6 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700"
           role="status"
         >
-          Stripe is not configured — add{" "}
-          <code className="rounded bg-white px-1 py-0.5 text-neutral-900">STRIPE_SECRET_KEY</code>{" "}
-          and{" "}
+          Checkout needs{" "}
+          <code className="rounded bg-white px-1 py-0.5 text-neutral-900">
+            STRIPE_SECRET_KEY
+          </code>{" "}
+          in this environment (e.g. Vercel → Project → Settings → Environment Variables →{" "}
+          <strong className="font-medium">Production</strong>, then redeploy). Add{" "}
           <code className="rounded bg-white px-1 py-0.5 text-neutral-900">
             STRIPE_WEBHOOK_SECRET
           </code>{" "}
-          to your environment (see <code className="text-neutral-900">.env.example</code>).
+          too so paid checkouts can credit tokens via{" "}
+          <code className="text-neutral-900">/api/stripe/webhook</code>. See{" "}
+          <code className="text-neutral-900">.env.example</code>.
         </p>
       ) : null}
 

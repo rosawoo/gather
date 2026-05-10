@@ -1,7 +1,9 @@
 import { auth } from "@/auth";
+import { PolaroidCard } from "@/components/polaroid-card";
 import { prisma } from "@/lib/prisma";
 import { PERSONALITY_PROMPTS } from "@/lib/prompts";
 import { ageFromDob } from "@/lib/gathering-display";
+import { GatheringStatus, Plan } from "@prisma/client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SectionTitle } from "@/components/ui/page-header";
@@ -19,7 +21,12 @@ export default async function PublicProfilePage({
 }: {
   params: Promise<{ userId: string }>;
 }) {
-  await auth();
+  const session = await auth();
+  const viewer = await prisma.user.findUniqueOrThrow({
+    where: { id: session!.user!.id },
+    select: { plan: true },
+  });
+
   const { userId } = await params;
 
   const u = await prisma.user.findUnique({
@@ -28,12 +35,25 @@ export default async function PublicProfilePage({
       profile: true,
       photos: { orderBy: { sortOrder: "asc" } },
       promptAnswers: true,
+      hostedGatherings: {
+        where: {
+          status: GatheringStatus.PUBLISHED,
+          startsAt: { gt: new Date() },
+        },
+        orderBy: { startsAt: "asc" },
+      },
     },
   });
 
   if (!u?.profile) notFound();
 
   const primary = u.photos.find((p) => p.isPrimary) ?? u.photos[0];
+  const hostImage = primary?.url ?? u.image ?? null;
+
+  const visibleHosted = u.hostedGatherings.filter((g) => {
+    if (viewer.plan === Plan.OBSERVER && g.tokenCost >= 2) return false;
+    return true;
+  });
   const p = u.profile;
   const meta = [p.neighborhood, p.college, p.job].filter(Boolean);
 
@@ -92,6 +112,42 @@ export default async function PublicProfilePage({
           ) : null}
         </div>
       </section>
+
+      {visibleHosted.length > 0 ? (
+        <section>
+          <SectionTitle title="Upcoming gatherings" />
+          <p className="mb-6 text-sm text-neutral-600">
+            Open postings they&apos;re hosting — tap a card to view or request to
+            join.
+          </p>
+          <div className="flex flex-col items-center gap-10">
+            {visibleHosted.map((g) => (
+              <PolaroidCard
+                key={g.id}
+                id={g.id}
+                title={g.title}
+                coverImageUrl={g.coverImageUrl}
+                startsAt={g.startsAt}
+                neighborhood={g.neighborhood}
+                minTotalSize={g.minTotalSize}
+                maxTotalSize={g.maxTotalSize}
+                hostFriendsCount={g.hostFriendsCount}
+                tokenCost={g.tokenCost}
+                hostImage={hostImage}
+              />
+            ))}
+          </div>
+        </section>
+      ) : u.hostedGatherings.length > 0 ? (
+        <section>
+          <SectionTitle title="Upcoming gatherings" />
+          <p className="text-sm text-neutral-500">
+            {viewer.plan === Plan.OBSERVER
+              ? "This host has gatherings that aren’t available on your current plan."
+              : "Nothing upcoming."}
+          </p>
+        </section>
+      ) : null}
 
       <section>
         <SectionTitle title="About" />
