@@ -1,19 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  /* Linear / GatherSocial-inspired: espresso shell, warm paper, editorial contrast */
-  --gather-espresso: #241c18;
-  --gather-espresso-mid: #2e2520;
-  --gather-brown: #3d322b;
-  --gather-brown-mid: #6a5344;
-  --gather-cream: #f3e8dc;
-  --gather-paper: #faf5ef;
-  --gather-ink: #1a1410;
-  --gather-accent: #c9a06c;
-  /* Scroll / mood accents (discover polish, host cover tints) */
-  --gather-jewel-burgundy: #5c2419;
-  --gather-jewel-teal: #1e3d36;
-  --gather-jewel-amber: #b85c2e;
+  /* Pulled from gathersocial.us Wix theme (cream, teal, wine, Caslon/DIN palette) */
+  --gather-cream: #f4f0e9;
+  --gather-paper: #f4f0e9;
+  --gather-ink: #4f1d0e;
+  --gather-charcoal: #4a4a4a;
+  --gather-teal: #1e5d74;
+  --gather-wine: #6b2f3a;
+  --gather-peach: #f9c5b4;
+  --gather-line: #cac7c1;
+  /* Semantic aliases used by existing components */
+  --gather-brown: #6b2f3a;
+  --gather-brown-mid: #1e5d74;
+  --gather-accent: #1e5d74;
+  --gather-espresso: #6b2f3a;
+  --gather-espresso-mid: #4a4a4a;
+  --gather-jewel-burgundy: #6b2f3a;
+  --gather-jewel-teal: #1e5d74;
+  --gather-jewel-amber: #9e3b1b;
 }
 
 @theme inline {
@@ -25,19 +30,23 @@
   --color-gather-paper: var(--gather-paper);
   --color-gather-ink: var(--gather-ink);
   --color-gather-accent: var(--gather-accent);
+  --color-gather-teal: var(--gather-teal);
+  --color-gather-wine: var(--gather-wine);
+  --color-gather-charcoal: var(--gather-charcoal);
+  --color-gather-peach: var(--gather-peach);
+  --color-gather-line: var(--gather-line);
   --color-gather-jewel-burgundy: var(--gather-jewel-burgundy);
   --color-gather-jewel-teal: var(--gather-jewel-teal);
   --color-gather-jewel-amber: var(--gather-jewel-amber);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-barlow), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
-  --font-display: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
-  --font-handwriting: var(--font-kalam), "Segoe Print", "Bradley Hand",
-    "Apple Chancery", cursive;
+  --font-serif: var(--font-caslon), ui-serif, Georgia, serif;
+  --font-display: var(--font-outfit), var(--font-barlow), system-ui, sans-serif;
+  --font-handwriting: var(--font-reenie), cursive;
 }
 
 body {
-  background: var(--gather-espresso);
+  background: var(--gather-cream);
   color: var(--gather-ink);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-barlow), system-ui, sans-serif;
 }

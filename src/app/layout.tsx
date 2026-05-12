@@ -1,9 +1,34 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Kalam, Playfair_Display } from "next/font/google";
+import {
+  Barlow,
+  Geist_Mono,
+  Libre_Caslon_Text,
+  Outfit,
+  Reenie_Beanie,
+} from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const barlow = Barlow({
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-barlow",
+  subsets: ["latin"],
+});
+
+const outfit = Outfit({
+  weight: ["600", "700", "800"],
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+
+const reenie = Reenie_Beanie({
+  weight: "400",
+  variable: "--font-reenie",
+  subsets: ["latin"],
+});
+
+const caslon = Libre_Caslon_Text({
+  weight: ["400", "700"],
+  variable: "--font-caslon",
   subsets: ["latin"],
 });
 
@@ -12,20 +37,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const kalam = Kalam({
-  weight: ["300", "400", "700"],
-  variable: "--font-kalam",
-  subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "Gather",
-  description: "A cozier way to meet people.",
+  description: "Find local gatherings. Treat new friends like old ones.",
 };
 
 export default function RootLayout({
@@ -36,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${kalam.variable} ${playfair.variable} h-full scroll-smooth antialiased`}
+      className={`${barlow.variable} ${outfit.variable} ${reenie.variable} ${caslon.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

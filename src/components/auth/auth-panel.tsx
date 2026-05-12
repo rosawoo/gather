@@ -3,7 +3,18 @@ import { signInWithGoogle } from "@/app/actions/auth";
 
 type Mode = "sign-in" | "sign-up";
 
-const COPY: Record<Mode, { eyebrow: string; title: string; sub: string; cta: string; switchLabel: string; switchHref: string; switchCta: string }> = {
+const COPY: Record<
+  Mode,
+  {
+    eyebrow: string;
+    title: string;
+    sub: string;
+    cta: string;
+    switchLabel: string;
+    switchHref: string;
+    switchCta: string;
+  }
+> = {
   "sign-in": {
     eyebrow: "Welcome back",
     title: "Sign in",
@@ -16,7 +27,7 @@ const COPY: Record<Mode, { eyebrow: string; title: string; sub: string; cta: str
   "sign-up": {
     eyebrow: "Say hello",
     title: "Create account",
-    sub: "It takes a minute. After Google, you’ll set up your profile.",
+    sub: "It takes a minute. After Google, you'll set up your profile.",
     cta: "Sign up with Google",
     switchLabel: "Already have an account?",
     switchHref: "/sign-in",
@@ -24,41 +35,48 @@ const COPY: Record<Mode, { eyebrow: string; title: string; sub: string; cta: str
   },
 };
 
-export function AuthPanel({ mode, callbackUrl }: { mode: Mode; callbackUrl: string }) {
+export function AuthPanel({
+  mode,
+  callbackUrl,
+}: {
+  mode: Mode;
+  callbackUrl: string;
+}) {
   const copy = COPY[mode];
   const tabBase =
     "flex-1 rounded-full px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.18em] transition";
-  const active = "bg-gather-cream text-gather-brown shadow-sm";
-  const inactive = "text-gather-cream/60 hover:text-gather-cream";
+  const active = "bg-gather-wine text-gather-cream shadow-sm";
+  const inactive =
+    "text-gather-charcoal hover:bg-gather-teal/10 hover:text-gather-teal";
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-1 flex-col">
       <Link
         href="/"
-        className="inline-flex w-fit items-center gap-1.5 text-sm text-gather-cream/70 transition hover:text-gather-cream"
+        className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-gather-teal transition hover:text-gather-wine"
       >
         <span aria-hidden>←</span> Back
       </Link>
 
       <div className="mt-10 flex flex-1 flex-col justify-center sm:mt-6">
-        <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gather-cream/55">
+        <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gather-teal">
           <span
             className="h-1 w-4 rounded-full bg-gather-accent/90"
             aria-hidden
           />
           {copy.eyebrow}
         </p>
-        <h1 className="mt-3 font-serif text-3xl font-light tracking-tight sm:text-4xl">
+        <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-gather-ink sm:text-4xl">
           {copy.title}
         </h1>
-        <p className="mt-3 max-w-sm text-sm leading-relaxed text-gather-cream/75">
+        <p className="mt-3 max-w-sm text-sm leading-relaxed text-gather-charcoal">
           {copy.sub}
         </p>
 
         <div
           role="tablist"
           aria-label="Authentication"
-          className="mt-8 flex gap-1 rounded-full border border-gather-cream/15 bg-gather-brown-mid/40 p-1"
+          className="mt-8 flex gap-1 rounded-full border border-gather-teal bg-white/50 p-1"
         >
           <Link
             href="/sign-in"
@@ -82,24 +100,24 @@ export function AuthPanel({ mode, callbackUrl }: { mode: Mode; callbackUrl: stri
           <input type="hidden" name="callbackUrl" value={callbackUrl} />
           <button
             type="submit"
-            className="group flex w-full items-center justify-center gap-3 rounded-full bg-gather-cream px-6 py-3.5 text-sm font-semibold text-gather-brown shadow-md transition hover:bg-white hover:shadow-lg active:scale-[0.99]"
+            className="group flex w-full items-center justify-center gap-3 border border-gather-teal bg-white px-6 py-3.5 text-sm font-semibold text-gather-ink shadow-sm transition hover:bg-gather-cream hover:shadow-md active:scale-[0.99]"
           >
             <GoogleMark className="h-5 w-5 shrink-0" aria-hidden />
             {copy.cta}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gather-cream/70">
+        <p className="mt-6 text-center text-sm text-gather-charcoal">
           {copy.switchLabel}{" "}
           <Link
             href={copy.switchHref}
-            className="font-semibold text-gather-cream underline decoration-gather-accent/70 underline-offset-4 transition hover:decoration-gather-accent"
+            className="font-semibold text-gather-teal underline decoration-gather-teal/50 underline-offset-4 transition hover:text-gather-wine hover:decoration-gather-wine"
           >
             {copy.switchCta}
           </Link>
         </p>
 
-        <p className="mt-10 text-center text-xs leading-relaxed text-gather-cream/50">
+        <p className="mt-10 text-center text-xs leading-relaxed text-gather-charcoal/70">
           By continuing, Google may share your name, email, and profile photo
           with Gather. You agree to our community guidelines.
         </p>
