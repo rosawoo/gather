@@ -2,11 +2,14 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
+import { lcChrome } from "@/lib/lc-classes";
+
+type ChromeMode = "light" | "espresso" | "candlelit";
 
 type Options = {
   neighborhoods: string[];
-  /** Espresso discover background. Light controls on dark chrome. */
-  chrome?: "light" | "espresso";
+  /** Light = paper app UI; espresso = legacy dark discover; candlelit = sign-in palette. */
+  chrome?: ChromeMode;
 };
 
 type Filters = {
@@ -100,7 +103,10 @@ export function DiscoverFilters({
     });
   }
 
-  const espresso = chrome === "espresso";
+  const chromeMode: ChromeMode = chrome ?? "light";
+  const espresso = chromeMode === "espresso";
+  const candlelit = chromeMode === "candlelit";
+  const darkChrome = espresso || candlelit;
 
   return (
     <div className="mb-6 space-y-3">
@@ -119,9 +125,11 @@ export function DiscoverFilters({
               }
             }}
             className={`w-full rounded-full border px-4 py-2.5 pl-9 text-sm outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40 ${
-              espresso
-                ? "border-white/20 bg-white/95 text-gather-ink"
-                : "border-gather-teal/25 bg-white text-gather-ink"
+              candlelit
+                ? "border-lc-pale-blue-border/40 bg-lc-aged-paper text-lc-ink-on-paper placeholder:text-lc-muted-tan focus:border-lc-dusty-blue focus:ring-lc-dusty-blue/35"
+                : espresso
+                  ? "border-white/20 bg-white/95 text-gather-ink"
+                  : "border-gather-teal/25 bg-white text-gather-ink"
             }`}
           />
           <svg
@@ -133,7 +141,11 @@ export function DiscoverFilters({
             strokeLinecap="round"
             strokeLinejoin="round"
             className={`pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${
-              espresso ? "text-gather-charcoal/80" : "text-gather-charcoal/55"
+              candlelit
+                ? "text-lc-ink-on-paper/45"
+                : espresso
+                  ? "text-gather-charcoal/80"
+                  : "text-gather-charcoal/55"
             }`}
           >
             <circle cx="11" cy="11" r="7" />
@@ -145,12 +157,16 @@ export function DiscoverFilters({
           onClick={() => setOpen((v) => !v)}
           className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2.5 text-[13px] font-semibold transition ${
             activeCount > 0
-              ? espresso
-                ? "border-gather-cream bg-gather-cream text-gather-espresso"
-                : "border-gather-brown bg-gather-brown text-gather-cream"
-              : espresso
-                ? "border-white/25 bg-white/10 text-gather-cream hover:bg-white/15"
-                : "border-gather-teal/25 bg-white text-gather-ink hover:border-gather-brown/40"
+              ? candlelit
+                ? "border-lc-pale-blue-border bg-lc-dusty-blue text-lc-cream shadow-md shadow-black/20"
+                : espresso
+                  ? "border-gather-cream bg-gather-cream text-gather-espresso"
+                  : "border-gather-brown bg-gather-brown text-gather-cream"
+              : candlelit
+                ? "border-lc-pale-blue-border/35 bg-lc-espresso/55 text-lc-cream backdrop-blur-sm transition hover:border-lc-cream/65 hover:bg-lc-warm-shadow/75"
+                : espresso
+                  ? "border-white/25 bg-white/10 text-gather-cream hover:bg-white/15"
+                  : "border-gather-teal/25 bg-white text-gather-ink hover:border-gather-brown/40"
           }`}
           aria-expanded={open}
         >
@@ -172,9 +188,11 @@ export function DiscoverFilters({
           {activeCount > 0 ? (
             <span
               className={`ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold ${
-                espresso
-                  ? "bg-gather-espresso text-gather-cream"
-                  : "bg-gather-cream text-gather-brown"
+                candlelit
+                  ? "bg-lc-aged-paper text-lc-ink-on-paper"
+                  : espresso
+                    ? "bg-gather-espresso text-gather-cream"
+                    : "bg-gather-cream text-gather-brown"
               }`}
             >
               {activeCount}
@@ -184,10 +202,17 @@ export function DiscoverFilters({
       </div>
 
       {open ? (
-        <div className="space-y-3 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
-          <FilterBlock label="Neighborhood">
+        <div
+          className={
+            candlelit
+              ? "space-y-3 rounded-2xl border border-lc-pale-blue-border/25 bg-lc-card-overlay p-4 text-lc-cream shadow-[0_18px_48px_rgba(0,0,0,0.35)] backdrop-blur-sm"
+              : "space-y-3 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10"
+          }
+        >
+          <FilterBlock label="Neighborhood" chrome={chromeMode}>
             <Select
-              value={draft.neighborhood}
+                chrome={chromeMode}
+                value={draft.neighborhood}
               onChange={(v) => setDraft((d) => ({ ...d, neighborhood: v }))}
               options={[{ label: "Anywhere", value: "" }].concat(
                 neighborhoods.map((n) => ({ label: n, value: n })),
@@ -196,29 +221,33 @@ export function DiscoverFilters({
           </FilterBlock>
 
           <div className="grid grid-cols-2 gap-3">
-            <FilterBlock label="Type">
+            <FilterBlock label="Type" chrome={chromeMode}>
               <Select
+                chrome={chromeMode}
                 value={draft.type}
                 onChange={(v) => setDraft((d) => ({ ...d, type: v }))}
                 options={TYPES}
               />
             </FilterBlock>
-            <FilterBlock label="Size">
+            <FilterBlock label="Size" chrome={chromeMode}>
               <Select
+                chrome={chromeMode}
                 value={draft.size}
                 onChange={(v) => setDraft((d) => ({ ...d, size: v }))}
                 options={SIZES}
               />
             </FilterBlock>
-            <FilterBlock label="Token cost">
+            <FilterBlock label="Token cost" chrome={chromeMode}>
               <Select
+                chrome={chromeMode}
                 value={draft.cost}
                 onChange={(v) => setDraft((d) => ({ ...d, cost: v }))}
                 options={COSTS}
               />
             </FilterBlock>
-            <FilterBlock label="Date">
+            <FilterBlock label="Date" chrome={chromeMode}>
               <Select
+                chrome={chromeMode}
                 value={draft.date}
                 onChange={(v) => setDraft((d) => ({ ...d, date: v }))}
                 options={DATES}
@@ -230,7 +259,11 @@ export function DiscoverFilters({
             <button
               type="button"
               onClick={clearAll}
-              className="text-xs font-semibold uppercase tracking-[0.14em] text-gather-charcoal/80 transition hover:text-gather-ink"
+              className={
+                candlelit
+                  ? `text-xs font-semibold ${lcChrome.mutedBody} uppercase tracking-[0.14em] transition hover:text-lc-cream`
+                  : "text-xs font-semibold uppercase tracking-[0.14em] text-gather-charcoal/80 transition hover:text-gather-ink"
+              }
             >
               Clear all
             </button>
@@ -238,7 +271,11 @@ export function DiscoverFilters({
               type="button"
               onClick={applyDraft}
               disabled={pending}
-              className="rounded-full bg-gather-brown px-5 py-2 text-[13px] font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid disabled:opacity-60"
+              className={
+                candlelit
+                  ? "rounded-full bg-lc-dusty-blue px-5 py-2 text-[13px] font-semibold text-lc-cream shadow-md shadow-black/25 transition hover:bg-lc-dusty-blue-hover disabled:opacity-60"
+                  : "rounded-full bg-gather-brown px-5 py-2 text-[13px] font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid disabled:opacity-60"
+              }
             >
               {pending ? "Applying…" : "Apply"}
             </button>
@@ -250,35 +287,35 @@ export function DiscoverFilters({
         <div className="flex flex-wrap items-center gap-1.5">
           {current.neighborhood ? (
             <Chip
-              espresso={espresso}
+              darkChrome={darkChrome}
               label={current.neighborhood}
               onClear={() => setParam("neighborhood", "")}
             />
           ) : null}
           {current.type ? (
             <Chip
-              espresso={espresso}
+              darkChrome={darkChrome}
               label={TYPES.find((t) => t.value === current.type)?.label ?? current.type}
               onClear={() => setParam("type", "")}
             />
           ) : null}
           {current.size ? (
             <Chip
-              espresso={espresso}
+              darkChrome={darkChrome}
               label={SIZES.find((s) => s.value === current.size)?.label ?? current.size}
               onClear={() => setParam("size", "")}
             />
           ) : null}
           {current.cost ? (
             <Chip
-              espresso={espresso}
+              darkChrome={darkChrome}
               label={COSTS.find((c) => c.value === current.cost)?.label ?? current.cost}
               onClear={() => setParam("cost", "")}
             />
           ) : null}
           {current.date ? (
             <Chip
-              espresso={espresso}
+              darkChrome={darkChrome}
               label={DATES.find((d) => d.value === current.date)?.label ?? current.date}
               onClear={() => setParam("date", "")}
             />
@@ -287,9 +324,11 @@ export function DiscoverFilters({
             type="button"
             onClick={clearAll}
             className={`text-[11px] font-semibold uppercase tracking-[0.14em] transition ${
-              espresso
-                ? "text-gather-cream/50 hover:text-gather-cream"
-                : "text-gather-charcoal/80 hover:text-gather-ink"
+              candlelit
+                ? "text-lc-cream/50 hover:text-lc-cream"
+                : espresso
+                  ? "text-gather-cream/50 hover:text-gather-cream"
+                  : "text-gather-charcoal/80 hover:text-gather-ink"
             }`}
           >
             Clear all
@@ -302,14 +341,23 @@ export function DiscoverFilters({
 
 function FilterBlock({
   label,
+  chrome,
   children,
 }: {
   label: string;
+  chrome: ChromeMode;
   children: React.ReactNode;
 }) {
+  const labelClass =
+    chrome === "candlelit"
+      ? "text-lc-pale-blue-border/88"
+      : "text-gather-brown-mid";
+
   return (
     <label className="block">
-      <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+      <span
+        className={`flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] ${labelClass}`}
+      >
         {label}
       </span>
       <div className="mt-1.5">{children}</div>
@@ -321,17 +369,20 @@ function Select({
   value,
   onChange,
   options,
+  chrome,
 }: {
   value: string;
   onChange: (v: string) => void;
   options: { label: string; value: string }[];
+  chrome: ChromeMode;
 }) {
+  const selectClass =
+    chrome === "candlelit"
+      ? "w-full rounded-xl border border-lc-pale-blue-border/35 bg-lc-aged-paper px-3 py-2 text-sm text-lc-ink-on-paper outline-none transition focus:border-lc-dusty-blue focus:ring-2 focus:ring-lc-dusty-blue/35"
+      : "w-full rounded-xl border border-gather-teal/25 bg-white px-3 py-2 text-sm text-gather-ink outline-none transition focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
+
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-xl border border-gather-teal/25 bg-white px-3 py-2 text-sm text-gather-ink outline-none transition focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
-    >
+    <select value={value} onChange={(e) => onChange(e.target.value)} className={selectClass}>
       {options.map((o) => (
         <option key={o.value || "_"} value={o.value}>
           {o.label}
@@ -344,17 +395,17 @@ function Select({
 function Chip({
   label,
   onClear,
-  espresso,
+  darkChrome,
 }: {
   label: string;
   onClear: () => void;
-  espresso: boolean;
+  darkChrome: boolean;
 }) {
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${
-        espresso
-          ? "bg-white/12 text-gather-cream"
+        darkChrome
+          ? "bg-lc-chip-surface text-lc-cream"
           : "bg-gather-brown/[0.08] text-gather-brown"
       }`}
     >
@@ -363,8 +414,8 @@ function Chip({
         type="button"
         onClick={onClear}
         className={
-          espresso
-            ? "text-gather-cream/55 transition hover:text-gather-cream"
+          darkChrome
+            ? "text-lc-cream/55 transition hover:text-lc-cream"
             : "text-gather-brown/60 transition hover:text-gather-brown"
         }
         aria-label={`Remove ${label}`}

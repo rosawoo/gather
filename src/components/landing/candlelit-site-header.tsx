@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { GatherWordmarkLink } from "@/components/branding/gather-wordmark-link";
+import { lcChrome } from "@/lib/lc-classes";
 
 type Props = {
   sticky?: boolean;
@@ -24,12 +26,10 @@ export function CandlelitSiteHeader({ sticky = false }: Props) {
 
   if (sticky) {
     return (
-      <header className="sticky top-0 z-30 -mx-5 mb-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-[#321308]/40 bg-[#160601]/65 px-5 py-4 backdrop-blur-md sm:-mx-8 sm:px-8 lg:-mx-14 lg:px-14">
+      <header className={lcChrome.stickyMarketingHeaderBar}>
         <div aria-hidden className="min-w-0" />
-        <h1 className="landing-font-display text-center text-[2.85rem] font-normal leading-none text-[#f4eee7] sm:text-4xl">
-          <Link href="/" className="text-inherit no-underline">
-            gather
-          </Link>
+        <h1 className="flex justify-center">
+          <GatherWordmarkLink href="/" size="landingSticky" />
         </h1>
         <div className="flex min-w-0 justify-end">{about}</div>
       </header>
@@ -39,10 +39,8 @@ export function CandlelitSiteHeader({ sticky = false }: Props) {
   return (
     <header className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-4">
       <div aria-hidden className="min-w-0" />
-      <h1 className="landing-font-display text-center text-[4.75rem] font-normal leading-none text-[#f4eee7] sm:text-6xl md:text-7xl">
-        <Link href="/" className="text-inherit no-underline">
-          gather
-        </Link>
+      <h1 className="flex justify-center">
+        <GatherWordmarkLink href="/" size="landingHero" />
       </h1>
       <div className="flex min-w-0 justify-end">{about}</div>
     </header>

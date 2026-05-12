@@ -85,9 +85,9 @@ export function AuthPanel({
     "text-gather-charcoal hover:bg-gather-teal/10 hover:text-gather-teal";
 
   const candleActive =
-    "bg-[#266b7e] text-[#f4eee7] shadow-md shadow-black/20";
+    "bg-lc-dusty-blue text-lc-cream shadow-md shadow-black/20";
   const candleInactive =
-    "text-[#f4eee7]/72 hover:bg-[#321308]/80 hover:text-[#f4eee7]";
+    "text-lc-cream/72 hover:bg-lc-warm-shadow/80 hover:text-lc-cream";
 
   const active = variant === "candlelit" ? candleActive : defaultActive;
   const inactive = variant === "candlelit" ? candleInactive : defaultInactive;
@@ -97,57 +97,57 @@ export function AuthPanel({
 
   const backClass =
     variant === "candlelit"
-      ? "inline-flex w-fit items-center gap-1.5 text-sm font-medium text-[#c6d8e3] transition hover:text-[#f4eee7]"
+      ? "inline-flex w-fit items-center gap-1.5 text-sm font-medium text-lc-pale-blue-border transition hover:text-lc-cream"
       : "inline-flex w-fit items-center gap-1.5 text-sm font-medium text-gather-teal transition hover:text-gather-wine";
 
   const eyebrowClass =
     variant === "candlelit"
-      ? "flex items-center gap-2 text-[13px] font-semibold lowercase tracking-[0.18em] text-[#c4a99a]"
+      ? "flex items-center gap-2 text-[13px] font-semibold lowercase tracking-[0.18em] text-lc-tan-accent"
       : "flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-gather-teal";
 
   const eyebrowDot =
     variant === "candlelit"
-      ? "h-1 w-4 rounded-full bg-[#c6d8e3]/70"
+      ? "h-1 w-4 rounded-full bg-lc-pale-blue-border/70"
       : "h-1 w-4 rounded-full bg-gather-accent/90";
 
   const titleClass =
     variant === "candlelit"
-      ? "landing-font-display mt-3 text-3xl font-normal tracking-tight text-[#f4eee7] sm:text-[2.15rem]"
+      ? "landing-font-display mt-3 text-3xl font-normal tracking-tight text-lc-cream sm:text-[2.15rem]"
       : "mt-3 font-display text-3xl font-bold tracking-tight text-gather-ink sm:text-4xl";
 
   const subClass =
     variant === "candlelit"
-      ? "mt-3 text-[17px] leading-[1.5] text-[rgba(244,238,231,0.9)]"
+      ? "mt-3 text-[17px] leading-[1.5] text-lc-cream/90"
       : "mt-3 text-[17px] leading-[1.5] text-gather-charcoal";
 
   const tabShellClass =
     variant === "candlelit"
-      ? "mt-8 flex gap-1 rounded-full border border-[#c6d8e3]/35 bg-[#1a0702]/45 p-1"
+      ? "mt-8 flex gap-1 rounded-full border border-lc-pale-blue-border/35 bg-lc-espresso/45 p-1"
       : "mt-8 flex gap-1 rounded-full border border-gather-teal bg-white/50 p-1";
 
   const googleBtnClass =
     variant === "candlelit"
-      ? "group flex w-full items-center justify-center gap-3 border border-[#321308] bg-[#eee9e1] px-6 py-3.5 text-[16px] font-semibold text-[#3a1a0f] shadow-lg shadow-black/25 transition hover:bg-[#f4eee7] active:scale-[0.99]"
+      ? "group flex w-full items-center justify-center gap-3 border border-lc-warm-shadow bg-lc-aged-paper px-6 py-3.5 text-[16px] font-semibold text-lc-ink-on-paper shadow-lg shadow-black/25 transition hover:bg-lc-cream active:scale-[0.99]"
       : "group flex w-full items-center justify-center gap-3 border border-gather-teal bg-white px-6 py-3.5 text-[16px] font-semibold text-gather-ink shadow-sm transition hover:bg-gather-cream hover:shadow-md active:scale-[0.99]";
 
   const switchClass =
     variant === "candlelit"
-      ? "mt-6 text-center text-[15px] leading-snug text-[rgba(244,238,231,0.88)]"
+      ? "mt-6 text-center text-[15px] leading-snug text-lc-cream/88"
       : "mt-6 text-center text-[15px] leading-snug text-gather-charcoal";
 
   const switchLinkClass =
     variant === "candlelit"
-      ? "font-semibold text-[#d6e6ef] underline decoration-[#c6d8e3]/55 underline-offset-[5px] transition hover:text-[#f4eee7] hover:decoration-[#f4eee7]"
+      ? "font-semibold text-lc-link-soft underline decoration-lc-pale-blue-border/55 underline-offset-[5px] transition hover:text-lc-cream hover:decoration-lc-cream"
       : "font-semibold text-gather-teal underline decoration-gather-teal/55 underline-offset-[5px] transition hover:text-gather-wine hover:decoration-gather-wine";
 
   const legalClass =
     variant === "candlelit"
-      ? "mt-10 text-center text-[12.5px] leading-[1.55] text-[rgba(244,238,231,0.72)]"
+      ? "mt-10 text-center text-[12.5px] leading-[1.55] text-lc-cream/72"
       : "mt-10 text-center text-[12.5px] leading-[1.55] text-gather-charcoal/80";
 
   const legalLinkClass =
     variant === "candlelit"
-      ? "font-medium text-[rgba(214,230,239,0.95)] underline decoration-[#c6d8e3]/55 underline-offset-[3px] transition hover:text-[#f4eee7]"
+      ? "font-medium text-lc-link-soft/95 underline decoration-lc-pale-blue-border/55 underline-offset-[3px] transition hover:text-lc-cream"
       : "font-medium text-gather-teal underline decoration-gather-teal/50 underline-offset-[3px] transition hover:text-gather-wine";
 
   const showLowercaseTabs = variant === "candlelit";

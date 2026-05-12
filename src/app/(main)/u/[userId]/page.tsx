@@ -75,10 +75,10 @@ export default async function PublicProfilePage({
   const subline = [p.college, p.job].filter(Boolean).join(" · ").toLowerCase();
 
   return (
-    <div className="relative -mx-4 min-h-[calc(100dvh-6rem)] bg-gradient-to-b from-[#1f0d10] via-[#2a1216] to-[#160808] px-5 py-8 pb-28 sm:-mx-6 sm:px-8">
+    <div className="relative -mx-4 min-h-[calc(100dvh-6rem)] bg-gradient-to-b from-lc-profile-gradient-from via-lc-profile-gradient-via to-lc-profile-gradient-to px-5 py-8 pb-28 sm:-mx-6 sm:px-8">
       <Link
         href="/gatherings"
-        className="mb-10 inline-flex items-center gap-1 font-serif text-sm lowercase tracking-wide text-[#c6d8e3] transition hover:text-[#f4eee7]"
+        className="mb-10 inline-flex items-center gap-1 font-serif text-sm lowercase tracking-wide text-lc-pale-blue-border transition hover:text-lc-cream"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -110,31 +110,31 @@ export default async function PublicProfilePage({
               <img
                 src={primary?.url ?? u.image!}
                 alt=""
-                className="h-44 w-44 rounded-full object-cover shadow-[0_20px_50px_rgba(0,0,0,0.45)] ring-4 ring-[#f4eee7]/12"
+                className="h-44 w-44 rounded-full object-cover shadow-[0_20px_50px_rgba(0,0,0,0.45)] ring-4 ring-lc-cream/12"
               />
             ) : (
-              <div className="flex h-44 w-44 items-center justify-center rounded-full bg-[#3d2528] font-serif text-sm text-[#9c8474]">
+              <div className="flex h-44 w-44 items-center justify-center rounded-full bg-lc-disk-plum font-serif text-sm text-lc-tab-muted">
                 no photo
               </div>
             )}
           </div>
-          <h1 className="mt-8 font-serif text-3xl font-light lowercase tracking-tight text-[#f4eee7] sm:text-[2.1rem]">
+          <h1 className="mt-8 font-serif text-3xl font-light lowercase tracking-tight text-lc-cream sm:text-[2.1rem]">
             {p.firstName}, {age}
           </h1>
           {hood ? (
-            <p className="mt-2 font-serif text-base lowercase text-[#b89a8c]">
+            <p className="mt-2 font-serif text-base lowercase text-lc-soft-rose">
               {hood}
             </p>
           ) : null}
           {subline ? (
-            <p className="mt-1 font-serif text-sm lowercase text-[#8f7268]/90">
+            <p className="mt-1 font-serif text-sm lowercase text-lc-earth-muted/90">
               {subline}
             </p>
           ) : null}
         </header>
 
         {p.bio?.trim() ? (
-          <p className="mx-auto mt-14 max-w-md text-center font-serif text-lg italic leading-relaxed text-[#e8ddd2]/95">
+          <p className="mx-auto mt-14 max-w-md text-center font-serif text-lg italic leading-relaxed text-lc-caption-warm/95">
             {p.bio}
           </p>
         ) : null}
@@ -144,14 +144,14 @@ export default async function PublicProfilePage({
             {visibleHosted.map((g) => (
               <p
                 key={g.id}
-                className="font-handwriting text-[1.35rem] leading-snug text-[#d4c4b8]"
+                className="font-handwriting text-[1.35rem] leading-snug text-lc-verse-dust"
               >
                 hosted “{g.title.toLowerCase()}”
               </p>
             ))}
           </section>
         ) : u.hostedGatherings.length > 0 ? (
-          <p className="mt-14 text-center font-serif text-sm italic text-[#9c8474]">
+          <p className="mt-14 text-center font-serif text-sm italic text-lc-tab-muted">
             {viewer.plan === Plan.OBSERVER
               ? "some gatherings aren’t visible on your current plan."
               : "nothing hosted right now."}
@@ -199,7 +199,7 @@ export default async function PublicProfilePage({
               return (
                 <p
                   key={pr.key}
-                  className="max-w-md font-serif text-base italic leading-relaxed text-[#d4c4b8]/95"
+                  className="max-w-md font-serif text-base italic leading-relaxed text-lc-verse-dust/95"
                 >
                   {ans.body}
                 </p>
@@ -219,7 +219,7 @@ export default async function PublicProfilePage({
                 <img
                   src={ph.url}
                   alt=""
-                  className="h-48 w-48 rounded-full object-cover shadow-[0_16px_40px_rgba(0,0,0,0.4)] ring-2 ring-[#f4eee7]/10 sm:h-52 sm:w-52"
+                  className="h-48 w-48 rounded-full object-cover shadow-[0_16px_40px_rgba(0,0,0,0.4)] ring-2 ring-lc-cream/10 sm:h-52 sm:w-52"
                 />
               </div>
             ))}
@@ -233,13 +233,13 @@ export default async function PublicProfilePage({
                 ? "#their-gatherings"
                 : "/gatherings"
             }
-            className="inline-flex min-w-[200px] items-center justify-center rounded-md border border-[#c6d8e3] bg-[#266b7e] px-8 py-3 font-serif text-[15px] lowercase tracking-[0.12em] text-[#f4eee7] transition hover:bg-[#2f7f95]"
+            className="inline-flex min-w-[200px] items-center justify-center rounded-md border border-lc-pale-blue-border bg-lc-dusty-blue px-8 py-3 font-serif text-[15px] lowercase tracking-[0.12em] text-lc-cream transition hover:bg-lc-dusty-blue-bright-hover"
           >
             request a seat
           </Link>
           <Link
             href={`/report?type=user&id=${userId}`}
-            className="font-serif text-xs lowercase tracking-wide text-[#8f7268] transition hover:text-[#c6d8e3]"
+            className="font-serif text-xs lowercase tracking-wide text-lc-earth-muted transition hover:text-lc-pale-blue-border"
           >
             report profile
           </Link>

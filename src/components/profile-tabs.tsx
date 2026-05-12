@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { lcChrome } from "@/lib/lc-classes";
+
 const tabs = [
   { href: "/profile", label: "Profile", exact: true as const },
   { href: "/profile/notifications", label: "Notifications", exact: false as const },
@@ -13,7 +15,7 @@ export function ProfileTabs({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
   const pathname = usePathname();
 
   return (
-    <div className="mb-6 flex border-b border-gather-teal/25">
+    <div className="mb-6 flex border-b border-lc-pale-blue-border/20">
       {tabs.map((t) => {
         const active = t.exact
           ? pathname === t.href ||
@@ -28,8 +30,8 @@ export function ProfileTabs({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
             aria-current={active ? "page" : undefined}
             className={`relative flex-1 py-3 text-center text-[13px] font-semibold uppercase tracking-[0.14em] transition ${
               active
-                ? "text-gather-teal"
-                : "text-gather-charcoal/55 hover:text-gather-teal"
+                ? "text-lc-cream"
+                : `${lcChrome.tabMutedUnderline}`
             }`}
           >
             <span className="inline-flex items-center gap-1.5">
@@ -42,7 +44,7 @@ export function ProfileTabs({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
             </span>
             <span
               aria-hidden
-              className={`pointer-events-none absolute -bottom-px left-1/2 h-[2px] -translate-x-1/2 rounded-full bg-gather-teal transition-all duration-200 ${
+              className={`pointer-events-none absolute -bottom-px left-1/2 h-[2px] -translate-x-1/2 rounded-full ${lcChrome.pillUnderline} transition-all duration-200 ${
                 active ? "w-10 opacity-100" : "w-0 opacity-0"
               }`}
             />

@@ -3,15 +3,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DiscoverFilters } from "@/components/discover-filters";
 import { PolaroidCard, type PolaroidCardData } from "@/components/polaroid-card";
+import { lcChrome } from "@/lib/lc-classes";
 
-/** Background washes that follow the centered Polaroid (scroll / arrows). */
+/** Inline gradient stops mirror `:root --lc-deep-brown`, dusty teal, plum, amber, etc. */
 const MOOD_BACKGROUNDS = [
-  "linear-gradient(165deg, #1a0a06 0%, #2d1510 45%, #120705 100%)",
-  "linear-gradient(165deg, #2a0c12 0%, #5c1f28 48%, #1a080c 100%)",
-  "linear-gradient(165deg, #0c1f18 0%, #1a4d3d 42%, #081210 100%)",
-  "linear-gradient(165deg, #3a1a08 0%, #b84a1a 40%, #1f0d05 100%)",
-  "linear-gradient(165deg, #1e1028 0%, #4a2a58 45%, #120818 100%)",
-  "linear-gradient(165deg, #280812 0%, #6b1a32 46%, #16040a 100%)",
+  "linear-gradient(165deg, #230b04 0%, #3d1808 45%, #120602 100%)",
+  "linear-gradient(165deg, #163640 0%, #266b7e 42%, #0d2328 100%)",
+  "linear-gradient(165deg, #291012 0%, #4f2130 46%, #150608 100%)",
+  "linear-gradient(165deg, #33220c 0%, #664218 38%, #1a0f06 100%)",
+  "linear-gradient(165deg, #17102a 0%, #362c5c 45%, #0d0818 100%)",
+  "linear-gradient(165deg, #38121c 0%, #663040 42%, #120408 100%)",
 ] as const;
 
 function moodForIndex(i: number, len: number) {
@@ -36,7 +37,7 @@ function CarouselArrow({
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className="z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#f4eee7]/45 bg-[#1a0a06]/55 text-[#f4eee7] shadow-md backdrop-blur-sm transition hover:border-[#f4eee7]/70 hover:bg-[#1a0a06]/75 disabled:pointer-events-none disabled:opacity-35"
+      className={`z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${lcChrome.roundControlIdle} disabled:pointer-events-none disabled:opacity-35`}
     >
       <svg
         viewBox="0 0 20 20"
@@ -181,14 +182,14 @@ export function DiscoverExperience({
         }}
       />
 
-      <DiscoverFilters neighborhoods={neighborhoods} chrome="espresso" />
+      <DiscoverFilters neighborhoods={neighborhoods} chrome="candlelit" />
 
       {empty ? (
-        <div className="rounded-2xl border border-dashed border-white/18 bg-black/15 px-5 py-12 text-center backdrop-blur-[2px]">
-          <p className="text-sm font-medium text-[#f4eee7]">
+        <div className="rounded-2xl border border-dashed border-lc-pale-blue-border/20 bg-lc-chip-surface px-5 py-12 text-center backdrop-blur-[2px]">
+          <p className={`text-sm font-medium ${lcChrome.body}`}>
             {hasActiveFilters ? "No gatherings match" : "Nothing open right now"}
           </p>
-          <p className="mt-2 text-xs text-[#f4eee7]/55">
+          <p className={`mt-2 text-xs ${lcChrome.mutedBody}`}>
             {hasActiveFilters
               ? "Try loosening your filters."
               : "New gatherings drop regularly, or host one from the Host tab."}
@@ -204,7 +205,7 @@ export function DiscoverExperience({
           />
           <div
             ref={stripRef}
-            className="flex min-h-[min(76vh,520px)] flex-1 snap-x snap-mandatory gap-10 overflow-x-auto overflow-y-visible py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex min-h-[min(592px,min(84vh,640px))] flex-1 snap-x snap-mandatory gap-10 overflow-x-auto overflow-y-visible py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             <div
               className="w-[min(28vw,7.5rem)] max-w-[180px] shrink-0 sm:w-[min(22vw,6rem)]"

@@ -36,7 +36,6 @@ export async function completeProfile(formData: FormData) {
     .split(/[\n,]/)
     .map((s) => s.trim())
     .filter(Boolean);
-  if (photoUrls.length < 1) throw new Error("At least one photo URL required");
 
   const answers = parsePersonalitySlots(formData);
 
@@ -65,14 +64,16 @@ export async function completeProfile(formData: FormData) {
     });
 
     await tx.profilePhoto.deleteMany({ where: { userId } });
-    await tx.profilePhoto.createMany({
-      data: photoUrls.map((url, i) => ({
-        userId,
-        url,
-        sortOrder: i,
-        isPrimary: i === 0,
-      })),
-    });
+    if (photoUrls.length > 0) {
+      await tx.profilePhoto.createMany({
+        data: photoUrls.map((url, i) => ({
+          userId,
+          url,
+          sortOrder: i,
+          isPrimary: i === 0,
+        })),
+      });
+    }
 
     await tx.profilePromptAnswer.deleteMany({ where: { userId } });
     await tx.profilePromptAnswer.createMany({
@@ -113,7 +114,6 @@ export async function updateProfile(formData: FormData) {
     .split(/[\n,]/)
     .map((s) => s.trim())
     .filter(Boolean);
-  if (photoUrls.length < 1) throw new Error("At least one photo URL required");
 
   const answers = parsePersonalitySlots(formData);
 
@@ -140,14 +140,16 @@ export async function updateProfile(formData: FormData) {
     });
 
     await tx.profilePhoto.deleteMany({ where: { userId } });
-    await tx.profilePhoto.createMany({
-      data: photoUrls.map((url, i) => ({
-        userId,
-        url,
-        sortOrder: i,
-        isPrimary: i === 0,
-      })),
-    });
+    if (photoUrls.length > 0) {
+      await tx.profilePhoto.createMany({
+        data: photoUrls.map((url, i) => ({
+          userId,
+          url,
+          sortOrder: i,
+          isPrimary: i === 0,
+        })),
+      });
+    }
 
     await tx.profilePromptAnswer.deleteMany({ where: { userId } });
     await tx.profilePromptAnswer.createMany({

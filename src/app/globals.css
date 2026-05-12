@@ -19,6 +19,44 @@
   --gather-jewel-burgundy: #6b2f3a;
   --gather-jewel-teal: #1e5d74;
   --gather-jewel-amber: #9e3b1b;
+
+  /* Candlelit / supper-club — shared by landing & signed-in shell (`lc-*` Tailwind utilities). */
+  --lc-bg-void: #160601;
+  --lc-espresso: #1a0702;
+  --lc-deep-brown: #230b04;
+  --lc-warm-shadow: #321308;
+  --lc-cream: #f4eee7;
+  --lc-aged-paper: #eee9e1;
+  --lc-muted-tan: #a98974;
+  --lc-tan-accent: #c4a99a;
+  --lc-tab-muted: #9c8474;
+  --lc-earth-muted: #8f7268;
+  --lc-caption-warm: #e8ddd2;
+  --lc-dusty-blue: #266b7e;
+  --lc-dusty-blue-hover: #2c7a8f;
+  --lc-dusty-blue-bright-hover: #2f7f95;
+  --lc-pale-blue-border: #c6d8e3;
+  --lc-ink-on-paper: #3a1a0f;
+  --lc-link-soft: rgb(214 230 239);
+  --lc-chip-surface: rgb(255 255 255 / 0.12);
+  --lc-card-overlay: rgb(32 11 4 / 0.92);
+
+  /* Polaroid / editorial scrapbook neutrals */
+  --lc-polaroid-shell: #f2ebe3;
+  --lc-photo-placeholder: #ddd5cc;
+  --lc-writing-ink: #2c1810;
+  --lc-body-rich: #3d2a22;
+  --lc-meta-label: #6b5348;
+  --lc-meta-dim: #5c4a42;
+  --lc-control-brown: #4a342c;
+
+  /* Profile / plum shell gradients + accent dust */
+  --lc-profile-gradient-from: #1f0d10;
+  --lc-profile-gradient-via: #2a1216;
+  --lc-profile-gradient-to: #160808;
+  --lc-disk-plum: #3d2528;
+  --lc-soft-rose: #b89a8c;
+  --lc-verse-dust: #d4c4b8;
 }
 
 @theme inline {
@@ -38,7 +76,40 @@
   --color-gather-jewel-burgundy: var(--gather-jewel-burgundy);
   --color-gather-jewel-teal: var(--gather-jewel-teal);
   --color-gather-jewel-amber: var(--gather-jewel-amber);
-  /* GAT-5 / gathersocial.us: Barlow + Outfit + Caslon + Reenie (handwriting on polaroids, etc.) */
+
+  --color-lc-bg-void: var(--lc-bg-void);
+  --color-lc-espresso: var(--lc-espresso);
+  --color-lc-deep-brown: var(--lc-deep-brown);
+  --color-lc-warm-shadow: var(--lc-warm-shadow);
+  --color-lc-cream: var(--lc-cream);
+  --color-lc-aged-paper: var(--lc-aged-paper);
+  --color-lc-muted-tan: var(--lc-muted-tan);
+  --color-lc-tan-accent: var(--lc-tan-accent);
+  --color-lc-tab-muted: var(--lc-tab-muted);
+  --color-lc-earth-muted: var(--lc-earth-muted);
+  --color-lc-caption-warm: var(--lc-caption-warm);
+  --color-lc-dusty-blue: var(--lc-dusty-blue);
+  --color-lc-dusty-blue-hover: var(--lc-dusty-blue-hover);
+  --color-lc-dusty-blue-bright-hover: var(--lc-dusty-blue-bright-hover);
+  --color-lc-pale-blue-border: var(--lc-pale-blue-border);
+  --color-lc-ink-on-paper: var(--lc-ink-on-paper);
+  --color-lc-card-overlay: var(--lc-card-overlay);
+  --color-lc-chip-surface: var(--lc-chip-surface);
+  --color-lc-link-soft: var(--lc-link-soft);
+  --color-lc-polaroid-shell: var(--lc-polaroid-shell);
+  --color-lc-photo-placeholder: var(--lc-photo-placeholder);
+  --color-lc-writing-ink: var(--lc-writing-ink);
+  --color-lc-body-rich: var(--lc-body-rich);
+  --color-lc-meta-label: var(--lc-meta-label);
+  --color-lc-meta-dim: var(--lc-meta-dim);
+  --color-lc-control-brown: var(--lc-control-brown);
+  --color-lc-profile-gradient-from: var(--lc-profile-gradient-from);
+  --color-lc-profile-gradient-via: var(--lc-profile-gradient-via);
+  --color-lc-profile-gradient-to: var(--lc-profile-gradient-to);
+  --color-lc-disk-plum: var(--lc-disk-plum);
+  --color-lc-soft-rose: var(--lc-soft-rose);
+  --color-lc-verse-dust: var(--lc-verse-dust);
+
   --font-sans: var(--font-barlow), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-caslon), ui-serif, Georgia, serif;
@@ -67,16 +138,24 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Candlelit marketing landing (/): supper-club palette, separate from app UI tokens */
+/** Discover Polaroid backs: readable scroll regions + slim scrollbar */
+.polaroid-card-back-scroll {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.polaroid-card-back-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.polaroid-card-back-scroll::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: rgb(107 83 72 / 0.45);
+}
+
+/* Typography + text color inside candlelit shells; palette lives on :root as --lc-* */
 .landing-candlelit {
-  --lc-espresso: #1a0702;
-  --lc-deep-brown: #230b04;
-  --lc-warm-shadow: #321308;
-  --lc-cream: #f4eee7;
-  --lc-aged-paper: #eee9e1;
-  --lc-muted-tan: #a98974;
-  --lc-dusty-blue: #266b7e;
-  --lc-pale-blue-border: #c6d8e3;
   color: var(--lc-cream);
   font-family: var(--font-landing-body), ui-serif, Georgia, serif;
 }

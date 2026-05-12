@@ -22,14 +22,14 @@ export function GatheringsTabs() {
             aria-current={active ? "page" : undefined}
             className={`relative flex-1 py-3 text-center text-[15px] font-medium tracking-wide lowercase transition ${
               active
-                ? "text-[#f4eee7]"
-                : "text-[#9c8474] hover:text-[#c4a99a]"
+                ? "text-lc-cream"
+                : "text-lc-tab-muted hover:text-lc-tan-accent"
             }`}
           >
             {t.label}
             <span
               aria-hidden
-              className={`pointer-events-none absolute -bottom-px left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-[#f4eee7] transition-all duration-200 ${
+              className={`pointer-events-none absolute -bottom-px left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-lc-cream transition-all duration-200 ${
                 active ? "w-10 opacity-100" : "w-0 opacity-0"
               }`}
             />

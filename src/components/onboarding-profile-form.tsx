@@ -63,8 +63,8 @@ export function OnboardingProfileForm({
       </ProfileFieldGroup>
 
       <ProfileFieldGroup
-        title="Photos"
-        hint="Drop images here or pick from your device. First photo is your primary."
+        title="Photos (optional)"
+        hint="Add a face—or skip for now and upload later from your profile. First photo becomes primary."
       >
         <PhotoUpload />
       </ProfileFieldGroup>

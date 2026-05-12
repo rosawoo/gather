@@ -87,8 +87,8 @@ export function EditProfileForm({
       </ProfileFieldGroup>
 
       <ProfileFieldGroup
-        title="Photos"
-        hint="Drop images here or pick from your device. First photo is your primary."
+        title="Photos (optional)"
+        hint="Add or reorder images. Clearing all photos is allowed—you can upload again anytime."
       >
         <PhotoUpload initialUrls={photoUrls} />
       </ProfileFieldGroup>
