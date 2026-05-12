@@ -50,7 +50,7 @@ export default async function UpcomingGatheringsPage() {
     <div className="relative pb-8">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.12)_0%,transparent_58%)] blur-2xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 w-full bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.12)_0%,transparent_58%)] blur-2xl"
       />
       <p className="mb-8 text-sm text-gather-cream/65">
         Requests, confirmed plans, and past gatherings.

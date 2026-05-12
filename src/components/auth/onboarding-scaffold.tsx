@@ -22,8 +22,8 @@ export function OnboardingScaffold({
   const activeIndex = STEPS.findIndex((s) => s.key === step);
 
   return (
-    <div className="min-h-full bg-gather-paper px-5 py-10 text-gather-ink sm:py-14">
-      <div className="mx-auto flex w-full max-w-md flex-col">
+    <div className="min-h-full bg-gather-paper px-4 py-10 text-gather-ink sm:px-6 sm:py-14 lg:px-10 xl:px-14">
+      <div className="mx-auto flex w-full flex-col">
         <Link
           href="/"
           className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-gather-teal/90 transition hover:text-gather-teal"

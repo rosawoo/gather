@@ -16,7 +16,7 @@ export default async function LandingPage() {
 
   return (
     <div className="min-h-full bg-gather-cream text-gather-ink">
-      <div className="mx-auto max-w-lg px-6 pb-20 pt-[calc(env(safe-area-inset-top,0px)+2rem)] sm:px-8">
+      <div className="w-full px-6 pb-20 pt-[calc(env(safe-area-inset-top,0px)+2rem)] sm:px-8 lg:px-12 xl:px-16">
         <header className="text-center">
           <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-gather-teal">
             gather{" "}

@@ -62,7 +62,7 @@ export default async function PublicProfilePage({
     <div className="relative space-y-8 pb-10">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.9)_0%,transparent_58%)] blur-2xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 w-full bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.9)_0%,transparent_58%)] blur-2xl"
       />
       <Link
         href="/gatherings"
@@ -124,7 +124,7 @@ export default async function PublicProfilePage({
             {ageFromDob(p.dateOfBirth)} years old
           </p>
           {meta.length > 0 ? (
-            <div className="mt-5 flex max-w-sm flex-wrap justify-center gap-2">
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
               {meta.map((m) => (
                 <MetaChip key={m as string}>{m}</MetaChip>
               ))}
@@ -144,10 +144,12 @@ export default async function PublicProfilePage({
             {visibleHosted.map((g) => (
               <PolaroidCard
                 key={g.id}
+                variant="static"
                 id={g.id}
                 title={g.title}
+                description={g.description}
                 coverImageUrl={g.coverImageUrl}
-                startsAt={g.startsAt}
+                startsAt={g.startsAt.toISOString()}
                 neighborhood={g.neighborhood}
                 minTotalSize={g.minTotalSize}
                 maxTotalSize={g.maxTotalSize}
@@ -156,7 +158,7 @@ export default async function PublicProfilePage({
                 hostImage={hostImage}
                 hostId={u.id}
                 hostFirstName={p.firstName}
-                hostDateOfBirth={p.dateOfBirth}
+                hostDateOfBirth={p.dateOfBirth.toISOString()}
               />
             ))}
           </div>

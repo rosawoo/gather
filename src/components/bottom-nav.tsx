@@ -14,7 +14,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-gather-teal/25 bg-gather-paper/92 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md">
-      <div className="mx-auto flex max-w-lg">
+      <div className="flex w-full">
         {tabs.map((t) => {
           const Icon = t.icon;
           const active =

@@ -76,7 +76,7 @@ export default async function ProfilePage() {
             {ageFromDob(p.dateOfBirth)} years old
           </p>
           {meta.length > 0 ? (
-            <div className="mt-5 flex max-w-sm flex-wrap justify-center gap-2">
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
               {meta.map((m) => (
                 <MetaChip key={m}>{m}</MetaChip>
               ))}

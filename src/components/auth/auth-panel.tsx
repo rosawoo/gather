@@ -50,7 +50,7 @@ export function AuthPanel({
     "text-gather-charcoal hover:bg-gather-teal/10 hover:text-gather-teal";
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-1 flex-col">
+    <div className="mx-auto flex w-full flex-1 flex-col">
       <Link
         href="/"
         className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-gather-teal transition hover:text-gather-wine"
@@ -69,7 +69,7 @@ export function AuthPanel({
         <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-gather-ink sm:text-4xl">
           {copy.title}
         </h1>
-        <p className="mt-3 max-w-sm text-sm leading-relaxed text-gather-charcoal">
+        <p className="mt-3 text-sm leading-relaxed text-gather-charcoal">
           {copy.sub}
         </p>
 

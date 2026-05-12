@@ -26,7 +26,7 @@ export default async function MainAppLayout({
 
   return (
     <div className="min-h-full bg-gather-paper text-gather-ink">
-      <div className="mx-auto max-w-lg px-3 pt-[calc(env(safe-area-inset-top,0px)+1rem)] pb-[calc(env(safe-area-inset-bottom,0px)+5.5rem)] sm:px-4">
+      <div className="w-full px-4 pt-[calc(env(safe-area-inset-top,0px)+1rem)] pb-[calc(env(safe-area-inset-bottom,0px)+5.5rem)] sm:px-6 lg:px-10 xl:px-14">
         {children}
       </div>
       <BottomNav unreadNotifs={unreadNotifs} />

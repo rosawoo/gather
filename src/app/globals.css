@@ -38,6 +38,7 @@
   --color-gather-jewel-burgundy: var(--gather-jewel-burgundy);
   --color-gather-jewel-teal: var(--gather-jewel-teal);
   --color-gather-jewel-amber: var(--gather-jewel-amber);
+  /* GAT-5 / gathersocial.us: Barlow + Outfit + Caslon + Reenie (handwriting on polaroids, etc.) */
   --font-sans: var(--font-barlow), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-caslon), ui-serif, Georgia, serif;
@@ -48,5 +49,20 @@
 body {
   background: var(--gather-cream);
   color: var(--gather-ink);
-  font-family: var(--font-barlow), system-ui, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Polaroid 3D flip (discover) */
+.polaroid-perspective {
+  perspective: 1200px;
+}
+.polaroid-preserve-3d {
+  transform-style: preserve-3d;
+}
+.polaroid-backface {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.polaroid-face-back {
+  transform: rotateY(180deg);
 }

@@ -1,8 +1,7 @@
 import { auth } from "@/auth";
-import { PolaroidCard } from "@/components/polaroid-card";
 import { prisma } from "@/lib/prisma";
 import { GatheringStatus, GatheringType, Plan } from "@prisma/client";
-import { DiscoverFilters } from "@/components/discover-filters";
+import { DiscoverExperience } from "@/components/discover-experience";
 import { getNeighborhoodFilterList } from "@/lib/neighborhoods";
 
 type SearchParams = {
@@ -130,50 +129,30 @@ export default async function DiscoverGatheringsPage({
   const hasActiveFilters =
     !!(sp.q || sp.neighborhood || sp.type || sp.size || sp.cost || sp.date);
 
+  const items = visible.map((g) => ({
+    id: g.id,
+    title: g.title,
+    description: g.description,
+    coverImageUrl: g.coverImageUrl,
+    startsAt: g.startsAt.toISOString(),
+    neighborhood: g.neighborhood,
+    minTotalSize: g.minTotalSize,
+    maxTotalSize: g.maxTotalSize,
+    hostFriendsCount: g.hostFriendsCount,
+    tokenCost: g.tokenCost,
+    hostImage: g.host.photos[0]?.url ?? g.host.image,
+    hostId: g.hostId,
+    hostFirstName: g.host.profile?.firstName ?? null,
+    hostDateOfBirth: g.host.profile?.dateOfBirth?.toISOString() ?? null,
+  }));
+
   return (
     <div className="relative pb-10" dir="ltr">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 w-full bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.14)_0%,transparent_55%)] blur-xl"
+      <DiscoverExperience
+        neighborhoods={neighborhoods}
+        items={items}
+        hasActiveFilters={hasActiveFilters}
       />
-
-      <DiscoverFilters neighborhoods={neighborhoods} chrome="espresso" />
-
-      {visible.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-white/20 bg-white/8 px-5 py-10 text-center backdrop-blur-[2px]">
-          <p className="text-sm font-semibold text-gather-cream">
-            {hasActiveFilters ? "No gatherings match" : "Nothing open right now"}
-          </p>
-          <p className="mt-1 text-xs text-gather-cream/55">
-            {hasActiveFilters
-              ? "Try loosening your filters."
-              : "New gatherings drop regularly. Or host one from the Host tab."}
-          </p>
-        </div>
-      ) : (
-        <div className="-mx-4 flex snap-x snap-mandatory gap-10 overflow-x-auto px-5 pb-6 pt-2 [scrollbar-width:thin] sm:mx-0 sm:flex-wrap sm:justify-start sm:gap-x-12 sm:gap-y-16 sm:overflow-visible sm:px-0 sm:pb-2">
-          {visible.map((g, i) => (
-            <div key={g.id} className="shrink-0 snap-center sm:shrink">
-              <PolaroidCard
-                scrapbookIndex={i}
-                id={g.id}
-                title={g.title}
-                coverImageUrl={g.coverImageUrl}
-                startsAt={g.startsAt}
-                neighborhood={g.neighborhood}
-                minTotalSize={g.minTotalSize}
-                maxTotalSize={g.maxTotalSize}
-                hostFriendsCount={g.hostFriendsCount}
-                tokenCost={g.tokenCost}
-                hostImage={g.host.photos[0]?.url ?? g.host.image}
-                hostId={g.hostId}
-                hostFirstName={g.host.profile?.firstName ?? null}
-                hostDateOfBirth={g.host.profile?.dateOfBirth ?? null}
-              />
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
