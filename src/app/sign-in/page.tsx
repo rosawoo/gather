@@ -1,8 +1,9 @@
 import { auth } from "@/auth";
+import { AuthPanel } from "@/components/auth/auth-panel";
+import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
 import { redirect } from "next/navigation";
-import { AuthPanel } from "@/components/auth/auth-panel";
 
 type Props = {
   searchParams: Promise<{ callbackUrl?: string }>;
@@ -29,8 +30,16 @@ export default async function SignInPage({ searchParams }: Props) {
   const callbackUrl = normalizeCallback(sp.callbackUrl);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col bg-gather-cream px-4 py-12 text-gather-ink sm:px-8 sm:py-16 lg:px-12">
-      <AuthPanel mode="sign-in" callbackUrl={callbackUrl} />
-    </div>
+    <CandlelitPageShell>
+      <main className="relative z-10 mx-auto w-full max-w-lg flex-1 px-4 pb-20 sm:px-6">
+        <div className="landing-auth-card landing-candlelit">
+          <AuthPanel
+            mode="sign-in"
+            callbackUrl={callbackUrl}
+            variant="candlelit"
+          />
+        </div>
+      </main>
+    </CandlelitPageShell>
   );
 }

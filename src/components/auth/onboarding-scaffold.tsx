@@ -24,18 +24,16 @@ export function OnboardingScaffold({
   return (
     <div className="min-h-full bg-gather-paper px-4 py-10 text-gather-ink sm:px-6 sm:py-14 lg:px-10 xl:px-14">
       <div className="mx-auto flex w-full flex-col">
-        <Link
-          href="/"
-          className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-gather-teal/90 transition hover:text-gather-teal"
-        >
-          <span
-            className="h-1 w-4 rounded-full bg-gather-teal/90"
-            aria-hidden
-          />
-          Gather
-        </Link>
+        <div className="flex justify-center">
+          <Link
+            href="/"
+            className="landing-font-display text-[2.25rem] font-normal lowercase leading-none tracking-tight text-gather-ink no-underline sm:text-[2.75rem]"
+          >
+            gather
+          </Link>
+        </div>
 
-        <ol className="mt-6 flex items-center gap-2">
+        <ol className="mt-8 flex items-center gap-2 sm:mt-10">
           {STEPS.map((s, i) => {
             const state =
               i < activeIndex ? "done" : i === activeIndex ? "active" : "todo";

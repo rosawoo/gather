@@ -18,7 +18,7 @@ export function PrivacyDocument() {
         uses, and shares information about you when you use our website, mobile
         application, and related services (collectively, the
         &ldquo;platform&rdquo;), or when you communicate with us. we are based in
-        washington, dc, united states.
+        the united states.
       </p>
       <p>
         this privacy policy does not cover how other users (including hosts and

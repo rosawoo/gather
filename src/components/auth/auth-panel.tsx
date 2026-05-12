@@ -3,6 +3,8 @@ import { signInWithGoogle } from "@/app/actions/auth";
 
 type Mode = "sign-in" | "sign-up";
 
+type Variant = "default" | "candlelit";
+
 const COPY: Record<
   Mode,
   {
@@ -11,7 +13,6 @@ const COPY: Record<
     sub: string;
     cta: string;
     switchLabel: string;
-    switchHref: string;
     switchCta: string;
   }
 > = {
@@ -21,7 +22,6 @@ const COPY: Record<
     sub: "Pick up where you left off: browse gatherings and RSVP.",
     cta: "Continue with Google",
     switchLabel: "New to Gather?",
-    switchHref: "/sign-up",
     switchCta: "Create an account",
   },
   "sign-up": {
@@ -30,97 +30,216 @@ const COPY: Record<
     sub: "It takes a minute. After Google, you'll set up your profile.",
     cta: "Sign up with Google",
     switchLabel: "Already have an account?",
-    switchHref: "/sign-in",
     switchCta: "Sign in",
+  },
+};
+
+const CANDLELIT_COPY: Record<
+  Mode,
+  {
+    eyebrow: string;
+    title: string;
+    sub: string;
+    cta: string;
+    switchLabel: string;
+    switchCta: string;
+  }
+> = {
+  "sign-in": {
+    eyebrow: "welcome back",
+    title: "sign in",
+    sub: "pick up where you left off—browse gatherings, send requests, host when you are ready.",
+    cta: "continue with google",
+    switchLabel: "new here?",
+    switchCta: "create an account",
+  },
+  "sign-up": {
+    eyebrow: "come on in",
+    title: "join gather",
+    sub: "one tap with google, then a short profile so hosts know who you are.",
+    cta: "sign up with google",
+    switchLabel: "already gathering?",
+    switchCta: "sign in",
   },
 };
 
 export function AuthPanel({
   mode,
   callbackUrl,
+  variant = "default",
 }: {
   mode: Mode;
   callbackUrl: string;
+  variant?: Variant;
 }) {
-  const copy = COPY[mode];
+  const copy = variant === "candlelit" ? CANDLELIT_COPY[mode] : COPY[mode];
+
   const tabBase =
     "flex-1 rounded-full px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.18em] transition";
-  const active = "bg-gather-wine text-gather-cream shadow-sm";
-  const inactive =
+
+  const defaultActive = "bg-gather-wine text-gather-cream shadow-sm";
+  const defaultInactive =
     "text-gather-charcoal hover:bg-gather-teal/10 hover:text-gather-teal";
+
+  const candleActive =
+    "bg-[#266b7e] text-[#f4eee7] shadow-md shadow-black/20";
+  const candleInactive =
+    "text-[#f4eee7]/65 hover:bg-[#321308]/80 hover:text-[#f4eee7]";
+
+  const active = variant === "candlelit" ? candleActive : defaultActive;
+  const inactive = variant === "candlelit" ? candleInactive : defaultInactive;
+
+  const signInTabHref = `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`;
+  const signUpTabHref = `/sign-up?callbackUrl=${encodeURIComponent(callbackUrl)}`;
+
+  const backClass =
+    variant === "candlelit"
+      ? "inline-flex w-fit items-center gap-1.5 text-sm font-medium text-[#c6d8e3] transition hover:text-[#f4eee7]"
+      : "inline-flex w-fit items-center gap-1.5 text-sm font-medium text-gather-teal transition hover:text-gather-wine";
+
+  const eyebrowClass =
+    variant === "candlelit"
+      ? "flex items-center gap-2 text-[11px] font-semibold lowercase tracking-[0.18em] text-[#a98974]"
+      : "flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gather-teal";
+
+  const eyebrowDot =
+    variant === "candlelit"
+      ? "h-1 w-4 rounded-full bg-[#c6d8e3]/70"
+      : "h-1 w-4 rounded-full bg-gather-accent/90";
+
+  const titleClass =
+    variant === "candlelit"
+      ? "landing-font-display mt-3 text-3xl font-normal tracking-tight text-[#f4eee7] sm:text-[2.15rem]"
+      : "mt-3 font-display text-3xl font-bold tracking-tight text-gather-ink sm:text-4xl";
+
+  const subClass =
+    variant === "candlelit"
+      ? "mt-3 text-[1.02rem] leading-relaxed text-[#eee9e1]/88"
+      : "mt-3 text-sm leading-relaxed text-gather-charcoal";
+
+  const tabShellClass =
+    variant === "candlelit"
+      ? "mt-8 flex gap-1 rounded-full border border-[#c6d8e3]/35 bg-[#1a0702]/45 p-1"
+      : "mt-8 flex gap-1 rounded-full border border-gather-teal bg-white/50 p-1";
+
+  const googleBtnClass =
+    variant === "candlelit"
+      ? "group flex w-full items-center justify-center gap-3 border border-[#321308] bg-[#eee9e1] px-6 py-3.5 text-base font-semibold text-[#3a1a0f] shadow-lg shadow-black/25 transition hover:bg-[#f4eee7] active:scale-[0.99]"
+      : "group flex w-full items-center justify-center gap-3 border border-gather-teal bg-white px-6 py-3.5 text-sm font-semibold text-gather-ink shadow-sm transition hover:bg-gather-cream hover:shadow-md active:scale-[0.99]";
+
+  const switchClass =
+    variant === "candlelit"
+      ? "mt-6 text-center text-[1rem] text-[#eee9e1]/82"
+      : "mt-6 text-center text-sm text-gather-charcoal";
+
+  const switchLinkClass =
+    variant === "candlelit"
+      ? "font-semibold text-[#c6d8e3] underline decoration-[#c6d8e3]/45 underline-offset-4 transition hover:text-[#f4eee7] hover:decoration-[#f4eee7]"
+      : "font-semibold text-gather-teal underline decoration-gather-teal/50 underline-offset-4 transition hover:text-gather-wine hover:decoration-gather-wine";
+
+  const legalClass =
+    variant === "candlelit"
+      ? "mt-10 text-center text-xs leading-relaxed text-[#a98974]/85"
+      : "mt-10 text-center text-xs leading-relaxed text-gather-charcoal/70";
+
+  const showLowercaseTabs = variant === "candlelit";
 
   return (
     <div className="mx-auto flex w-full flex-1 flex-col">
-      <Link
-        href="/"
-        className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-gather-teal transition hover:text-gather-wine"
-      >
-        <span aria-hidden>←</span> Back
+      <Link href="/" className={backClass}>
+        <span aria-hidden>←</span> {variant === "candlelit" ? "home" : "Back"}
       </Link>
 
-      <div className="mt-10 flex flex-1 flex-col justify-center sm:mt-6">
-        <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gather-teal">
-          <span
-            className="h-1 w-4 rounded-full bg-gather-accent/90"
-            aria-hidden
-          />
+      <div
+        className={
+          variant === "candlelit"
+            ? "mt-8 flex flex-1 flex-col justify-center sm:mt-6"
+            : "mt-10 flex flex-1 flex-col justify-center sm:mt-6"
+        }
+      >
+        <p className={eyebrowClass}>
+          <span className={eyebrowDot} aria-hidden />
           {copy.eyebrow}
         </p>
-        <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-gather-ink sm:text-4xl">
-          {copy.title}
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-gather-charcoal">
-          {copy.sub}
-        </p>
+        <h1 className={titleClass}>{copy.title}</h1>
+        <p className={subClass}>{copy.sub}</p>
 
-        <div
-          role="tablist"
-          aria-label="Authentication"
-          className="mt-8 flex gap-1 rounded-full border border-gather-teal bg-white/50 p-1"
-        >
+        <div role="tablist" aria-label="Authentication" className={tabShellClass}>
           <Link
-            href="/sign-in"
+            href={signInTabHref}
             role="tab"
             aria-selected={mode === "sign-in"}
             className={`${tabBase} ${mode === "sign-in" ? active : inactive}`}
+            style={
+              showLowercaseTabs
+                ? { textTransform: "lowercase" as const }
+                : undefined
+            }
           >
-            Sign in
+            {showLowercaseTabs ? "sign in" : "Sign in"}
           </Link>
           <Link
-            href="/sign-up"
+            href={signUpTabHref}
             role="tab"
             aria-selected={mode === "sign-up"}
             className={`${tabBase} ${mode === "sign-up" ? active : inactive}`}
+            style={
+              showLowercaseTabs
+                ? { textTransform: "lowercase" as const }
+                : undefined
+            }
           >
-            Sign up
+            {showLowercaseTabs ? "sign up" : "Sign up"}
           </Link>
         </div>
 
         <form action={signInWithGoogle} className="mt-6">
           <input type="hidden" name="callbackUrl" value={callbackUrl} />
-          <button
-            type="submit"
-            className="group flex w-full items-center justify-center gap-3 border border-gather-teal bg-white px-6 py-3.5 text-sm font-semibold text-gather-ink shadow-sm transition hover:bg-gather-cream hover:shadow-md active:scale-[0.99]"
-          >
+          <button type="submit" className={googleBtnClass}>
             <GoogleMark className="h-5 w-5 shrink-0" aria-hidden />
             {copy.cta}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gather-charcoal">
+        <p className={switchClass}>
           {copy.switchLabel}{" "}
-          <Link
-            href={copy.switchHref}
-            className="font-semibold text-gather-teal underline decoration-gather-teal/50 underline-offset-4 transition hover:text-gather-wine hover:decoration-gather-wine"
-          >
+          <Link href={mode === "sign-in" ? signUpTabHref : signInTabHref} className={switchLinkClass}>
             {copy.switchCta}
           </Link>
         </p>
 
-        <p className="mt-10 text-center text-xs leading-relaxed text-gather-charcoal/70">
-          By continuing, Google may share your name, email, and profile photo
-          with Gather. You agree to our community guidelines.
-        </p>
+        {variant === "candlelit" ? (
+          <p className={legalClass}>
+            by continuing, google may share your name, email, and photo with
+            gather. you agree to our{" "}
+            <Link
+              href="/terms-of-service"
+              className="text-[#c6d8e3] underline-offset-2 hover:underline"
+            >
+              terms
+            </Link>
+            ,{" "}
+            <Link
+              href="/privacy-policy"
+              className="text-[#c6d8e3] underline-offset-2 hover:underline"
+            >
+              privacy policy
+            </Link>
+            , and{" "}
+            <Link
+              href="/community-guidelines"
+              className="text-[#c6d8e3] underline-offset-2 hover:underline"
+            >
+              community guidelines
+            </Link>
+            .
+          </p>
+        ) : (
+          <p className={legalClass}>
+            By continuing, Google may share your name, email, and profile photo
+            with Gather. You agree to our community guidelines.
+          </p>
+        )}
       </div>
     </div>
   );

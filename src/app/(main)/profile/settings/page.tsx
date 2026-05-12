@@ -139,6 +139,14 @@ export default async function SettingsPage() {
           <ul className="space-y-2 text-sm">
             <li>
               <Link
+                href="/about"
+                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+              >
+                How it works
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/terms-of-service"
                 className="font-medium text-gather-brown underline-offset-4 hover:underline"
               >

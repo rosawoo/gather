@@ -86,25 +86,27 @@ body {
 }
 
 .landing-candlelit-bg {
+  /* Lighter scrim so the photograph stays visible; text relies on shadow + cards */
   background-image: linear-gradient(
-      rgba(25, 6, 1, 0.72),
-      rgba(25, 6, 1, 0.82)
+      rgba(25, 6, 1, 0.38),
+      rgba(25, 6, 1, 0.55)
     ),
     url("/background.jpg");
   background-size: cover;
   background-position: center;
-  filter: contrast(0.9) brightness(0.92);
+  filter: contrast(0.96) brightness(0.98);
 }
 
 .landing-candlelit-vignette {
   pointer-events: none;
-  box-shadow: inset 0 0 min(28vw, 220px) rgba(0, 0, 0, 0.55);
+  box-shadow: inset 0 0 min(28vw, 220px) rgba(0, 0, 0, 0.38);
 }
 
 .landing-candlelit-hero-glow {
   text-shadow:
-    0 0 42px rgba(244, 238, 231, 0.12),
-    0 2px 28px rgba(0, 0, 0, 0.55);
+    0 0 48px rgba(244, 238, 231, 0.2),
+    0 2px 32px rgba(0, 0, 0, 0.65),
+    0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .landing-polaroid {
@@ -177,6 +179,27 @@ body {
 .landing-btn-about--compact {
   padding: 10px clamp(0.75rem, 2vw, 2.5rem);
   font-size: 14px;
+}
+
+/* Sign-in / sign-up card on candlelit background */
+.landing-auth-card {
+  width: 100%;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.5rem;
+  padding: 32px 26px 36px;
+  background: rgba(32, 11, 4, 0.88);
+  border-radius: 28px;
+  color: #f4eee7;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 640px) {
+  .landing-auth-card {
+    margin-top: 1.5rem;
+    padding: 40px 36px 44px;
+  }
 }
 
 /* Legal / terms document card (candlelit brand) */

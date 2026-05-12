@@ -1,13 +1,17 @@
 import { auth } from "@/auth";
 import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
-import { LandingWaitlistForm } from "@/components/landing/landing-waitlist-form";
+import { HomeGatheringTeaser } from "@/components/landing/home-gathering-teaser";
 import { prisma } from "@/lib/prisma";
+import { getPublicGatheringTeasers } from "@/lib/public-gatherings";
 import { nextAppPath } from "@/lib/onboarding";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const POLAROID_PHOTO_SRC =
   "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&q=80";
+
+const SIGN_UP_GATHERINGS = `/sign-up?callbackUrl=${encodeURIComponent("/gatherings")}`;
+const SIGN_IN_GATHERINGS = `/sign-in?callbackUrl=${encodeURIComponent("/gatherings")}`;
 
 export default async function LandingPage() {
   const session = await auth();
@@ -19,6 +23,8 @@ export default async function LandingPage() {
     if (user) redirect(nextAppPath(user));
   }
 
+  const teaserGatherings = await getPublicGatheringTeasers(4);
+
   return (
     <CandlelitPageShell>
       <main className="mx-auto mt-10 w-full max-w-6xl flex-1">
@@ -28,33 +34,48 @@ export default async function LandingPage() {
               treat new friends like old ones.
             </h2>
             <p className="mt-4 text-lg text-[#f4eee7]/88 sm:text-xl">
-              coming soon to d.c.
+              host-led gatherings, in real rooms near you.
             </p>
           </div>
           <div className="flex flex-col items-start justify-end lg:col-span-6 lg:items-end xl:col-span-7">
-            <p className="mb-3 max-w-[320px] text-[0.95rem] leading-relaxed text-[#eee9e1]/85">
-              we&apos;re quietly opening a list for the first hosts and guests.
-              leave your email—we&apos;ll write like friends, not a marketing
-              robot.
+            <p className="mb-4 max-w-[340px] text-[0.95rem] leading-relaxed text-[#eee9e1]/85">
+              discover intimate dinners, game nights, and rooms worth leaving
+              the group chat for. create a profile, request a seat, or host your
+              own table—we&apos;ll handle the boring parts.
             </p>
-            <LandingWaitlistForm />
-            <p className="mt-4 text-sm text-[#a98974]">
-              already in?{" "}
+            <div className="flex w-full max-w-[320px] flex-col gap-3 sm:flex-row sm:max-w-none sm:gap-4">
               <Link
-                href="/sign-in"
+                href={SIGN_UP_GATHERINGS}
+                className="landing-btn-cta inline-flex flex-1 items-center justify-center lowercase no-underline sm:min-w-[160px]"
+              >
+                join gather
+              </Link>
+              <Link
+                href={SIGN_IN_GATHERINGS}
+                className="landing-btn-about inline-flex flex-1 items-center justify-center lowercase no-underline sm:min-w-[140px]"
+              >
+                sign in
+              </Link>
+            </div>
+            <p className="mt-4 text-sm text-[#a98974]">
+              curious how it works?{" "}
+              <Link
+                href="/about"
                 className="text-[#f4eee7] underline decoration-[#c6d8e3]/50 underline-offset-4 hover:decoration-[#c6d8e3]"
               >
-                log in
+                read our story
               </Link>
             </p>
           </div>
         </div>
 
+        <HomeGatheringTeaser gatherings={teaserGatherings} />
+
         <section className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-12 lg:pt-8">
           <div className="flex justify-center lg:col-span-5 lg:justify-start">
             <figure className="landing-polaroid w-full max-w-[300px]">
               <div className="aspect-[4/3] w-full overflow-hidden bg-[#321308]">
-                {/* eslint-disable-next-line @next/next/no-img-element -- remote mood photo; avoid coupling to image config */}
+                {/* eslint-disable-next-line @next/next/no-img-element -- mood photo; avoids image remotePatterns */}
                 <img
                   src={POLAROID_PHOTO_SRC}
                   alt=""
@@ -64,7 +85,7 @@ export default async function LandingPage() {
                 />
               </div>
               <figcaption className="mt-3 text-center text-sm italic text-[#3a1a0f]/85">
-                same table, softer light
+                your next room is already gathering
               </figcaption>
             </figure>
           </div>
@@ -98,23 +119,46 @@ export default async function LandingPage() {
               small rooms, big napkins, low candlelight—somewhere between a
               literary salon and your friend&apos;s living room.
             </p>
-            <p>
-              <a
-                href="https://www.gathersocial.us/about"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#c6d8e3] underline decoration-[#c6d8e3]/40 underline-offset-[5px] transition hover:decoration-[#c6d8e3]"
-              >
-                see how it works
-              </a>{" "}
-              <span className="text-[#a98974]/90">on gathersocial.us</span>
-            </p>
           </div>
         </section>
       </main>
 
-      <footer className="mx-auto mt-16 w-full max-w-6xl border-t border-[#321308] pt-8 text-center text-xs text-[#a98974]/80">
-        free to join during beta.
+      <footer className="mx-auto mt-16 w-full max-w-6xl border-t border-[#321308] pt-8 text-center text-xs leading-relaxed text-[#a98974]/85">
+        <p>
+          <Link
+            href="/about"
+            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+          >
+            about
+          </Link>
+          <span aria-hidden className="mx-2 text-[#321308]">
+            ·
+          </span>
+          <Link
+            href="/terms-of-service"
+            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+          >
+            terms
+          </Link>
+          <span aria-hidden className="mx-2 text-[#321308]">
+            ·
+          </span>
+          <Link
+            href="/privacy-policy"
+            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+          >
+            privacy
+          </Link>
+          <span aria-hidden className="mx-2 text-[#321308]">
+            ·
+          </span>
+          <Link
+            href="/community-guidelines"
+            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+          >
+            community
+          </Link>
+        </p>
       </footer>
     </CandlelitPageShell>
   );

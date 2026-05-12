@@ -54,7 +54,8 @@ const landingBody = EB_Garamond({
 
 export const metadata: Metadata = {
   title: "Gather",
-  description: "Find local gatherings. Treat new friends like old ones.",
+  description:
+    "Host-led gatherings in real rooms near you. Treat new friends like old ones.",
 };
 
 export default function RootLayout({
