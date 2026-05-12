@@ -131,7 +131,12 @@ export default async function DiscoverGatheringsPage({
     !!(sp.q || sp.neighborhood || sp.type || sp.size || sp.cost || sp.date);
 
   return (
-    <div className="pb-8">
+    <div className="relative pb-10" dir="ltr">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-3xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.95)_0%,transparent_55%)] blur-xl"
+      />
+
       <DiscoverFilters neighborhoods={neighborhoods} />
 
       {visible.length === 0 ? (
@@ -146,24 +151,26 @@ export default async function DiscoverGatheringsPage({
           </p>
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-10">
-          {visible.map((g) => (
-            <PolaroidCard
-              key={g.id}
-              id={g.id}
-              title={g.title}
-              coverImageUrl={g.coverImageUrl}
-              startsAt={g.startsAt}
-              neighborhood={g.neighborhood}
-              minTotalSize={g.minTotalSize}
-              maxTotalSize={g.maxTotalSize}
-              hostFriendsCount={g.hostFriendsCount}
-              tokenCost={g.tokenCost}
-              hostImage={g.host.photos[0]?.url ?? g.host.image}
-              hostId={g.hostId}
-              hostFirstName={g.host.profile?.firstName ?? null}
-              hostDateOfBirth={g.host.profile?.dateOfBirth ?? null}
-            />
+        <div className="-mx-4 flex snap-x snap-mandatory gap-10 overflow-x-auto px-5 pb-6 pt-2 [scrollbar-width:thin] sm:mx-0 sm:flex-wrap sm:justify-start sm:gap-x-12 sm:gap-y-16 sm:overflow-visible sm:px-0 sm:pb-2">
+          {visible.map((g, i) => (
+            <div key={g.id} className="shrink-0 snap-center sm:shrink">
+              <PolaroidCard
+                scrapbookIndex={i}
+                id={g.id}
+                title={g.title}
+                coverImageUrl={g.coverImageUrl}
+                startsAt={g.startsAt}
+                neighborhood={g.neighborhood}
+                minTotalSize={g.minTotalSize}
+                maxTotalSize={g.maxTotalSize}
+                hostFriendsCount={g.hostFriendsCount}
+                tokenCost={g.tokenCost}
+                hostImage={g.host.photos[0]?.url ?? g.host.image}
+                hostId={g.hostId}
+                hostFirstName={g.host.profile?.firstName ?? null}
+                hostDateOfBirth={g.host.profile?.dateOfBirth ?? null}
+              />
+            </div>
           ))}
         </div>
       )}

@@ -96,8 +96,32 @@ const PREFIX = "gathertpl:";
 
 export type ParsedCover =
   | { kind: "url"; url: string }
-  | { kind: "template"; template: CoverTemplate; bg: string | null }
+  | {
+      kind: "template";
+      template: CoverTemplate;
+      bg: string | null;
+      stickers: string[];
+    }
   | { kind: "none" };
+
+/** Preset sticker ids for template covers (comma-separated in stored URL). */
+export const COVER_STICKER_PRESETS = [
+  { id: "heart", glyph: "❤️" },
+  { id: "star", glyph: "⭐" },
+  { id: "sparkle", glyph: "✨" },
+  { id: "music", glyph: "🎵" },
+  { id: "flower", glyph: "🌸" },
+  { id: "sun", glyph: "☀️" },
+  { id: "moon", glyph: "🌙" },
+  { id: "party", glyph: "🎉" },
+  { id: "coffee", glyph: "☕" },
+  { id: "pizza", glyph: "🍕" },
+] as const;
+
+export function stickerGlyph(id: string): string {
+  const row = COVER_STICKER_PRESETS.find((s) => s.id === id);
+  return row?.glyph ?? "";
+}
 
 export function parseCover(raw: string | null | undefined): ParsedCover {
   if (!raw) return { kind: "none" };
@@ -110,18 +134,30 @@ export function parseCover(raw: string | null | undefined): ParsedCover {
 
   const params = new URLSearchParams(qs);
   const bg = params.get("bg");
-  return { kind: "template", template: tpl, bg };
+  const stickersRaw = params.get("stickers");
+  const stickers = stickersRaw
+    ? stickersRaw
+        .split(",")
+        .map((s) => decodeURIComponent(s.trim()))
+        .filter(Boolean)
+        .slice(0, 4)
+    : [];
+  return { kind: "template", template: tpl, bg, stickers };
 }
 
 export function encodeTemplate({
   id,
   bg,
+  stickers,
 }: {
   id: CoverTemplateId;
   bg?: string | null;
+  stickers?: string[];
 }): string {
   const qs = new URLSearchParams();
   if (bg) qs.set("bg", bg);
+  if (stickers?.length)
+    qs.set("stickers", stickers.slice(0, 4).join(","));
   const suffix = qs.toString() ? `?${qs.toString()}` : "";
   return `${PREFIX}${id}${suffix}`;
 }

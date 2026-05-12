@@ -1,4 +1,4 @@
-import { parseCover, type CoverTemplate } from "@/lib/cover";
+import { parseCover, type CoverTemplate, stickerGlyph } from "@/lib/cover";
 
 export function CoverArt({
   cover,
@@ -32,6 +32,7 @@ export function CoverArt({
         bgOverride={parsed.bg}
         title={title}
         className={className}
+        stickers={parsed.stickers}
       />
     );
   }
@@ -50,11 +51,14 @@ export function TemplatePreview({
   bgOverride,
   title,
   className = "",
+  stickers = [],
 }: {
   template: CoverTemplate;
   bgOverride?: string | null;
   title: string;
   className?: string;
+  /** Sticker preset ids (see COVER_STICKER_PRESETS). */
+  stickers?: string[];
 }) {
   const bg = bgOverride || template.bgPrimary;
   return (
@@ -65,6 +69,7 @@ export function TemplatePreview({
       }}
     >
       <Motif motif={template.motif} accent={template.accent} fg={template.fg} />
+      <StickerOverlay stickers={stickers} />
 
       <div className="relative p-4">
         <span
@@ -92,6 +97,32 @@ export function TemplatePreview({
   );
 }
 
+function StickerOverlay({ stickers }: { stickers: string[] }) {
+  const pos = [
+    "left-[5%] top-[14%] -rotate-12",
+    "right-[6%] top-[16%] rotate-10",
+    "left-[8%] bottom-[16%] rotate-8",
+    "right-[8%] bottom-[18%] -rotate-10",
+  ];
+  return (
+    <>
+      {stickers.map((id, i) => {
+        const glyph = stickerGlyph(id);
+        if (!glyph) return null;
+        return (
+          <span
+            key={`${id}-${i}`}
+            className={`pointer-events-none absolute z-10 select-none text-[1.65rem] leading-none drop-shadow-md sm:text-3xl ${pos[i] ?? pos[0]}`}
+            aria-hidden
+          >
+            {glyph}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 function Motif({
   motif,
   accent,
@@ -114,7 +145,7 @@ function Motif({
     <svg
       aria-hidden
       viewBox="0 0 200 150"
-      className="absolute right-3 top-3 h-16 w-auto opacity-80"
+      className="absolute right-3 top-3 z-[1] h-16 w-auto opacity-80"
     >
       {motif === "cup" && (
         <>

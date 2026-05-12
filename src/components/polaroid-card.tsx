@@ -16,9 +16,18 @@ type PolaroidCardProps = {
   hostId: string;
   hostFirstName: string | null;
   hostDateOfBirth: Date | null;
+  /** When set, enables alternating tilt + washi tape (discover scrapbook layout). */
+  scrapbookIndex?: number;
 };
 
 export function PolaroidCard(props: PolaroidCardProps) {
+  const idx = props.scrapbookIndex;
+  const tiltClass =
+    idx !== undefined
+      ? idx % 2 === 0
+        ? "-rotate-[1.6deg]"
+        : "rotate-[1.8deg]"
+      : "-rotate-[1.2deg]";
   const dateStr = props.startsAt.toLocaleDateString(undefined, {
     weekday: "short",
     month: "short",
@@ -37,7 +46,15 @@ export function PolaroidCard(props: PolaroidCardProps) {
       : null;
 
   return (
-    <div className="w-[min(100%,280px)] rotate-[-1.2deg] transition duration-300 hover:rotate-0 hover:scale-[1.02]">
+    <div
+      className={`relative w-[min(100%,280px)] ${tiltClass} transition duration-300 hover:rotate-0 hover:scale-[1.02]`}
+    >
+      {idx !== undefined ? (
+        <div
+          aria-hidden
+          className="absolute -top-2 left-1/2 z-20 h-4 w-[4.75rem] -translate-x-1/2 rotate-[2deg] rounded-[2px] bg-gradient-to-r from-[#f0e6d8]/95 via-white/90 to-[#e8dcc8]/95 shadow-md ring-1 ring-black/15"
+        />
+      ) : null}
       <div className="rounded-xl bg-white p-3 pb-14 shadow-lg shadow-black/10 ring-1 ring-black/[0.07] transition duration-300 hover:shadow-xl hover:ring-gather-accent/25">
         <Link href={`/gatherings/${props.id}`} className="group block">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-neutral-200">

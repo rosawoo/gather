@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { upload } from "@vercel/blob/client";
+import { useEffect, useRef, useState } from "react";
 import {
+  COVER_STICKER_PRESETS,
   COVER_TEMPLATES,
   encodeTemplate,
   parseCover,
@@ -33,10 +35,16 @@ export function CoverEditor({
   const [bg, setBg] = useState<string>(
     initial.kind === "template" && initial.bg ? initial.bg : "",
   );
+  const [stickers, setStickers] = useState<string[]>(
+    initial.kind === "template" ? initial.stickers : [],
+  );
   const [url, setUrl] = useState<string>(
     initial.kind === "url" ? initial.url : "",
   );
   const [title, setTitle] = useState(initialTitle);
+  const [uploading, setUploading] = useState(false);
+  const [uploadErr, setUploadErr] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -58,9 +66,40 @@ export function CoverEditor({
   const value =
     mode === "upload"
       ? url.trim()
-      : encodeTemplate({ id: templateId, bg: bg || null });
+      : encodeTemplate({ id: templateId, bg: bg || null, stickers });
 
   const activeTemplate = COVER_TEMPLATES.find((t) => t.id === templateId)!;
+
+  async function onCoverFile(file: File | null) {
+    if (!file) return;
+    setUploadErr(null);
+    if (!/^image\/(jpeg|png|webp|gif|heic)$/i.test(file.type)) {
+      setUploadErr("Use a JPG, PNG, WebP, GIF, or HEIC file.");
+      return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      setUploadErr("Max file size is 8 MB.");
+      return;
+    }
+    setUploading(true);
+    try {
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/blob-upload",
+      });
+      setUrl(blob.url);
+      setMode("upload");
+    } catch (e) {
+      setUploadErr(
+        e instanceof Error
+          ? e.message
+          : "Upload failed — paste a public image or GIF URL instead.",
+      );
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
 
   return (
     <div>
@@ -83,6 +122,7 @@ export function CoverEditor({
               template={activeTemplate}
               bgOverride={bg || null}
               title={title}
+              stickers={stickers}
             />
           ) : (
             <CoverArt cover={url || null} title={title} eager />
@@ -112,7 +152,7 @@ export function CoverEditor({
                 aria-pressed={templateId === t.id}
               >
                 <div className="aspect-[16/10] w-full">
-                  <TemplatePreview template={t} title={title} />
+                  <TemplatePreview template={t} title={title} stickers={[]} />
                 </div>
                 <div className="bg-white px-2 py-1.5">
                   <p className="text-[11px] font-semibold text-gather-ink">
@@ -161,19 +201,75 @@ export function CoverEditor({
               Custom
             </label>
           </div>
+
+          <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+            Stickers (optional, max 4)
+          </p>
+          <p className="mt-1 text-xs text-neutral-500">
+            Tap to add tiny accents on the polaroid template — great with GIFs in
+            upload mode too.
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {COVER_STICKER_PRESETS.map((s) => {
+              const on = stickers.includes(s.id);
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => {
+                    setStickers((prev) => {
+                      if (prev.includes(s.id))
+                        return prev.filter((x) => x !== s.id);
+                      if (prev.length >= 4) return prev;
+                      return [...prev, s.id];
+                    });
+                  }}
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl border text-lg transition ${
+                    on
+                      ? "border-gather-brown bg-gather-cream/80 ring-2 ring-gather-accent/40"
+                      : "border-neutral-200 bg-white hover:border-gather-accent/40"
+                  }`}
+                  aria-pressed={on}
+                  title={s.id}
+                >
+                  {s.glyph}
+                </button>
+              );
+            })}
+          </div>
         </>
       ) : (
         <div className="mt-4 space-y-3">
           <input
+            ref={fileRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,image/heic"
+            className="hidden"
+            onChange={(e) => void onCoverFile(e.target.files?.[0] ?? null)}
+          />
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={uploading}
+              onClick={() => fileRef.current?.click()}
+              className="rounded-full border border-gather-brown px-4 py-2 text-sm font-semibold text-gather-brown transition hover:bg-gather-brown hover:text-gather-cream disabled:opacity-50"
+            >
+              {uploading ? "Uploading…" : "Upload image or GIF"}
+            </button>
+          </div>
+          {uploadErr ? (
+            <p className="text-xs text-red-600">{uploadErr}</p>
+          ) : null}
+          <input
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://example.com/cover.jpg"
+            placeholder="Or paste URL (image or GIF)"
             className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
           />
           <p className="text-xs text-neutral-500">
-            Paste an image URL. Direct file upload is coming soon — for now, any
-            public image URL works.
+            Animated GIFs work as cover art. With Blob storage connected, uploads
+            go straight to your gallery URL.
           </p>
         </div>
       )}

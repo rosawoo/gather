@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { requestPhoneCode, verifyPhoneCode } from "@/app/actions/phone";
-import { isRedirectError } from "next/navigation";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 const inputCls =
   "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
