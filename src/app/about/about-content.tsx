@@ -46,7 +46,7 @@ export function AboutContent() {
 
       <p className="mt-10 text-center text-[1.05rem] text-[#eee9e1]/88">
         <Link
-          href={`/sign-up?callbackUrl=${encodeURIComponent("/gatherings")}`}
+          href={`/?callbackUrl=${encodeURIComponent("/gatherings")}`}
           className="text-[#c6d8e3] underline decoration-[#c6d8e3]/40 underline-offset-[5px] transition hover:decoration-[#c6d8e3]"
         >
           join gather

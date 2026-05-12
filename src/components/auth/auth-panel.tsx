@@ -67,10 +67,13 @@ export function AuthPanel({
   mode,
   callbackUrl,
   variant = "default",
+  showBackLink = true,
 }: {
   mode: Mode;
   callbackUrl: string;
   variant?: Variant;
+  /** Hide the back/home link when this panel is already the home welcome screen (`/`). */
+  showBackLink?: boolean;
 }) {
   const copy = variant === "candlelit" ? CANDLELIT_COPY[mode] : COPY[mode];
 
@@ -90,7 +93,7 @@ export function AuthPanel({
   const inactive = variant === "candlelit" ? candleInactive : defaultInactive;
 
   const signInTabHref = `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`;
-  const signUpTabHref = `/sign-up?callbackUrl=${encodeURIComponent(callbackUrl)}`;
+  const signUpTabHref = `/?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
   const backClass =
     variant === "candlelit"
@@ -144,19 +147,24 @@ export function AuthPanel({
 
   const showLowercaseTabs = variant === "candlelit";
 
+  const contentTop =
+    variant === "candlelit"
+      ? showBackLink
+        ? "mt-8 sm:mt-6"
+        : "mt-0"
+      : showBackLink
+        ? "mt-10"
+        : "mt-0";
+
   return (
     <div className="mx-auto flex w-full flex-1 flex-col">
-      <Link href="/" className={backClass}>
-        <span aria-hidden>←</span> {variant === "candlelit" ? "home" : "Back"}
-      </Link>
+      {showBackLink ? (
+        <Link href="/" className={backClass}>
+          <span aria-hidden>←</span> {variant === "candlelit" ? "home" : "Back"}
+        </Link>
+      ) : null}
 
-      <div
-        className={
-          variant === "candlelit"
-            ? "mt-8 flex flex-1 flex-col justify-center sm:mt-6"
-            : "mt-10 flex flex-1 flex-col justify-center sm:mt-6"
-        }
-      >
+      <div className={`${contentTop} flex flex-1 flex-col justify-center`}>
         <p className={eyebrowClass}>
           <span className={eyebrowDot} aria-hidden />
           {copy.eyebrow}

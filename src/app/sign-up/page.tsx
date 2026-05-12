@@ -1,6 +1,4 @@
 import { auth } from "@/auth";
-import { AuthPanel } from "@/components/auth/auth-panel";
-import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
 import { redirect } from "next/navigation";
@@ -16,7 +14,8 @@ function normalizeCallback(raw: string | undefined): string {
   return raw;
 }
 
-export default async function SignUpPage({ searchParams }: Props) {
+/** Canonical welcome / sign-up lives at `/`; keep `/sign-up` as a redirect for old links. */
+export default async function SignUpPageRedirect({ searchParams }: Props) {
   const session = await auth();
   if (session?.user?.id) {
     const user = await prisma.user.findUnique({
@@ -27,19 +26,9 @@ export default async function SignUpPage({ searchParams }: Props) {
   }
 
   const sp = await searchParams;
-  const callbackUrl = normalizeCallback(sp.callbackUrl);
-
-  return (
-    <CandlelitPageShell>
-      <main className="relative z-10 mx-auto w-full max-w-lg flex-1 px-4 pb-20 sm:px-6">
-        <div className="landing-auth-card landing-candlelit">
-          <AuthPanel
-            mode="sign-up"
-            callbackUrl={callbackUrl}
-            variant="candlelit"
-          />
-        </div>
-      </main>
-    </CandlelitPageShell>
-  );
+  const params = new URLSearchParams();
+  if (typeof sp.callbackUrl === "string") {
+    params.set("callbackUrl", normalizeCallback(sp.callbackUrl));
+  }
+  redirect(params.size ? `/?${params.toString()}` : "/");
 }
