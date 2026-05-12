@@ -74,7 +74,7 @@ export default async function SettingsPage() {
             <form action={billingPortalRedirect} className="pt-2">
               <button
                 type="submit"
-                className="w-full rounded-full bg-gather-accent py-3 text-[15px] font-semibold text-gather-cream shadow-[0_6px_20px_-8px_rgb(26_93_116_/_0.55)] transition hover:bg-gather-brown-mid"
+                className="w-full rounded-full bg-gather-accent py-3 text-[15px] font-semibold text-gather-cream shadow-[0_6px_20px_-8px_rgb(72_42_38_/_0.5)] transition hover:bg-gather-brown-mid"
               >
                 Manage billing & invoices
               </button>

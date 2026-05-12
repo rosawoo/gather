@@ -36,14 +36,14 @@ export function ProfileTabs({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               key={t.href}
               href={t.href}
               aria-current={active ? "page" : undefined}
-              className={`relative shrink-0 px-3 py-3.5 text-center font-serif text-[15px] font-semibold lowercase tracking-[0.02em] transition sm:px-5 ${
+              className={`relative shrink-0 px-3 py-3.5 text-center font-serif text-[17px] font-semibold lowercase tracking-[0.02em] transition sm:px-5 ${
                 active ? "text-lc-cream" : `${lcChrome.tabMutedUnderline}`
               }`}
             >
               <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
                 {t.label}
                 {t.label === "Notifications" && unreadNotifs > 0 ? (
-                  <span className="inline-flex min-h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 font-sans text-[10px] font-bold leading-none text-white">
+                  <span className="inline-flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-500 px-1 font-sans text-[11px] font-bold leading-none text-white">
                     {unreadNotifs > 99 ? "99+" : unreadNotifs}
                   </span>
                 ) : null}

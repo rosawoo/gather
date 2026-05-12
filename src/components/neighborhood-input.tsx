@@ -158,19 +158,35 @@ export function NeighborhoodInput({
   name,
   required,
   defaultValue,
+  value: controlledValue,
+  onValueChange,
   placeholder,
   className,
   extras = [],
+  id,
 }: {
-  name: string;
+  /** Omit when using as a controlled filter (no form field name). */
+  name?: string;
   required?: boolean;
   defaultValue?: string;
+  /** Controlled value; when set, `onValueChange` is required for updates. */
+  value?: string;
+  onValueChange?: (value: string) => void;
   placeholder?: string;
   className?: string;
   /** Additional suggestions from the database (recent values). */
   extras?: string[];
+  id?: string;
 }) {
-  const [value, setValue] = useState(defaultValue ?? "");
+  const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : internalValue;
+
+  function setValue(next: string) {
+    if (!isControlled) setInternalValue(next);
+    onValueChange?.(next);
+  }
+
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
   const [remote, setRemote] = useState<string[]>([]);
@@ -289,11 +305,13 @@ export function NeighborhoodInput({
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActiveIdx((i) => Math.max(i - 1, 0));
-    } else if (e.key === "Enter" && activeIdx >= 0) {
-      e.preventDefault();
-      setValue(combined[activeIdx].label);
-      setOpen(false);
-      setActiveIdx(-1);
+    } else if (e.key === "Enter") {
+      if (activeIdx >= 0 && combined[activeIdx]) {
+        e.preventDefault();
+        setValue(combined[activeIdx].label);
+        setOpen(false);
+        setActiveIdx(-1);
+      }
     } else if (e.key === "Escape") {
       setOpen(false);
     }
@@ -302,11 +320,12 @@ export function NeighborhoodInput({
   return (
     <div ref={wrapperRef} className="relative">
       <input
+        id={id}
         type="text"
         name={name}
         required={required}
         value={value}
-        placeholder={placeholder ?? "Neighborhood or city"}
+        placeholder={placeholder ?? "Type or search neighborhoods & cities"}
         autoComplete="off"
         onChange={(e) => {
           setValue(e.target.value);

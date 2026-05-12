@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import { lcChrome } from "@/lib/lc-classes";
+import { NeighborhoodInput } from "@/components/neighborhood-input";
 
 type ChromeMode = "light" | "espresso" | "candlelit";
 
@@ -210,13 +211,18 @@ export function DiscoverFilters({
           }
         >
           <FilterBlock label="Neighborhood" chrome={chromeMode}>
-            <Select
-                chrome={chromeMode}
-                value={draft.neighborhood}
-              onChange={(v) => setDraft((d) => ({ ...d, neighborhood: v }))}
-              options={[{ label: "Anywhere", value: "" }].concat(
-                neighborhoods.map((n) => ({ label: n, value: n })),
-              )}
+            <NeighborhoodInput
+              value={draft.neighborhood}
+              onValueChange={(v) => setDraft((d) => ({ ...d, neighborhood: v }))}
+              extras={neighborhoods}
+              placeholder="Type or search…"
+              className={
+                candlelit
+                  ? "w-full rounded-xl border border-lc-pale-blue-border/35 bg-lc-aged-paper px-3 py-2 text-sm text-lc-ink-on-paper outline-none transition placeholder:text-lc-earth-muted focus:border-lc-dusty-blue focus:ring-2 focus:ring-lc-dusty-blue/35"
+                  : espresso
+                    ? "w-full rounded-xl border border-gather-teal/25 bg-white/90 px-3 py-2 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
+                    : "w-full rounded-xl border border-gather-teal/25 bg-white px-3 py-2 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
+              }
             />
           </FilterBlock>
 

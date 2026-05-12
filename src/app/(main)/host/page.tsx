@@ -48,7 +48,7 @@ export default async function HostHubPage() {
         <div className="flex justify-center px-1 pt-1">
           <Link
             href="/host/new"
-            className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gather-accent px-7 py-3.5 font-sans text-[15px] font-semibold text-gather-cream shadow-[0_10px_32px_-12px_rgb(30_93_116_/_0.65)] transition hover:bg-gather-brown-mid hover:shadow-[0_14px_36px_-14px_rgb(30_93_116_/_0.48)] active:scale-[0.99] sm:min-h-[52px] sm:w-auto sm:px-10"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gather-accent px-7 py-3.5 font-serif text-[15px] font-semibold tracking-[0.04em] text-gather-cream shadow-[0_10px_32px_-12px_rgb(80_45_38_/_0.55)] transition hover:bg-gather-brown-mid hover:shadow-[0_14px_36px_-14px_rgb(70_40_34_/_0.48)] active:scale-[0.99] sm:min-h-[52px] sm:w-auto sm:px-10"
           >
             Start a new gathering
           </Link>
@@ -91,7 +91,7 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className={`block p-5 font-sans transition ${parchmentCard} hover:border-gather-accent/45 hover:shadow-[0_22px_48px_-30px_rgb(22_96_118_/_0.35)]`}
+                    className={`block p-5 font-sans transition ${parchmentCard} hover:border-lc-muted-tan/55 hover:shadow-[0_22px_48px_-30px_rgb(60_45_40_/_0.28)]`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <p className="text-[17px] font-semibold leading-snug text-lc-settings-ink-strong">
@@ -106,7 +106,7 @@ export default async function HostHubPage() {
                     <p className="mt-2 font-sans text-[14px] text-lc-settings-helper">
                       {dateStr}
                     </p>
-                    <p className="mt-2 font-sans text-[14px] font-medium text-gather-accent">
+                    <p className="mt-2 font-sans text-[14px] font-medium text-lc-meta-label">
                       {attending} / {g.maxTotalSize} attending
                     </p>
                   </Link>
@@ -146,7 +146,7 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className={`block px-4 py-4 font-sans transition sm:px-5 ${parchmentCard} hover:border-gather-accent/40 hover:bg-[rgb(246_243_239_/_0.98)]`}
+                    className={`block px-4 py-4 font-sans transition sm:px-5 ${parchmentCard} hover:border-lc-muted-tan/50 hover:bg-[rgb(246_243_239_/_0.98)]`}
                   >
                     <p className="text-[15px] font-semibold text-lc-settings-ink-strong">
                       {g.title}
@@ -160,7 +160,7 @@ export default async function HostHubPage() {
                       })}{" "}
                       · {approved} attended · ${budget}
                     </p>
-                    <p className="mt-2 font-sans text-[12px] font-semibold uppercase tracking-[0.1em] text-gather-accent">
+                    <p className="mt-2 font-sans text-[12px] font-semibold uppercase tracking-[0.1em] text-lc-meta-label">
                       {reimburseLabel}
                     </p>
                   </Link>
@@ -197,7 +197,7 @@ function EmptyState({
       <p className="text-[18px] font-semibold leading-snug tracking-tight text-lc-settings-ink-strong">
         {title}
       </p>
-      <p className="mt-4 font-handwriting text-[1.375rem] leading-snug lowercase text-[#2b7890]/95">
+      <p className="mt-4 font-handwriting text-[1.375rem] leading-snug lowercase text-lc-muted-tan">
         {subtitle}
       </p>
       <p className="mx-auto mt-4 max-w-[28ch] font-sans text-[14px] leading-[1.45] text-lc-settings-helper">

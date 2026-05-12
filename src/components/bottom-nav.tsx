@@ -31,7 +31,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               key={t.href}
               href={t.href}
               aria-current={active ? "page" : undefined}
-              className={`relative flex flex-1 flex-col items-center justify-center gap-1.5 px-2 pt-3 pb-2.5 text-center transition outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#74c5db]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(34_17_13)] ${
+              className={`relative flex flex-1 flex-col items-center justify-center gap-1.5 px-2 pt-3 pb-2.5 text-center transition outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lc-tan-accent/75 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(34_17_13)] ${
                 active ? lcChrome.navIconActive : lcChrome.navIconIdle
               }`}
             >
@@ -49,7 +49,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               {active ? (
                 <span
                   aria-hidden
-                  className="absolute left-1/2 top-0 h-[2px] w-11 -translate-x-1/2 rounded-full bg-[#74c5db]"
+                  className="absolute left-1/2 top-0 h-[2px] w-11 -translate-x-1/2 rounded-full bg-lc-tan-accent"
                 />
               ) : null}
             </Link>

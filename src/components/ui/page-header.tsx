@@ -15,7 +15,7 @@ export function PageHeader({
     <div className={`mb-8 flex items-start justify-between gap-4 ${className}`}>
       <div className="min-w-0">
         {eyebrow ? (
-          <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-gather-teal/80">
+          <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-gather-accent/80">
             {eyebrow}
           </p>
         ) : null}
@@ -42,7 +42,7 @@ export function SectionTitle({
   className?: string;
   /** `onDark`: cream typography for espresso / mood-board backgrounds */
   /** `accountShell`: larger teal headings above parchment cards (profile settings) */
-  /** `hostShell`: teal section labels optimized for espresso / candlelit host views */
+  /** `hostShell`: warm section labels for espresso / candlelit host views */
   variant?: "default" | "onDark" | "accountShell" | "hostShell";
 }) {
   let labelClass: string;
@@ -53,17 +53,17 @@ export function SectionTitle({
       "font-serif text-[15px] tracking-[0.1em] text-gather-accent sm:text-[15.5px] sm:tracking-[0.095em]";
   } else if (variant === "hostShell") {
     labelClass =
-      "text-[15px] font-semibold tracking-[0.1em] text-[#74c5db] drop-shadow-[0_1px_14px_rgb(116_197_219_/_0.14)] sm:text-[15.5px]";
+      "text-[15px] font-semibold tracking-[0.1em] text-lc-tan-accent drop-shadow-[0_1px_16px_rgb(196_169_154_/_0.15)] sm:text-[15.5px]";
   } else {
-    labelClass = "text-gather-teal";
+    labelClass = "text-gather-accent";
   }
 
   const barClass =
     variant === "accountShell"
       ? "h-1.5 w-6 rounded-full bg-gather-accent/80"
       : variant === "hostShell"
-        ? "h-1.5 w-6 rounded-full bg-[#74c5db]/90"
-        : "h-1.5 w-5 rounded-full bg-gather-teal/80";
+        ? "h-1.5 w-6 rounded-full bg-lc-tan-accent/88"
+        : "h-1.5 w-5 rounded-full bg-gather-accent/75";
 
   const headingClass =
     variant === "accountShell"

@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  /* Pulled from gathersocial.us Wix theme (cream, teal, wine, Caslon/DIN palette) */
+  /* Core palette: cream, wine, warm clay accent (borders use muted brown, not blue). */
   --gather-cream: #f4f0e9;
   --gather-paper: #f4f0e9;
   --gather-ink: #4f1d0e;
   --gather-charcoal: #4a4a4a;
-  --gather-teal: #1e5d74;
+  --gather-teal: #5e5048;
   --gather-wine: #6b2f3a;
   --gather-peach: #f9c5b4;
   --gather-line: #cac7c1;
   /* Semantic aliases used by existing components */
   --gather-brown: #6b2f3a;
-  --gather-brown-mid: #1e5d74;
-  --gather-accent: #1e5d74;
+  --gather-brown-mid: #7f453c;
+  --gather-accent: #6b3932;
   --gather-espresso: #6b2f3a;
   --gather-espresso-mid: #4a4a4a;
   --gather-jewel-burgundy: #6b2f3a;
-  --gather-jewel-teal: #1e5d74;
+  --gather-jewel-teal: #6b5148;
   --gather-jewel-amber: #9e3b1b;
 
   /* Candlelit / supper-club — shared by landing & signed-in shell (`lc-*` Tailwind utilities). */
