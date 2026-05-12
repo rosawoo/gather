@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 /**
  * Next.js 16 on Vercel still wires a Proxy Web Handler; without a valid handler
  * exports, requests 500. Auth is enforced in `(main)/layout.tsx`; this is a no-op
  * pass-through for the previous matcher scope.
  */
-export default async function proxy(_request: NextRequest) {
+export default async function proxy() {
   return NextResponse.next();
 }
 
