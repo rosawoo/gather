@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { GatheringStatus, GatheringType, Plan } from "@prisma/client";
+import { GatheringStatus, GatheringType, Plan, GatheringRequestStatus } from "@prisma/client";
 import { DiscoverExperience } from "@/components/discover-experience";
 import { getNeighborhoodFilterList } from "@/lib/neighborhoods";
 
@@ -118,6 +118,17 @@ export default async function DiscoverGatheringsPage({
           photos: { where: { isPrimary: true }, take: 1 },
         },
       },
+      requests: {
+        where: {
+          status: {
+            in: [
+              GatheringRequestStatus.PENDING,
+              GatheringRequestStatus.APPROVED,
+            ],
+          },
+        },
+        select: { id: true },
+      },
     },
   });
 
@@ -129,22 +140,28 @@ export default async function DiscoverGatheringsPage({
   const hasActiveFilters =
     !!(sp.q || sp.neighborhood || sp.type || sp.size || sp.cost || sp.date);
 
-  const items = visible.map((g) => ({
-    id: g.id,
-    title: g.title,
-    description: g.description,
-    coverImageUrl: g.coverImageUrl,
-    startsAt: g.startsAt.toISOString(),
-    neighborhood: g.neighborhood,
-    minTotalSize: g.minTotalSize,
-    maxTotalSize: g.maxTotalSize,
-    hostFriendsCount: g.hostFriendsCount,
-    tokenCost: g.tokenCost,
-    hostImage: g.host.photos[0]?.url ?? g.host.image,
-    hostId: g.hostId,
-    hostFirstName: g.host.profile?.firstName ?? null,
-    hostDateOfBirth: g.host.profile?.dateOfBirth?.toISOString() ?? null,
-  }));
+  const items = visible.map((g) => {
+    const filled = g.hostFriendsCount + g.requests.length;
+    const spotsLeft = Math.max(0, g.maxTotalSize - filled);
+    return {
+      id: g.id,
+      title: g.title,
+      description: g.description,
+      coverImageUrl: g.coverImageUrl,
+      startsAt: g.startsAt.toISOString(),
+      neighborhood: g.neighborhood,
+      gatheringType: g.gatheringType,
+      minTotalSize: g.minTotalSize,
+      maxTotalSize: g.maxTotalSize,
+      hostFriendsCount: g.hostFriendsCount,
+      tokenCost: g.tokenCost,
+      hostImage: g.host.photos[0]?.url ?? g.host.image,
+      hostId: g.hostId,
+      hostFirstName: g.host.profile?.firstName ?? null,
+      hostDateOfBirth: g.host.profile?.dateOfBirth?.toISOString() ?? null,
+      spotsLeft,
+    };
+  });
 
   return (
     <div className="relative pb-10" dir="ltr">

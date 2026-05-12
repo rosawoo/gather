@@ -8,11 +8,11 @@ export function AboutContent() {
         <ol className="about-manifesto-body about-manifesto-ol">
           <li>create a profile so hosts know who you are.</li>
           <li>
-            find or host a gathering—solo or with people you already trust.
+            find or host a gathering, solo or with people you already trust.
           </li>
           <li>request to join; hosts approve who fits the room.</li>
           <li>
-            use tokens where it helps cover food, drinks, or space—always
+            use tokens where it helps cover food, drinks, or space, always
             disclosed up front.
           </li>
           <li>show up, share a table, and see how it feels.</li>
@@ -23,7 +23,7 @@ export function AboutContent() {
         <h2 className="about-manifesto-heading">who gather is for:</h2>
         <ul className="about-manifesto-body about-manifesto-ul">
           <li>
-            aspiring dinner-party hosts who want their living room full—not
+            aspiring dinner-party hosts who want their living room full, not
             their inbox.
           </li>
           <li>
@@ -37,7 +37,7 @@ export function AboutContent() {
             fourth roommate.
           </li>
           <li>
-            anyone who wants to socialize on their own terms—and treat new
+            anyone who wants to socialize on their own terms, and treat new
             friends like old ones.
           </li>
         </ul>
@@ -45,7 +45,7 @@ export function AboutContent() {
 
       <div className="about-manifesto-section about-manifesto-body">
         <p className="text-[#e8ddd2]/95">
-          gather is a quiet corner of the internet built for real rooms—warm
+          gather is a quiet corner of the internet built for real rooms: warm
           light, honest introductions, and tables that do not scroll.
         </p>
       </div>

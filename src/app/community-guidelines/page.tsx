@@ -3,9 +3,9 @@ import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
 import { CommunityGuidelinesDocument } from "./community-guidelines-document";
 
 export const metadata: Metadata = {
-  title: "Community guidelines — Gather",
+  title: "Community guidelines · Gather",
   description:
-    "What we expect from hosts, guests, and everyone on Gather—respectful, safe, real-life gatherings.",
+    "What we expect from hosts, guests, and everyone on Gather: respectful, safe, real-life gatherings.",
 };
 
 export default function CommunityGuidelinesPage() {

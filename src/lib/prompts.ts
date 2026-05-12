@@ -42,7 +42,7 @@ export function parsePersonalitySlots(formData: FormData): {
 
     if (!key || !body) {
       throw new Error(
-        `For prompt ${i + 1}, choose a question and write an answer—or clear both.`,
+        `For prompt ${i + 1}, choose a question and write an answer, or clear both.`,
       );
     }
 

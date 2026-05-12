@@ -67,7 +67,7 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Candlelit marketing landing (/) — supper-club palette, separate from app UI tokens */
+/* Candlelit marketing landing (/): supper-club palette, separate from app UI tokens */
 .landing-candlelit {
   --lc-espresso: #1a0702;
   --lc-deep-brown: #230b04;
@@ -304,7 +304,7 @@ body {
   color: #fff8ef;
 }
 
-/* About page — single manifesto card (supper-club invitation tone) */
+/* About page: single manifesto card (supper-club invitation tone) */
 .about-manifesto-card {
   max-width: 780px;
   margin-left: auto;

@@ -91,10 +91,10 @@ export function TermsDocument() {
       </h2>
 
       <h3 className="terms-subheading">2.1 eligibility</h3>
-      <p>you must be at least 18 years old to use gather.</p>
+      <p>you must be at least 21 years old to use gather.</p>
       <p>you represent that:</p>
       <ul className="terms-list">
-        <li>you are at least 18</li>
+        <li>you are at least 21</li>
         <li>you can legally enter into this agreement</li>
         <li>your use of gather complies with all applicable laws</li>
       </ul>

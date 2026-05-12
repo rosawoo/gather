@@ -68,7 +68,7 @@ const PLANS: Omit<PlanCardProps, "cta">[] = [
     priceSub: "per month",
     tagline: "Core plan for most people.",
     billingFootnote:
-      "When available, Member renews automatically each month with your included token. Switch plans after your current period ends so perks stay predictable—manage it from Settings → Plan & tokens.",
+      "When available, Member renews automatically each month with your included token. Switch plans after your current period ends so perks stay predictable. Manage it from Settings → Plan & tokens.",
     perks: [
       { label: "Access to all events", included: true },
       { label: "1 token per month", included: true },

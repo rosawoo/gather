@@ -9,7 +9,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Welcome — Gather",
+  title: "Welcome · Gather",
   description:
     "Join Gather: host-led gatherings in real rooms near you. Treat new friends like old ones.",
 };
@@ -45,37 +45,37 @@ export default async function HomePage({ searchParams }: Props) {
             showBackLink={false}
           />
         </div>
-        <p className="mx-auto mt-10 max-w-md text-center text-xs leading-relaxed text-[#a98974]/90">
+        <p className="mx-auto mt-10 max-w-md text-center text-[12.5px] leading-snug text-[rgba(244,238,231,0.78)] sm:mt-12">
           <Link
             href="/about"
-            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+            className="font-medium text-[rgba(214,230,239,0.95)] underline decoration-[#c6d8e3]/45 underline-offset-[4px] transition hover:text-[#f4eee7]"
           >
             about
           </Link>
-          <span aria-hidden className="mx-2 text-[#321308]">
+          <span aria-hidden className="mx-2.5 text-[#5c3d32]">
             ·
           </span>
           <Link
             href="/terms-of-service"
-            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+            className="font-medium text-[rgba(214,230,239,0.95)] underline decoration-[#c6d8e3]/45 underline-offset-[4px] transition hover:text-[#f4eee7]"
           >
             terms
           </Link>
-          <span aria-hidden className="mx-2 text-[#321308]">
+          <span aria-hidden className="mx-2.5 text-[#5c3d32]">
             ·
           </span>
           <Link
             href="/privacy-policy"
-            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+            className="font-medium text-[rgba(214,230,239,0.95)] underline decoration-[#c6d8e3]/45 underline-offset-[4px] transition hover:text-[#f4eee7]"
           >
             privacy
           </Link>
-          <span aria-hidden className="mx-2 text-[#321308]">
+          <span aria-hidden className="mx-2.5 text-[#5c3d32]">
             ·
           </span>
           <Link
             href="/community-guidelines"
-            className="text-[#c6d8e3] underline-offset-4 hover:underline"
+            className="font-medium text-[rgba(214,230,239,0.95)] underline decoration-[#c6d8e3]/45 underline-offset-[4px] transition hover:text-[#f4eee7]"
           >
             community
           </Link>

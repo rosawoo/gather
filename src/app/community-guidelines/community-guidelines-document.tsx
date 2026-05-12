@@ -11,7 +11,7 @@ export function CommunityGuidelinesDocument() {
       <p>
         gather exists to make real-life social experiences feel welcoming,
         respectful, and safe. these community guidelines explain what we expect
-        from everyone who uses gather—whether you&rsquo;re hosting, attending,
+        from everyone who uses gather, whether you&rsquo;re hosting, attending,
         or just exploring.
       </p>
       <p>
@@ -32,7 +32,7 @@ export function CommunityGuidelinesDocument() {
       </ul>
       <p>
         we expect users to engage in good faith and treat others as real
-        people—not profiles.
+        people, not profiles.
       </p>
 
       <h2 className="terms-section-heading">1. respectful behavior</h2>
@@ -52,7 +52,7 @@ export function CommunityGuidelinesDocument() {
         <li>bully, shame, or demean others</li>
       </ul>
       <p>
-        disrespectful behavior—whether on the app or at a gathering—may result in
+        disrespectful behavior, whether on the app or at a gathering, may result in
         removal from the platform.
       </p>
 
@@ -120,7 +120,7 @@ export function CommunityGuidelinesDocument() {
           products or services unless clearly disclosed and permitted
         </li>
       </ul>
-      <p>gather is about social connection—not hidden agendas.</p>
+      <p>gather is about social connection, not hidden agendas.</p>
 
       <h2 className="terms-section-heading">5. payments and tokens</h2>
       <p>if a gathering requires tokens or payment:</p>
@@ -152,7 +152,7 @@ export function CommunityGuidelinesDocument() {
       </p>
 
       <h2 className="terms-section-heading">7. privacy and personal information</h2>
-      <p>respect privacy—yours and others&rsquo;.</p>
+      <p>respect privacy: yours and others&rsquo;.</p>
       <p>you may not:</p>
       <ul className="terms-list">
         <li>share someone else&rsquo;s private information without permission</li>
@@ -195,7 +195,7 @@ export function CommunityGuidelinesDocument() {
 
       <h2 className="terms-section-heading">9. a final note</h2>
       <p>
-        gather is not about perfection—it&rsquo;s about showing up thoughtfully.
+        gather is not about perfection; it&rsquo;s about showing up thoughtfully.
       </p>
       <p>we expect users to:</p>
       <ul className="terms-list">

@@ -2,8 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { capacityLine, ageFromDob } from "@/lib/gathering-display";
+import {
+  ageFromDob,
+  capacityLine,
+  formatPolaroidDate,
+  gatheringTypeCaptionLabel,
+  shortNeighborhoodForCaption,
+} from "@/lib/gathering-display";
 import { CoverArt } from "@/components/cover-art";
+import type { GatheringType } from "@prisma/client";
 
 export type PolaroidCardData = {
   id: string;
@@ -12,6 +19,7 @@ export type PolaroidCardData = {
   coverImageUrl: string | null;
   startsAt: string;
   neighborhood: string;
+  gatheringType: GatheringType;
   minTotalSize: number;
   maxTotalSize: number;
   hostFriendsCount: number;
@@ -20,6 +28,7 @@ export type PolaroidCardData = {
   hostId: string;
   hostFirstName: string | null;
   hostDateOfBirth: string | null;
+  spotsLeft: number;
 };
 
 type PolaroidCardProps = PolaroidCardData & {
@@ -27,6 +36,9 @@ type PolaroidCardProps = PolaroidCardData & {
   /** Profile / static lists: links only, no flip. */
   variant?: "discover" | "static";
 };
+
+const POLAROID_FRAME =
+  "rounded-sm bg-[#f2ebe3] p-[14px] pb-12 shadow-[0_20px_44px_rgba(0,0,0,0.35)] ring-1 ring-black/10";
 
 export function PolaroidCard(props: PolaroidCardProps) {
   const variant = props.variant ?? "discover";
@@ -48,20 +60,26 @@ export function PolaroidCard(props: PolaroidCardProps) {
   const tiltClass =
     idx !== undefined
       ? idx % 2 === 0
-        ? "-rotate-[1.6deg]"
-        : "rotate-[1.8deg]"
-      : "-rotate-[1.2deg]";
+        ? "-rotate-[1.2deg]"
+        : "rotate-[1.4deg]"
+      : "-rotate-[1deg]";
 
   const startsAt = new Date(props.startsAt);
-  const dateStr = startsAt.toLocaleDateString(undefined, {
+  const dateCaption = formatPolaroidDate(startsAt);
+  const dateTimeDetail = `${startsAt.toLocaleDateString(undefined, {
     weekday: "short",
     month: "short",
     day: "numeric",
-  });
+  })} · ${startsAt.toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  })}`;
+
+  const typeLine = `${gatheringTypeCaptionLabel(props.gatheringType)}, ${shortNeighborhoodForCaption(props.neighborhood)}`;
 
   const tokenLabel =
     props.tokenCost === 0
-      ? "Free"
+      ? "free"
       : `${props.tokenCost} token${props.tokenCost === 1 ? "" : "s"}`;
 
   const hostLabel = props.hostFirstName?.trim() || "Host";
@@ -73,68 +91,29 @@ export function PolaroidCard(props: PolaroidCardProps) {
   if (variant === "static") {
     return (
       <div
-        className={`relative w-[min(100%,280px)] ${tiltClass} transition duration-300 hover:rotate-0 hover:scale-[1.02]`}
+        className={`relative w-[min(100%,320px)] ${tiltClass} transition duration-300 hover:rotate-0 hover:scale-[1.02]`}
       >
-        {idx !== undefined ? (
-          <div
-            aria-hidden
-            className="absolute -top-2 left-1/2 z-20 h-4 w-[4.75rem] -translate-x-1/2 rotate-[2deg] rounded-[2px] bg-gradient-to-r from-[#f0e6d8]/95 via-white/90 to-[#e8dcc8]/95 shadow-md ring-1 ring-black/15"
-          />
-        ) : null}
-        <div className="rounded-xl bg-white p-3 pb-14 shadow-lg shadow-black/10 ring-1 ring-black/[0.07] transition duration-300 hover:shadow-xl hover:ring-gather-accent/25">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gather-line/50">
+        <div className={POLAROID_FRAME}>
+          <div className="relative aspect-square w-full overflow-hidden rounded-[2px] bg-[#ddd5cc]">
             <CoverArt cover={props.coverImageUrl} title={props.title} />
             <Link
               href={`/gatherings/${props.id}`}
               className="absolute inset-0 z-0"
               aria-label={`Open gathering: ${props.title}`}
             />
-            <span className="pointer-events-auto absolute bottom-2 right-2 z-[2] inline-flex rounded-full bg-gather-cream/95 px-2.5 py-0.5 text-[11px] font-semibold text-gather-brown shadow-sm ring-1 ring-black/5">
+            <span className="pointer-events-none absolute bottom-2 right-2 z-[2] inline-flex rounded-full bg-[#f4eee7]/95 px-2 py-0.5 font-handwriting text-[13px] text-[#3a1a0f] shadow-sm ring-1 ring-black/8">
               {tokenLabel}
             </span>
-            <Link
-              href={`/u/${props.hostId}`}
-              className="pointer-events-auto absolute bottom-2 left-2 z-[2] flex max-w-[min(100%,13rem)] items-center gap-2 rounded-lg bg-gather-cream/95 py-1 pl-1 pr-2 shadow-sm ring-1 ring-black/8 transition hover:bg-white"
-              aria-label={`View ${hostLabel}'s profile`}
-            >
-              {props.hostImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={props.hostImage}
-                  alt=""
-                  width={28}
-                  height={28}
-                  className="h-7 w-7 shrink-0 rounded-full object-cover ring-2 ring-white"
-                />
-              ) : (
-                <div className="h-7 w-7 shrink-0 rounded-full bg-gather-line/55 ring-2 ring-white" />
-              )}
-              <span className="min-w-0 truncate text-left text-xs font-medium text-gather-ink">
-                {hostLabel}
-                {hostAge != null ? (
-                  <span className="font-normal text-gather-charcoal/80">
-                    {" "}
-                    · {hostAge}
-                  </span>
-                ) : null}
-              </span>
-            </Link>
           </div>
           <Link
             href={`/gatherings/${props.id}`}
-            className="group mt-3 block space-y-1.5 px-0.5"
+            className="mt-4 block space-y-0.5 px-0.5"
           >
-            <h3 className="font-handwriting line-clamp-2 text-[17px] font-medium leading-snug text-gather-ink transition-colors group-hover:text-gather-brown-mid">
-              {props.title}
-            </h3>
-            <p className="text-xs font-medium text-gather-brown-mid/90">{dateStr}</p>
-            <p className="text-xs text-gather-charcoal">{props.neighborhood}</p>
-            <p className="text-xs text-gather-charcoal/80">
-              {capacityLine(
-                props.minTotalSize,
-                props.maxTotalSize,
-                props.hostFriendsCount,
-              )}
+            <p className="font-handwriting text-[1.15rem] leading-snug text-[#2c1810]">
+              {typeLine}
+            </p>
+            <p className="font-handwriting text-[1.35rem] text-[#2c1810]/90">
+              {dateCaption}
             </p>
           </Link>
         </div>
@@ -158,117 +137,118 @@ export function PolaroidCard(props: PolaroidCardProps) {
   const flipTransform = flipped ? "rotateY(180deg)" : "rotateY(0deg)";
   const transition = reduceMotion
     ? "none"
-    : "transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)";
+    : "transform 0.62s cubic-bezier(0.42, 0, 0.18, 1)";
+
+  const spotsPhrase =
+    props.spotsLeft <= 0
+      ? "full; waitlist vibes only"
+      : `${props.spotsLeft} spot${props.spotsLeft === 1 ? "" : "s"} open`;
 
   return (
     <div
-      className={`relative w-[min(100%,280px)] ${tiltClass} transition duration-300 hover:rotate-0 hover:scale-[1.02]`}
+      className={`relative w-[min(92vw,360px)] ${tiltClass} transition duration-300 hover:rotate-0`}
     >
-      {idx !== undefined ? (
+      <div className="polaroid-perspective min-h-[400px]">
         <div
-          aria-hidden
-          className="absolute -top-2 left-1/2 z-20 h-4 w-[4.75rem] -translate-x-1/2 rotate-[2deg] rounded-[2px] bg-gradient-to-r from-[#f0e6d8]/95 via-white/90 to-[#e8dcc8]/95 shadow-md ring-1 ring-black/15"
-        />
-      ) : null}
-
-      <div className="polaroid-perspective min-h-[320px]">
-        <div
-          className="polaroid-preserve-3d relative min-h-[320px] w-full"
+          className="polaroid-preserve-3d relative min-h-[400px] w-full"
           style={{
             transform: flipTransform,
             transition,
           }}
         >
+          {/* Front: candid + handwritten caption */}
           <div
             role="button"
             tabIndex={0}
             aria-expanded={flipped}
-            aria-label={`${props.title}. Press Enter to flip for details.`}
+            aria-label={`${props.title}. Flip for details.`}
             onClick={onCardClick}
             onKeyDown={onCardKeyDown}
-            className="polaroid-backface absolute inset-0 cursor-pointer rounded-xl bg-white p-3 pb-14 shadow-lg shadow-black/10 ring-1 ring-black/[0.07] transition duration-300 hover:shadow-xl hover:ring-gather-accent/25"
+            className={`polaroid-backface absolute inset-0 cursor-pointer ${POLAROID_FRAME}`}
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gather-line/50">
+            <div className="relative aspect-square w-full overflow-hidden rounded-[2px] bg-[#ddd5cc]">
               <CoverArt cover={props.coverImageUrl} title={props.title} />
-              <span className="pointer-events-auto absolute bottom-2 right-2 z-[2] inline-flex rounded-full bg-gather-cream/95 px-2.5 py-0.5 text-[11px] font-semibold text-gather-brown shadow-sm ring-1 ring-black/5">
-                {tokenLabel}
-              </span>
-              <Link
-                href={`/u/${props.hostId}`}
-                onClick={(e) => e.stopPropagation()}
-                className="pointer-events-auto absolute bottom-2 left-2 z-[2] flex max-w-[min(100%,13rem)] items-center gap-2 rounded-lg bg-gather-cream/95 py-1 pl-1 pr-2 shadow-sm ring-1 ring-black/8 transition hover:bg-white"
-                aria-label={`View ${hostLabel}'s profile`}
-              >
-                {props.hostImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={props.hostImage}
-                    alt=""
-                    width={28}
-                    height={28}
-                    className="h-7 w-7 shrink-0 rounded-full object-cover ring-2 ring-white"
-                  />
-                ) : (
-                  <div className="h-7 w-7 shrink-0 rounded-full bg-gather-line/55 ring-2 ring-white" />
-                )}
-                <span className="min-w-0 truncate text-left text-xs font-medium text-gather-ink">
-                  {hostLabel}
-                  {hostAge != null ? (
-                    <span className="font-normal text-gather-charcoal/80">
-                      {" "}
-                      · {hostAge}
-                    </span>
-                  ) : null}
-                </span>
-              </Link>
             </div>
-            <div className="mt-3 space-y-1.5 px-0.5">
-              <h3 className="font-handwriting line-clamp-2 text-[17px] font-medium leading-snug text-gather-ink">
-                {props.title}
-              </h3>
-              <p className="text-xs font-medium text-gather-brown-mid/90">{dateStr}</p>
-              <p className="text-xs text-gather-charcoal">{props.neighborhood}</p>
-              <p className="text-xs text-gather-charcoal/80">
-                {capacityLine(
-                  props.minTotalSize,
-                  props.maxTotalSize,
-                  props.hostFriendsCount,
-                )}
+            <div className="mt-4 space-y-1 px-0.5">
+              <p className="font-handwriting text-[1.2rem] leading-snug text-[#2c1810]">
+                {typeLine}
               </p>
-              <p className="pt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-gather-teal/90">
-                Tap card for details
+              <p className="font-handwriting text-[1.45rem] text-[#2c1810]/92">
+                {dateCaption}
+              </p>
+              <p className="pt-2 font-serif text-[11px] font-medium uppercase tracking-[0.14em] text-[#266b7e]/90">
+                Turn over for details
               </p>
             </div>
           </div>
-
-          <div className="polaroid-face-back polaroid-backface absolute inset-0 flex min-h-[320px] flex-col rounded-xl bg-white p-4 shadow-lg shadow-black/10 ring-1 ring-gather-teal/20">
-            <p className="font-display text-[11px] font-semibold uppercase tracking-[0.18em] text-gather-teal">
-              The vibe
+    
+          {/* Back: editorial + request */}
+          <div
+            className="polaroid-face-back polaroid-backface absolute inset-0 flex min-h-[400px] flex-col rounded-sm bg-[#f2ebe3] p-4 pb-5 shadow-[0_20px_44px_rgba(0,0,0,0.35)] ring-1 ring-black/10"
+          >
+            <p className="font-serif text-[11px] font-semibold uppercase tracking-[0.16em] text-[#266b7e]">
+              The evening
             </p>
-            <h3 className="mt-2 font-handwriting text-lg font-medium leading-snug text-gather-ink">
+            <h3 className="mt-2 font-handwriting text-xl font-medium leading-snug text-[#2c1810]">
               {props.title}
             </h3>
-            <p className="mt-2 line-clamp-6 text-sm leading-relaxed text-gather-charcoal">
+            <p className="mt-2 flex-1 overflow-y-auto text-sm leading-relaxed text-[#3d2a22]">
               {props.description ||
-                "The host will share more once you're connected."}
+                "The host will share more once you’re connected."}
             </p>
-            <ul className="mt-3 space-y-1.5 text-xs italic text-gather-charcoal/85">
-              <li>Exact address after approval.</li>
-              <li>Tokens held while the host reviews.</li>
-            </ul>
-            <div className="mt-auto flex flex-col gap-2 pt-4">
+
+            <div className="mt-3 space-y-1.5 border-t border-[#c6d8e3]/55 pt-3 font-serif text-[13px] leading-snug text-[#3d2a22]">
+              <p>
+                <span className="text-[#6b5348]">Host · </span>
+                {hostLabel}
+                {hostAge != null ? `, ${hostAge}` : ""}
+              </p>
+              <p>
+                <span className="text-[#6b5348]">Where · </span>
+                {props.neighborhood}
+              </p>
+              <p>
+                <span className="text-[#6b5348]">When · </span>
+                {dateTimeDetail}
+              </p>
+              <p>
+                <span className="text-[#6b5348]">Room · </span>
+                {spotsPhrase}
+                <span className="text-[#6b5348]"> · </span>
+                <span className="text-[#5c4a42]">
+                  {capacityLine(
+                    props.minTotalSize,
+                    props.maxTotalSize,
+                    props.hostFriendsCount,
+                  )}
+                </span>
+              </p>
+              <p className="text-xs text-[#6b5348]">
+                Tokens: {tokenLabel} · exact address after approval
+              </p>
+            </div>
+
+            <div className="mt-4 flex flex-col gap-2">
               <Link
-                href={`/gatherings/${props.id}`}
-                className="flex w-full items-center justify-center rounded-full bg-gather-wine py-3 text-center text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-charcoal"
+                href={`/gatherings/${props.id}#join`}
+                onClick={(e) => e.stopPropagation()}
+                className="flex w-full items-center justify-center rounded-md border border-[#c6d8e3] bg-[#266b7e] py-3 text-center font-serif text-[15px] font-medium lowercase tracking-[0.14em] text-[#f4eee7] shadow-sm transition hover:bg-[#2f7f95]"
               >
-                View full details &amp; request
+                request to join
+              </Link>
+              <Link
+                href={`/u/${props.hostId}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-center font-serif text-xs lowercase tracking-wide text-[#266b7e] underline decoration-[#266b7e]/40 underline-offset-4 hover:decoration-[#266b7e]"
+              >
+                view {hostLabel}&apos;s profile
               </Link>
               <button
                 type="button"
                 onClick={() => setFlipped(false)}
-                className="w-full rounded-full border border-gather-teal/35 py-2.5 text-sm font-semibold text-gather-teal transition hover:bg-gather-teal/10"
+                className="w-full rounded-md border border-[#6b5348]/35 py-2 font-serif text-sm lowercase tracking-wide text-[#4a342c] transition hover:bg-[#f2ebe3]"
               >
-                Flip back
+                flip back
               </button>
             </div>
           </div>

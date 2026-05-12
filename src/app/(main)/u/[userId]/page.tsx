@@ -3,18 +3,18 @@ import { PolaroidCard } from "@/components/polaroid-card";
 import { prisma } from "@/lib/prisma";
 import { PERSONALITY_PROMPTS } from "@/lib/prompts";
 import { ageFromDob } from "@/lib/gathering-display";
-import { GatheringStatus, Plan } from "@prisma/client";
+import { GatheringStatus, Plan, GatheringRequestStatus } from "@prisma/client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SectionTitle } from "@/components/ui/page-header";
 import { MoodBoardAura } from "@/components/mood-board-aura";
 
-function MetaChip({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center rounded-full border border-gather-teal/30 bg-white/90 px-3 py-1 text-xs font-medium text-gather-ink shadow-sm">
-      {children}
-    </span>
-  );
+function neighborhoodLine(n: string | null | undefined): string | null {
+  if (!n?.trim()) return null;
+  return n
+    .replace(/,\s*Washington,?\s*DC$/i, "")
+    .replace(/,\s*DC$/i, "")
+    .trim()
+    .toLowerCase();
 }
 
 export default async function PublicProfilePage({
@@ -42,6 +42,19 @@ export default async function PublicProfilePage({
           startsAt: { gt: new Date() },
         },
         orderBy: { startsAt: "asc" },
+        include: {
+          requests: {
+            where: {
+              status: {
+                in: [
+                  GatheringRequestStatus.PENDING,
+                  GatheringRequestStatus.APPROVED,
+                ],
+              },
+            },
+            select: { id: true },
+          },
+        },
       },
     },
   });
@@ -50,23 +63,22 @@ export default async function PublicProfilePage({
 
   const primary = u.photos.find((p) => p.isPrimary) ?? u.photos[0];
   const hostImage = primary?.url ?? u.image ?? null;
+  const extraPhotos = u.photos.filter((ph) => ph.id !== primary?.id);
 
   const visibleHosted = u.hostedGatherings.filter((g) => {
     if (viewer.plan === Plan.OBSERVER && g.tokenCost >= 2) return false;
     return true;
   });
   const p = u.profile;
-  const meta = [p.neighborhood, p.college, p.job].filter(Boolean);
+  const age = ageFromDob(p.dateOfBirth);
+  const hood = neighborhoodLine(p.neighborhood);
+  const subline = [p.college, p.job].filter(Boolean).join(" · ").toLowerCase();
 
   return (
-    <div className="relative space-y-8 pb-10">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 w-full bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.9)_0%,transparent_58%)] blur-2xl"
-      />
+    <div className="relative -mx-4 min-h-[calc(100dvh-6rem)] bg-gradient-to-b from-[#1f0d10] via-[#2a1216] to-[#160808] px-5 py-8 pb-28 sm:-mx-6 sm:px-8">
       <Link
         href="/gatherings"
-        className="inline-flex items-center gap-1 text-sm text-gather-brown-mid transition hover:text-gather-brown"
+        className="mb-10 inline-flex items-center gap-1 font-serif text-sm lowercase tracking-wide text-[#c6d8e3] transition hover:text-[#f4eee7]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -81,158 +93,157 @@ export default async function PublicProfilePage({
             clipRule="evenodd"
           />
         </svg>
-        Back
+        discover
       </Link>
 
-      <section
-        className={`relative overflow-visible rounded-3xl bg-gradient-to-b from-white via-gather-cream/40 to-gather-cream/20 px-5 pb-8 pt-10 shadow-md ring-1 ring-black/[0.06] ${
-          p.moodBoardEnabled ? "ring-2 ring-gather-accent/30" : ""
-        }`}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gather-accent/15 blur-2xl"
-        />
-        <div className="relative flex flex-col items-center text-center">
-          {p.moodBoardEnabled ? (
+      <div className="relative mx-auto max-w-lg">
+        {p.moodBoardEnabled ? (
+          <div className="pointer-events-none absolute -top-6 left-1/2 z-10 -translate-x-1/2 opacity-90">
             <MoodBoardAura decorJson={p.moodBoardDecor} />
-          ) : null}
-          <div className="relative">
+          </div>
+        ) : null}
+
+        <header className="pt-4 text-center">
+          <div className="relative mx-auto w-fit">
             {primary?.url || u.image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={primary?.url ?? u.image!}
                 alt=""
-                className="h-32 w-32 rounded-full object-cover shadow-lg ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30"
+                className="h-44 w-44 rounded-full object-cover shadow-[0_20px_50px_rgba(0,0,0,0.45)] ring-4 ring-[#f4eee7]/12"
               />
             ) : (
-              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gather-line/55 text-xs text-gather-charcoal/55 ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30">
-                No photo
+              <div className="flex h-44 w-44 items-center justify-center rounded-full bg-[#3d2528] font-serif text-sm text-[#9c8474]">
+                no photo
               </div>
             )}
           </div>
-          <h1
-            className={`mt-6 text-gather-ink sm:text-4xl ${
-              p.moodBoardEnabled
-                ? "font-handwriting text-4xl font-medium tracking-tight"
-                : "font-serif text-3xl font-light tracking-tight"
-            }`}
-          >
-            {p.firstName}
+          <h1 className="mt-8 font-serif text-3xl font-light lowercase tracking-tight text-[#f4eee7] sm:text-[2.1rem]">
+            {p.firstName}, {age}
           </h1>
-          <p className="mt-1 text-sm font-medium text-gather-brown-mid">
-            {ageFromDob(p.dateOfBirth)} years old
-          </p>
-          {meta.length > 0 ? (
-            <div className="mt-5 flex flex-wrap justify-center gap-2">
-              {meta.map((m) => (
-                <MetaChip key={m as string}>{m}</MetaChip>
-              ))}
-            </div>
+          {hood ? (
+            <p className="mt-2 font-serif text-base lowercase text-[#b89a8c]">
+              {hood}
+            </p>
           ) : null}
-        </div>
-      </section>
+          {subline ? (
+            <p className="mt-1 font-serif text-sm lowercase text-[#8f7268]/90">
+              {subline}
+            </p>
+          ) : null}
+        </header>
 
-      {visibleHosted.length > 0 ? (
-        <section>
-          <SectionTitle title="Upcoming gatherings" />
-          <p className="mb-6 text-sm text-gather-charcoal">
-            Open postings they&apos;re hosting. Tap a card to view or request to
-            join.
+        {p.bio?.trim() ? (
+          <p className="mx-auto mt-14 max-w-md text-center font-serif text-lg italic leading-relaxed text-[#e8ddd2]/95">
+            {p.bio}
           </p>
-          <div className="flex flex-col items-center gap-10">
+        ) : null}
+
+        {visibleHosted.length > 0 ? (
+          <section id="their-gatherings" className="mt-16 space-y-3 text-center">
             {visibleHosted.map((g) => (
-              <PolaroidCard
+              <p
                 key={g.id}
-                variant="static"
-                id={g.id}
-                title={g.title}
-                description={g.description}
-                coverImageUrl={g.coverImageUrl}
-                startsAt={g.startsAt.toISOString()}
-                neighborhood={g.neighborhood}
-                minTotalSize={g.minTotalSize}
-                maxTotalSize={g.maxTotalSize}
-                hostFriendsCount={g.hostFriendsCount}
-                tokenCost={g.tokenCost}
-                hostImage={hostImage}
-                hostId={u.id}
-                hostFirstName={p.firstName}
-                hostDateOfBirth={p.dateOfBirth.toISOString()}
-              />
-            ))}
-          </div>
-        </section>
-      ) : u.hostedGatherings.length > 0 ? (
-        <section>
-          <SectionTitle title="Upcoming gatherings" />
-          <p className="text-sm text-gather-charcoal/80">
-            {viewer.plan === Plan.OBSERVER
-              ? "This host has gatherings that aren’t available on your current plan."
-              : "Nothing upcoming."}
-          </p>
-        </section>
-      ) : null}
-
-      <section>
-        <SectionTitle title="About" />
-        <div className="rounded-2xl border border-gather-teal/25 bg-white px-5 py-4 shadow-sm ring-1 ring-gather-teal/10">
-          <p className="text-[15px] leading-relaxed text-gather-ink">{p.bio}</p>
-        </div>
-      </section>
-
-      <section>
-        <SectionTitle title="Prompts" />
-        <div className="space-y-3">
-          {PERSONALITY_PROMPTS.map((pr, i) => {
-            const ans = u.promptAnswers.find((a) => a.promptKey === pr.key);
-            if (!ans) return null;
-            const tilt = p.moodBoardEnabled
-              ? ["rotate-[-1deg]", "rotate-[1.2deg]", "rotate-[-0.6deg]", "rotate-[0.9deg]"][i % 4]
-              : "";
-            return (
-              <article
-                key={pr.key}
-                className={`rounded-2xl border border-gather-teal/25 bg-white px-4 py-4 shadow-sm ring-1 ring-gather-teal/10 ${
-                  p.moodBoardEnabled ? `${tilt} bg-[#fffef8] shadow-md ring-amber-100/80` : ""
-                }`}
+                className="font-handwriting text-[1.35rem] leading-snug text-[#d4c4b8]"
               >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
-                  {pr.label}
-                </p>
-                <p className="mt-2 text-[15px] leading-relaxed text-gather-ink">
+                hosted “{g.title.toLowerCase()}”
+              </p>
+            ))}
+          </section>
+        ) : u.hostedGatherings.length > 0 ? (
+          <p className="mt-14 text-center font-serif text-sm italic text-[#9c8474]">
+            {viewer.plan === Plan.OBSERVER
+              ? "some gatherings aren’t visible on your current plan."
+              : "nothing hosted right now."}
+          </p>
+        ) : null}
+
+        {visibleHosted.length > 0 ? (
+          <div className="mt-12 flex flex-col items-center gap-12">
+            {visibleHosted.map((g) => {
+              const filled = g.hostFriendsCount + g.requests.length;
+              const spotsLeft = Math.max(0, g.maxTotalSize - filled);
+              return (
+                <PolaroidCard
+                  key={g.id}
+                  variant="static"
+                  id={g.id}
+                  title={g.title}
+                  description={g.description}
+                  coverImageUrl={g.coverImageUrl}
+                  startsAt={g.startsAt.toISOString()}
+                  neighborhood={g.neighborhood}
+                  gatheringType={g.gatheringType}
+                  minTotalSize={g.minTotalSize}
+                  maxTotalSize={g.maxTotalSize}
+                  hostFriendsCount={g.hostFriendsCount}
+                  tokenCost={g.tokenCost}
+                  hostImage={hostImage}
+                  hostId={u.id}
+                  hostFirstName={p.firstName}
+                  hostDateOfBirth={p.dateOfBirth.toISOString()}
+                  spotsLeft={spotsLeft}
+                />
+              );
+            })}
+          </div>
+        ) : null}
+
+        {PERSONALITY_PROMPTS.some((pr) =>
+          u.promptAnswers.some((a) => a.promptKey === pr.key),
+        ) ? (
+          <section className="mt-20 space-y-6">
+            {PERSONALITY_PROMPTS.map((pr) => {
+              const ans = u.promptAnswers.find((a) => a.promptKey === pr.key);
+              if (!ans) return null;
+              return (
+                <p
+                  key={pr.key}
+                  className="max-w-md font-serif text-base italic leading-relaxed text-[#d4c4b8]/95"
+                >
                   {ans.body}
                 </p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+              );
+            })}
+          </section>
+        ) : null}
 
-      {u.photos.length > 0 ? (
-        <section>
-          <SectionTitle title="Photos" />
-          <div className="grid grid-cols-3 gap-2">
-            {u.photos.map((ph) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+        {extraPhotos.length > 0 ? (
+          <section className="mt-20 space-y-14">
+            {extraPhotos.map((ph, i) => (
+              <div
                 key={ph.id}
-                src={ph.url}
-                alt=""
-                className="aspect-square w-full rounded-xl object-cover shadow-sm ring-1 ring-black/[0.04]"
-              />
+                className={`flex ${i % 2 === 0 ? "justify-start pl-2" : "justify-end pr-4"}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ph.url}
+                  alt=""
+                  className="h-48 w-48 rounded-full object-cover shadow-[0_16px_40px_rgba(0,0,0,0.4)] ring-2 ring-[#f4eee7]/10 sm:h-52 sm:w-52"
+                />
+              </div>
             ))}
-          </div>
-        </section>
-      ) : null}
+          </section>
+        ) : null}
 
-      <div className="pt-2 text-center">
-        <Link
-          href={`/report?type=user&id=${userId}`}
-          className="text-xs text-gather-charcoal/80 transition hover:text-gather-ink hover:underline"
-        >
-          Report profile
-        </Link>
+        <div className="mt-24 flex flex-col items-center gap-4 pb-6">
+          <Link
+            href={
+              visibleHosted.length
+                ? "#their-gatherings"
+                : "/gatherings"
+            }
+            className="inline-flex min-w-[200px] items-center justify-center rounded-md border border-[#c6d8e3] bg-[#266b7e] px-8 py-3 font-serif text-[15px] lowercase tracking-[0.12em] text-[#f4eee7] transition hover:bg-[#2f7f95]"
+          >
+            request a seat
+          </Link>
+          <Link
+            href={`/report?type=user&id=${userId}`}
+            className="font-serif text-xs lowercase tracking-wide text-[#8f7268] transition hover:text-[#c6d8e3]"
+          >
+            report profile
+          </Link>
+        </div>
       </div>
     </div>
   );

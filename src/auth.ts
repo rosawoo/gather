@@ -16,7 +16,7 @@ function logProdAuthEnvOnce() {
     process.env.AUTH_GOOGLE_SECRET || process.env.GOOGLE_CLIENT_SECRET || "";
   if (!secret) {
     console.error(
-      "[Gather/auth] AUTH_SECRET (or NEXTAUTH_SECRET) is missing at runtime — Auth.js returns “Server error”. " +
+      "[Gather/auth] AUTH_SECRET (or NEXTAUTH_SECRET) is missing at runtime. Auth.js returns “Server error”. " +
         "Confirm it is enabled for this environment (Production vs Preview) and redeploy.",
     );
   } else if (process.env.AUTH_DEBUG === "1") {
@@ -24,7 +24,7 @@ function logProdAuthEnvOnce() {
   }
   if (!googleId || !googleSecret) {
     console.error(
-      "[Gather/auth] Google OAuth env vars missing — set AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET for this environment.",
+      "[Gather/auth] Google OAuth env vars missing. Set AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET for this environment.",
     );
   }
 }
@@ -95,7 +95,7 @@ function buildAuthConfig(): NextAuthConfig {
 }
 
 /**
- * Lazy factory so `setEnvDefaults` runs per request — avoids a stale empty
+ * Lazy factory so `setEnvDefaults` runs per request and avoids a stale empty
  * secret if the module was first loaded in an odd context.
  */
 export const { handlers, auth, signIn, signOut } =

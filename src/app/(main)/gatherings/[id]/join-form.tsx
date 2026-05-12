@@ -17,7 +17,8 @@ export function JoinRequestForm({
 
   return (
     <form
-      className="space-y-4 rounded-2xl border border-gather-teal/25 bg-white p-5 shadow-sm ring-1 ring-gather-teal/10"
+      id="join"
+      className="space-y-4 scroll-mt-24 rounded-2xl border border-gather-teal/25 bg-white p-5 shadow-sm ring-1 ring-gather-teal/10"
       action={(fd) => {
         setErr(null);
         start(async () => {

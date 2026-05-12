@@ -20,17 +20,17 @@ export function GatheringsTabs() {
             key={t.href}
             href={t.href}
             aria-current={active ? "page" : undefined}
-            className={`relative flex-1 py-3 text-center text-[15px] font-medium tracking-wide transition lowercase ${
+            className={`relative flex-1 py-3 text-center text-[15px] font-medium tracking-wide lowercase transition ${
               active
-                ? "text-gather-cream"
-                : "text-gather-cream/45 hover:text-gather-cream/70"
+                ? "text-[#f4eee7]"
+                : "text-[#9c8474] hover:text-[#c4a99a]"
             }`}
           >
             {t.label}
             <span
               aria-hidden
-              className={`pointer-events-none absolute -bottom-px left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-gather-cream transition-all duration-200 ${
-                active ? "w-9 opacity-100" : "w-0 opacity-0"
+              className={`pointer-events-none absolute -bottom-px left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-[#f4eee7] transition-all duration-200 ${
+                active ? "w-10 opacity-100" : "w-0 opacity-0"
               }`}
             />
           </Link>

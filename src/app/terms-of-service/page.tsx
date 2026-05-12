@@ -3,7 +3,7 @@ import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
 import { TermsDocument } from "./terms-document";
 
 export const metadata: Metadata = {
-  title: "Terms of service — Gather",
+  title: "Terms of service · Gather",
   description:
     "Terms of service for the Gather platform. Warm, bookish legal copy for hosts and guests.",
 };

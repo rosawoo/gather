@@ -265,8 +265,8 @@ export default async function GatheringDetailPage({
             Exact address and list of other gatherers shared after approval.
           </li>
           <li>
-            Tokens are held while the host reviews. If approved, tokens are used
-            — if not a match, they return. Tokens are for cost-sharing not
+            Tokens are held while the host reviews. If approved, tokens are used;
+            if not a match, they return. Tokens are for cost-sharing not
             profit.
           </li>
         </ul>

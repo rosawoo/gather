@@ -81,7 +81,7 @@ export default async function SettingsPage() {
               <p className="mt-2 text-[11px] text-gather-charcoal/80">
                 Opens Stripe&apos;s customer portal (payment methods, history,
                 cancellations). Subscription changes and downgrades usually take
-                effect at the end of the current billing period—see Stripe for
+                effect at the end of the current billing period; see Stripe for
                 your dates.
               </p>
             </form>

@@ -2,7 +2,7 @@
 /**
  * End-to-end Stripe integration check (no browser, no real card):
  * 1) prisma db push
- * 2) start Next.js on PORT (3021 — avoids colliding with a dev server on 3001)
+ * 2) start Next.js on PORT (3021; avoids colliding with a dev server on 3001)
  * 3) POST a correctly signed checkout.session.completed webhook
  * 4) assert DB: tokens increased once; duplicate event is idempotent
  *
@@ -220,7 +220,7 @@ async function main() {
 
     const looksLikePlaceholderSk = String(apiKey).includes("gatherE2ELocal");
     if (!looksLikePlaceholderSk) {
-      log("Stripe key looks real — probing Checkout Session create via API…");
+      log("Stripe key looks real: probing Checkout Session create via API…");
       try {
         const siteUrl = process.env.AUTH_URL?.replace(/\/$/, "") || `http://localhost:${PORT}`;
         const s = await stripe.checkout.sessions.create({
@@ -239,12 +239,12 @@ async function main() {
           cancel_url: `${siteUrl}/profile/tokens?checkout=cancelled`,
           metadata: { e2e: "1" },
         });
-        log(`Stripe API OK — created session ${s.id} (${s.url ? "has url" : "no url"}).`);
+        log(`Stripe API OK: created session ${s.id} (${s.url ? "has url" : "no url"}).`);
       } catch (e) {
         log(`Stripe API Checkout create failed (non-fatal): ${e.message}`);
       }
     } else {
-      log("Placeholder secret key — skipped live Stripe Checkout Session API call.");
+      log("Placeholder secret key; skipped live Stripe Checkout Session API call.");
     }
 
     log("All checks passed.");

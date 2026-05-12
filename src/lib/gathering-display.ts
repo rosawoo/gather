@@ -1,3 +1,36 @@
+import type { GatheringType } from "@prisma/client";
+
+/** Short neighborhood for Polaroid captions, e.g. "Logan Circle, Washington, DC" → "logan circle". */
+export function shortNeighborhoodForCaption(full: string): string {
+  const s = full
+    .replace(/,\s*Washington,?\s*DC$/i, "")
+    .replace(/,\s*DC$/i, "")
+    .trim();
+  return s.toLowerCase();
+}
+
+/** Casual first line for Polaroid (e.g. dinner, logan circle). */
+export function gatheringTypeCaptionLabel(type: GatheringType): string {
+  switch (type) {
+    case "HOME":
+      return "dinner";
+    case "PUBLIC":
+      return "out";
+    case "OTHER":
+      return "gathering";
+    default:
+      return "gathering";
+  }
+}
+
+/** Polaroid date stack: 05.19.26 */
+export function formatPolaroidDate(d: Date): string {
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  const yy = String(d.getFullYear()).slice(-2);
+  return `${mm}.${dd}.${yy}`;
+}
+
 /** Capacity line for cards and detail (host friends optional). */
 export function capacityLine(
   minTotal: number,

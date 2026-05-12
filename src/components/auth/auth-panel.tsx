@@ -48,7 +48,7 @@ const CANDLELIT_COPY: Record<
   "sign-in": {
     eyebrow: "welcome back",
     title: "sign in",
-    sub: "pick up where you left off—browse gatherings, send requests, host when you are ready.",
+    sub: "pick up where you left off: browse gatherings, send requests, host when you are ready.",
     cta: "continue with google",
     switchLabel: "new here?",
     switchCta: "create an account",
@@ -78,7 +78,7 @@ export function AuthPanel({
   const copy = variant === "candlelit" ? CANDLELIT_COPY[mode] : COPY[mode];
 
   const tabBase =
-    "flex-1 rounded-full px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.18em] transition";
+    "flex-1 rounded-full px-4 py-2.5 text-center text-[13px] font-semibold uppercase tracking-[0.16em] transition";
 
   const defaultActive = "bg-gather-wine text-gather-cream shadow-sm";
   const defaultInactive =
@@ -87,7 +87,7 @@ export function AuthPanel({
   const candleActive =
     "bg-[#266b7e] text-[#f4eee7] shadow-md shadow-black/20";
   const candleInactive =
-    "text-[#f4eee7]/65 hover:bg-[#321308]/80 hover:text-[#f4eee7]";
+    "text-[#f4eee7]/72 hover:bg-[#321308]/80 hover:text-[#f4eee7]";
 
   const active = variant === "candlelit" ? candleActive : defaultActive;
   const inactive = variant === "candlelit" ? candleInactive : defaultInactive;
@@ -102,8 +102,8 @@ export function AuthPanel({
 
   const eyebrowClass =
     variant === "candlelit"
-      ? "flex items-center gap-2 text-[11px] font-semibold lowercase tracking-[0.18em] text-[#a98974]"
-      : "flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gather-teal";
+      ? "flex items-center gap-2 text-[13px] font-semibold lowercase tracking-[0.18em] text-[#c4a99a]"
+      : "flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-gather-teal";
 
   const eyebrowDot =
     variant === "candlelit"
@@ -117,8 +117,8 @@ export function AuthPanel({
 
   const subClass =
     variant === "candlelit"
-      ? "mt-3 text-[1.02rem] leading-relaxed text-[#eee9e1]/88"
-      : "mt-3 text-sm leading-relaxed text-gather-charcoal";
+      ? "mt-3 text-[17px] leading-[1.5] text-[rgba(244,238,231,0.9)]"
+      : "mt-3 text-[17px] leading-[1.5] text-gather-charcoal";
 
   const tabShellClass =
     variant === "candlelit"
@@ -127,23 +127,28 @@ export function AuthPanel({
 
   const googleBtnClass =
     variant === "candlelit"
-      ? "group flex w-full items-center justify-center gap-3 border border-[#321308] bg-[#eee9e1] px-6 py-3.5 text-base font-semibold text-[#3a1a0f] shadow-lg shadow-black/25 transition hover:bg-[#f4eee7] active:scale-[0.99]"
-      : "group flex w-full items-center justify-center gap-3 border border-gather-teal bg-white px-6 py-3.5 text-sm font-semibold text-gather-ink shadow-sm transition hover:bg-gather-cream hover:shadow-md active:scale-[0.99]";
+      ? "group flex w-full items-center justify-center gap-3 border border-[#321308] bg-[#eee9e1] px-6 py-3.5 text-[16px] font-semibold text-[#3a1a0f] shadow-lg shadow-black/25 transition hover:bg-[#f4eee7] active:scale-[0.99]"
+      : "group flex w-full items-center justify-center gap-3 border border-gather-teal bg-white px-6 py-3.5 text-[16px] font-semibold text-gather-ink shadow-sm transition hover:bg-gather-cream hover:shadow-md active:scale-[0.99]";
 
   const switchClass =
     variant === "candlelit"
-      ? "mt-6 text-center text-[1rem] text-[#eee9e1]/82"
-      : "mt-6 text-center text-sm text-gather-charcoal";
+      ? "mt-6 text-center text-[15px] leading-snug text-[rgba(244,238,231,0.88)]"
+      : "mt-6 text-center text-[15px] leading-snug text-gather-charcoal";
 
   const switchLinkClass =
     variant === "candlelit"
-      ? "font-semibold text-[#c6d8e3] underline decoration-[#c6d8e3]/45 underline-offset-4 transition hover:text-[#f4eee7] hover:decoration-[#f4eee7]"
-      : "font-semibold text-gather-teal underline decoration-gather-teal/50 underline-offset-4 transition hover:text-gather-wine hover:decoration-gather-wine";
+      ? "font-semibold text-[#d6e6ef] underline decoration-[#c6d8e3]/55 underline-offset-[5px] transition hover:text-[#f4eee7] hover:decoration-[#f4eee7]"
+      : "font-semibold text-gather-teal underline decoration-gather-teal/55 underline-offset-[5px] transition hover:text-gather-wine hover:decoration-gather-wine";
 
   const legalClass =
     variant === "candlelit"
-      ? "mt-10 text-center text-xs leading-relaxed text-[#a98974]/85"
-      : "mt-10 text-center text-xs leading-relaxed text-gather-charcoal/70";
+      ? "mt-10 text-center text-[12.5px] leading-[1.55] text-[rgba(244,238,231,0.72)]"
+      : "mt-10 text-center text-[12.5px] leading-[1.55] text-gather-charcoal/80";
+
+  const legalLinkClass =
+    variant === "candlelit"
+      ? "font-medium text-[rgba(214,230,239,0.95)] underline decoration-[#c6d8e3]/55 underline-offset-[3px] transition hover:text-[#f4eee7]"
+      : "font-medium text-gather-teal underline decoration-gather-teal/50 underline-offset-[3px] transition hover:text-gather-wine";
 
   const showLowercaseTabs = variant === "candlelit";
 
@@ -220,24 +225,15 @@ export function AuthPanel({
           <p className={legalClass}>
             by continuing, google may share your name, email, and photo with
             gather. you agree to our{" "}
-            <Link
-              href="/terms-of-service"
-              className="text-[#c6d8e3] underline-offset-2 hover:underline"
-            >
+            <Link href="/terms-of-service" className={legalLinkClass}>
               terms
             </Link>
             ,{" "}
-            <Link
-              href="/privacy-policy"
-              className="text-[#c6d8e3] underline-offset-2 hover:underline"
-            >
+            <Link href="/privacy-policy" className={legalLinkClass}>
               privacy policy
             </Link>
             , and{" "}
-            <Link
-              href="/community-guidelines"
-              className="text-[#c6d8e3] underline-offset-2 hover:underline"
-            >
+            <Link href="/community-guidelines" className={legalLinkClass}>
               community guidelines
             </Link>
             .

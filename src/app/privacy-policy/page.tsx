@@ -3,7 +3,7 @@ import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
 import { PrivacyDocument } from "./privacy-document";
 
 export const metadata: Metadata = {
-  title: "Privacy policy — Gather",
+  title: "Privacy policy · Gather",
   description:
     "How Gather collects, uses, and shares information when you use the platform.",
 };

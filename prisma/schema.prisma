@@ -1,4 +1,4 @@
-// Gather — core data model (Postgres via Neon on Vercel)
+// Gather: core data model (Postgres via Neon on Vercel)
 
 generator client {
   provider = "prisma-client-js"
@@ -9,7 +9,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ——— Auth.js adapter models ———
+// --- Auth.js adapter models ---
 
 model User {
   id            String    @id @default(cuid())
@@ -31,7 +31,7 @@ model User {
 
   smsOptOut Boolean @default(false)
 
-  /** Set after Stripe Checkout / Customer is created — used for Billing Portal. */
+  /** Set after Stripe Checkout / Customer is created (used for Billing Portal). */
   stripeCustomerId String? @unique
 
   accounts Account[]
@@ -97,7 +97,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ——— Profile ———
+// --- Profile ---
 
 model Profile {
   userId        String   @id
@@ -137,7 +137,7 @@ model ProfilePromptAnswer {
   @@unique([userId, promptKey])
 }
 
-// ——— Gatherings ———
+// --- Gatherings ---
 
 model Gathering {
   id                  String          @id @default(cuid())
@@ -189,7 +189,7 @@ model GatheringRequest {
   @@index([guestId])
 }
 
-// ——— Tokens & money trail ———
+// --- Tokens & money trail ---
 
 model TokenLedgerEntry {
   id           String           @id @default(cuid())
@@ -207,7 +207,7 @@ model TokenLedgerEntry {
   @@index([gatheringId])
 }
 
-// ——— Notifications (in-app) ———
+// --- Notifications (in-app) ---
 
 model Notification {
   id        String   @id @default(cuid())
@@ -224,7 +224,7 @@ model Notification {
   @@index([userId, read])
 }
 
-// ——— Reimbursements ———
+// --- Reimbursements ---
 
 model ExpenseSubmission {
   id             String         @id @default(cuid())
@@ -242,7 +242,7 @@ model ExpenseSubmission {
   @@index([gatheringId])
 }
 
-// ——— Safety ———
+// --- Safety ---
 
 model Report {
   id           String     @id @default(cuid())
@@ -258,7 +258,7 @@ model Report {
   @@index([reporterId])
 }
 
-// ——— Phone OTP (SMS verification stub / production) ———
+// --- Phone OTP (SMS verification stub / production) ---
 
 model PhoneOtp {
   id        String   @id @default(cuid())
@@ -271,7 +271,7 @@ model PhoneOtp {
   @@index([phone, consumed])
 }
 
-// ——— Enums (SQLite stores as string) ———
+// --- Enums (SQLite stores as string) ---
 
 enum Plan {
   NONE
