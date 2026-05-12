@@ -6,6 +6,7 @@ import { ageFromDob } from "@/lib/gathering-display";
 import Link from "next/link";
 import { SectionTitle } from "@/components/ui/page-header";
 import { signOutAction } from "@/app/actions/auth";
+import { MoodBoardAura } from "@/components/mood-board-aura";
 
 function MetaChip({ children }: { children: React.ReactNode }) {
   return (
@@ -35,12 +36,19 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-8 pb-10">
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-white via-gather-cream/40 to-gather-cream/20 px-5 pb-8 pt-10 shadow-md ring-1 ring-black/[0.06]">
+      <section
+        className={`relative overflow-visible rounded-3xl bg-gradient-to-b from-white via-gather-cream/40 to-gather-cream/20 px-5 pb-8 pt-10 shadow-md ring-1 ring-black/[0.06] ${
+          p.moodBoardEnabled ? "ring-2 ring-gather-accent/30" : ""
+        }`}
+      >
         <div
           className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gather-accent/15 blur-2xl"
           aria-hidden
         />
         <div className="relative flex flex-col items-center text-center">
+          {p.moodBoardEnabled ? (
+            <MoodBoardAura decorJson={p.moodBoardDecor} />
+          ) : null}
           <div className="relative">
             {primary?.url || u.image ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -55,7 +63,13 @@ export default async function ProfilePage() {
               </div>
             )}
           </div>
-          <h1 className="mt-6 font-serif text-3xl font-light tracking-tight text-gather-ink sm:text-4xl">
+          <h1
+            className={`mt-6 text-gather-ink sm:text-4xl ${
+              p.moodBoardEnabled
+                ? "font-handwriting text-4xl font-medium tracking-tight"
+                : "font-serif text-3xl font-light tracking-tight"
+            }`}
+          >
             {p.firstName}
           </h1>
           <p className="mt-1 text-sm font-medium text-gather-brown-mid">
@@ -81,13 +95,18 @@ export default async function ProfilePage() {
       <section>
         <SectionTitle title="Prompts" />
         <div className="space-y-3">
-          {PERSONALITY_PROMPTS.map((pr) => {
+          {PERSONALITY_PROMPTS.map((pr, i) => {
             const ans = u.promptAnswers.find((a) => a.promptKey === pr.key);
             if (!ans) return null;
+            const tilt = p.moodBoardEnabled
+              ? ["rotate-[-1deg]", "rotate-[1.2deg]", "rotate-[-0.6deg]", "rotate-[0.9deg]"][i % 4]
+              : "";
             return (
               <article
                 key={pr.key}
-                className="rounded-2xl border border-neutral-200/70 bg-white px-4 py-4 shadow-sm ring-1 ring-black/[0.02]"
+                className={`rounded-2xl border border-neutral-200/70 bg-white px-4 py-4 shadow-sm ring-1 ring-black/[0.02] ${
+                  p.moodBoardEnabled ? `${tilt} bg-[#fffef8] shadow-md ring-amber-100/80` : ""
+                }`}
               >
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
                   {pr.label}

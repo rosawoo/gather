@@ -31,6 +31,9 @@ model User {
 
   smsOptOut Boolean @default(false)
 
+  /** Set after Stripe Checkout / Customer is created — used for Billing Portal. */
+  stripeCustomerId String? @unique
+
   accounts Account[]
   sessions Session[]
 
@@ -104,6 +107,9 @@ model Profile {
   college       String?
   job           String?
   bio           String?
+
+  moodBoardEnabled Boolean @default(false)
+  moodBoardDecor    String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

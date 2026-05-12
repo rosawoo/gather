@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { signOutAction } from "@/app/actions/auth";
+import { billingPortalRedirect } from "@/app/actions/billing";
+import { isStripeConfigured } from "@/lib/stripe";
 import { SmsToggle } from "./sms-toggle";
 import { DeleteAccountButton } from "./delete-account-button";
 import { SectionTitle } from "@/components/ui/page-header";
@@ -18,6 +20,8 @@ export default async function SettingsPage() {
     where: { id: session!.user!.id },
     include: { profile: true },
   });
+
+  const stripeOk = isStripeConfigured();
 
   return (
     <div className="space-y-8 pb-10">
@@ -65,9 +69,31 @@ export default async function SettingsPage() {
               <span className="text-amber-600">{user.tokensHeld}</span>
             </Row>
           )}
-          <p className="pt-1 text-xs text-neutral-500">
-            Billing portal coming soon (Stripe).
-          </p>
+          {stripeOk && user.stripeCustomerId ? (
+            <form action={billingPortalRedirect} className="pt-3">
+              <button
+                type="submit"
+                className="w-full rounded-full bg-gather-brown py-2.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid"
+              >
+                Manage billing & invoices
+              </button>
+              <p className="mt-2 text-[11px] text-neutral-500">
+                Opens Stripe&apos;s customer portal (payment methods, history).
+                Configure subscription products there if you use recurring plans.
+              </p>
+            </form>
+          ) : stripeOk ? (
+            <p className="pt-1 text-xs text-neutral-500">
+              Complete a token purchase with card checkout to link a Stripe
+              customer — then you can manage payment methods and receipts here.
+            </p>
+          ) : (
+            <p className="pt-1 text-xs text-neutral-500">
+              Stripe isn&apos;t configured in this environment. See{" "}
+              <code className="text-xs text-neutral-700">.env.example</code> for
+              setup.
+            </p>
+          )}
         </Card>
       </section>
 

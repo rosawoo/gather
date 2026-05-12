@@ -42,6 +42,8 @@ export default async function EditProfilePage() {
           college: p.college ?? "",
           job: p.job ?? "",
           bio: p.bio ?? "",
+          moodBoardEnabled: p.moodBoardEnabled,
+          moodBoardDecor: p.moodBoardDecor,
         }}
       />
     </div>

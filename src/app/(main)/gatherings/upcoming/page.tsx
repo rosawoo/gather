@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ageFromDob } from "@/lib/gathering-display";
 import { cancelGuestRequestAction } from "@/app/actions/request";
 import { SectionTitle } from "@/components/ui/page-header";
+import { ScrapbookFrame } from "@/components/scrapbook-frame";
 
 export default async function UpcomingGatheringsPage() {
   const session = await auth();
@@ -46,7 +47,11 @@ export default async function UpcomingGatheringsPage() {
   const past = requests.filter((r) => r.gathering.startsAt <= now);
 
   return (
-    <div className="pb-8">
+    <div className="relative pb-8">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.9)_0%,transparent_58%)] blur-2xl"
+      />
       <p className="mb-8 text-sm text-neutral-600">
         Requests, confirmed plans, and past gatherings.
       </p>
@@ -56,30 +61,31 @@ export default async function UpcomingGatheringsPage() {
         {pending.length === 0 ? (
           <p className="text-sm text-neutral-500">None right now.</p>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-8">
             {pending.map((r) => (
-              <li
-                key={r.id}
-                className="rounded-2xl border border-neutral-200/90 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md"
-              >
-                <Link
-                  href={`/gatherings/${r.gatheringId}`}
-                  className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
-                >
-                  {r.gathering.title}
-                </Link>
-                <p className="mt-1 text-xs text-neutral-500">
-                  {r.gathering.startsAt.toLocaleString()} · Pending
-                </p>
-                <form action={cancelGuestRequestAction} className="mt-2">
-                  <input type="hidden" name="gatheringId" value={r.gatheringId} />
-                  <button
-                    type="submit"
-                    className="text-xs font-semibold text-red-700 transition hover:text-red-800 hover:underline"
-                  >
-                    Cancel request (tokens return)
-                  </button>
-                </form>
+              <li key={r.id} className="list-none">
+                <ScrapbookFrame>
+                  <div className="rounded-2xl border border-neutral-200/90 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
+                    <Link
+                      href={`/gatherings/${r.gatheringId}`}
+                      className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
+                    >
+                      {r.gathering.title}
+                    </Link>
+                    <p className="mt-1 text-xs text-neutral-500">
+                      {r.gathering.startsAt.toLocaleString()} · Pending
+                    </p>
+                    <form action={cancelGuestRequestAction} className="mt-2">
+                      <input type="hidden" name="gatheringId" value={r.gatheringId} />
+                      <button
+                        type="submit"
+                        className="text-xs font-semibold text-red-700 transition hover:text-red-800 hover:underline"
+                      >
+                        Cancel request (tokens return)
+                      </button>
+                    </form>
+                  </div>
+                </ScrapbookFrame>
               </li>
             ))}
           </ul>
@@ -91,7 +97,7 @@ export default async function UpcomingGatheringsPage() {
         {approved.length === 0 ? (
           <p className="text-sm text-neutral-500">Nothing on your calendar yet.</p>
         ) : (
-          <ul className="space-y-6">
+          <ul className="space-y-10">
             {approved.map((r) => {
               const g = r.gathering;
               const host = g.host;
@@ -100,58 +106,32 @@ export default async function UpcomingGatheringsPage() {
               const approvedGuests = g.requests;
 
               return (
-                <li
-                  key={r.id}
-                  className="rounded-2xl border border-neutral-200/90 bg-white p-5 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md"
-                >
-                  <Link
-                    href={`/gatherings/${g.id}`}
-                    className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
-                  >
-                    {g.title}
-                  </Link>
-                  <p className="mt-1 text-xs text-neutral-500">
-                    {g.startsAt.toLocaleString()} · {g.neighborhood}
-                  </p>
-                  <p className="mt-2 text-xs text-neutral-600">
-                    Exact address is visible on the gathering page.
-                  </p>
+                <li key={r.id} className="list-none">
+                  <ScrapbookFrame>
+                    <div className="rounded-2xl border border-neutral-200/90 bg-white p-5 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
+                      <Link
+                        href={`/gatherings/${g.id}`}
+                        className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
+                      >
+                        {g.title}
+                      </Link>
+                      <p className="mt-1 text-xs text-neutral-500">
+                        {g.startsAt.toLocaleString()} · {g.neighborhood}
+                      </p>
+                      <p className="mt-2 text-xs text-neutral-600">
+                        Exact address is visible on the gathering page.
+                      </p>
 
-                  <div className="mt-4 rounded-xl bg-gather-paper/80 px-3 py-3 ring-1 ring-neutral-200/60">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-gather-brown-mid">
-                      Who&apos;s coming
-                    </p>
-                    <ul className="mt-2 space-y-2.5">
-                      <li className="flex items-center gap-2.5">
-                        {hostPrimary?.url || host.image ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={hostPrimary?.url ?? host.image!}
-                            alt=""
-                            className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
-                          />
-                        ) : (
-                          <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
-                        )}
-                        <span className="text-[15px]">
-                          {host.profile?.firstName ?? host.name ?? "Host"}{" "}
-                          <span className="text-xs font-medium text-gather-brown-mid">
-                            (host)
-                          </span>
-                        </span>
-                      </li>
-                      {approvedGuests.map((gr) => {
-                        const gp = gr.guest.profile;
-                        const ph =
-                          gr.guest.photos.find((p) => p.isPrimary) ??
-                          gr.guest.photos[0];
-                        if (!gp) return null;
-                        return (
-                          <li key={gr.id} className="flex items-center gap-2">
-                            {ph?.url ? (
+                      <div className="mt-4 rounded-xl bg-gather-paper/80 px-3 py-3 ring-1 ring-neutral-200/60">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-gather-brown-mid">
+                          Who&apos;s coming
+                        </p>
+                        <ul className="mt-2 space-y-2.5">
+                          <li className="flex items-center gap-2.5">
+                            {hostPrimary?.url || host.image ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img
-                                src={ph.url}
+                                src={hostPrimary?.url ?? host.image!}
                                 alt=""
                                 className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
                               />
@@ -159,32 +139,59 @@ export default async function UpcomingGatheringsPage() {
                               <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
                             )}
                             <span className="text-[15px]">
-                              {gp.firstName}{" "}
-                              <span className="text-xs text-neutral-500">
-                                · {ageFromDob(gp.dateOfBirth)}
+                              {host.profile?.firstName ?? host.name ?? "Host"}{" "}
+                              <span className="text-xs font-medium text-gather-brown-mid">
+                                (host)
                               </span>
                             </span>
                           </li>
-                        );
-                      })}
-                      {g.hostFriendsCount > 0 ? (
-                        <li className="text-xs text-neutral-500">
-                          + {g.hostFriendsCount} host friend
-                          {g.hostFriendsCount === 1 ? "" : "s"} (not shown)
-                        </li>
-                      ) : null}
-                    </ul>
-                  </div>
+                          {approvedGuests.map((gr) => {
+                            const gp = gr.guest.profile;
+                            const ph =
+                              gr.guest.photos.find((p) => p.isPrimary) ??
+                              gr.guest.photos[0];
+                            if (!gp) return null;
+                            return (
+                              <li key={gr.id} className="flex items-center gap-2">
+                                {ph?.url ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img
+                                    src={ph.url}
+                                    alt=""
+                                    className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+                                  />
+                                ) : (
+                                  <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
+                                )}
+                                <span className="text-[15px]">
+                                  {gp.firstName}{" "}
+                                  <span className="text-xs text-neutral-500">
+                                    · {ageFromDob(gp.dateOfBirth)}
+                                  </span>
+                                </span>
+                              </li>
+                            );
+                          })}
+                          {g.hostFriendsCount > 0 ? (
+                            <li className="text-xs text-neutral-500">
+                              + {g.hostFriendsCount} host friend
+                              {g.hostFriendsCount === 1 ? "" : "s"} (not shown)
+                            </li>
+                          ) : null}
+                        </ul>
+                      </div>
 
-                  <form action={cancelGuestRequestAction} className="mt-3">
-                    <input type="hidden" name="gatheringId" value={g.id} />
-                    <button
-                      type="submit"
-                      className="text-xs font-medium text-neutral-600 transition hover:text-gather-ink hover:underline"
-                    >
-                      Withdraw (&gt;24h before start returns tokens)
-                    </button>
-                  </form>
+                      <form action={cancelGuestRequestAction} className="mt-3">
+                        <input type="hidden" name="gatheringId" value={g.id} />
+                        <button
+                          type="submit"
+                          className="text-xs font-medium text-neutral-600 transition hover:text-gather-ink hover:underline"
+                        >
+                          Withdraw (&gt;24h before start returns tokens)
+                        </button>
+                      </form>
+                    </div>
+                  </ScrapbookFrame>
                 </li>
               );
             })}

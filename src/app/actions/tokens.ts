@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { getSiteUrl } from "@/lib/site-url";
 import { getStripe } from "@/lib/stripe";
 import { getTokenPack } from "@/lib/token-packs";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 // Tokens are credited when Stripe sends `checkout.session.completed` to /api/stripe/webhook.
@@ -21,6 +22,14 @@ export async function purchaseTokensCheckout(formData: FormData) {
 
   const stripe = getStripe();
   const site = getSiteUrl();
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { email: true, stripeCustomerId: true },
+  });
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "payment",
@@ -45,6 +54,12 @@ export async function purchaseTokensCheckout(formData: FormData) {
       tokens: String(def.tokens),
       pack: String(def.pack),
     },
+    ...(user.stripeCustomerId
+      ? { customer: user.stripeCustomerId }
+      : {
+          customer_email: user.email ?? undefined,
+          customer_creation: "always" as const,
+        }),
   });
 
   if (!checkoutSession.url) {

@@ -6,6 +6,7 @@ import { updateProfile } from "@/app/actions/profile";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { PersonalityPromptSlots } from "@/components/personality-prompt-slots";
 import { PhotoUpload } from "@/components/photo-upload";
+import { MoodBoardEditor } from "@/components/mood-board-editor";
 import {
   ProfileField,
   ProfileFieldGroup,
@@ -27,6 +28,8 @@ export function EditProfileForm({
     college: string;
     job: string;
     bio: string;
+    moodBoardEnabled: boolean;
+    moodBoardDecor: string | null;
   };
   usedNeighborhoods: string[];
   photoUrls: string[];
@@ -128,6 +131,28 @@ export function EditProfileForm({
           defaultValue={defaults.bio}
           className={profileInputCls}
         />
+      </ProfileFieldGroup>
+
+      <ProfileFieldGroup
+        title="Mood board (optional)"
+        hint="Scatter stickers around your name on your public profile — or keep the classic layout off."
+      >
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-neutral-200/80 bg-gather-paper/40 px-3 py-3">
+          <input
+            type="checkbox"
+            name="moodBoardEnabled"
+            value="on"
+            defaultChecked={defaults.moodBoardEnabled}
+            className="mt-0.5 accent-gather-brown"
+          />
+          <span className="text-sm text-gather-ink">
+            <span className="font-semibold">Enable mood board look</span>
+            <span className="mt-0.5 block text-xs text-neutral-600">
+              Name and age stay centered; you add playful emoji orbiters below.
+            </span>
+          </span>
+        </label>
+        <MoodBoardEditor initialDecorJson={defaults.moodBoardDecor} />
       </ProfileFieldGroup>
 
       <ProfileFieldGroup

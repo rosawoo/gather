@@ -61,6 +61,17 @@ async function fulfillCheckoutSession(session: Stripe.Checkout.Session): Promise
       data: { tokensAvailable: { increment: tokens } },
     });
 
+    const stripeCustomerId =
+      typeof session.customer === "string"
+        ? session.customer
+        : session.customer?.id;
+    if (stripeCustomerId) {
+      await tx.user.updateMany({
+        where: { id: userId, stripeCustomerId: null },
+        data: { stripeCustomerId },
+      });
+    }
+
     await tx.tokenLedgerEntry.create({
       data: {
         userId,

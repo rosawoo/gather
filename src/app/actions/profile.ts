@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { parsePersonalitySlots } from "@/lib/prompts";
+import { normalizeMoodBoardDecorJson } from "@/lib/mood-board";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -118,6 +119,11 @@ export async function updateProfile(formData: FormData) {
   const answers = parsePersonalitySlots(formData);
   if (answers.length < 2) throw new Error("Answer at least 2 prompts");
 
+  const moodBoardEnabled = formData.get("moodBoardEnabled") === "on";
+  const moodBoardDecor = normalizeMoodBoardDecorJson(
+    String(formData.get("moodBoardDecor") ?? ""),
+  );
+
   const userId = session.user.id;
 
   await prisma.$transaction(async (tx) => {
@@ -130,6 +136,8 @@ export async function updateProfile(formData: FormData) {
         college: college || null,
         job: job || null,
         bio,
+        moodBoardEnabled,
+        moodBoardDecor: moodBoardEnabled ? moodBoardDecor : null,
       },
     });
 

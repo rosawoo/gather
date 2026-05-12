@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { JoinRequestForm } from "./join-form";
 import { SectionTitle } from "@/components/ui/page-header";
 import { CoverArt } from "@/components/cover-art";
+import { ScrapbookFrame } from "@/components/scrapbook-frame";
 
 export default async function GatheringDetailPage({
   params,
@@ -68,7 +69,11 @@ export default async function GatheringDetailPage({
   });
 
   return (
-    <div className="pb-10">
+    <div className="relative pb-10">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.9)_0%,transparent_58%)] blur-2xl"
+      />
       <Link
         href="/gatherings"
         className="mb-4 inline-flex items-center gap-1 text-sm text-gather-brown-mid transition hover:text-gather-brown"
@@ -89,6 +94,7 @@ export default async function GatheringDetailPage({
         Discover
       </Link>
 
+      <ScrapbookFrame>
       <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.04]">
         <div className="aspect-[16/9] w-full bg-neutral-100">
           <CoverArt cover={g.coverImageUrl} title={g.title} eager />
@@ -171,6 +177,7 @@ export default async function GatheringDetailPage({
           </div>
         </div>
       </div>
+      </ScrapbookFrame>
 
       {(canSeePrivate || isHost) && (
         <section className="mt-8">

@@ -101,6 +101,7 @@ export type ParsedCover =
       template: CoverTemplate;
       bg: string | null;
       stickers: string[];
+      overlayUrls: string[];
     }
   | { kind: "none" };
 
@@ -123,6 +124,18 @@ export function stickerGlyph(id: string): string {
   return row?.glyph ?? "";
 }
 
+function parseCoverOverlayUrlParam(raw: string | null): string | null {
+  if (!raw?.trim()) return null;
+  try {
+    const u = decodeURIComponent(raw.trim());
+    if (!/^https?:\/\//i.test(u)) return null;
+    if (u.length > 2048) return null;
+    return u;
+  } catch {
+    return null;
+  }
+}
+
 export function parseCover(raw: string | null | undefined): ParsedCover {
   if (!raw) return { kind: "none" };
   if (!raw.startsWith(PREFIX)) return { kind: "url", url: raw };
@@ -142,22 +155,37 @@ export function parseCover(raw: string | null | undefined): ParsedCover {
         .filter(Boolean)
         .slice(0, 4)
     : [];
-  return { kind: "template", template: tpl, bg, stickers };
+  const overlayUrls = (["ov0", "ov1", "ov2"] as const)
+    .map((k) => parseCoverOverlayUrlParam(params.get(k)))
+    .filter((u): u is string => Boolean(u));
+  return { kind: "template", template: tpl, bg, stickers, overlayUrls };
 }
 
 export function encodeTemplate({
   id,
   bg,
   stickers,
+  overlays,
 }: {
   id: CoverTemplateId;
   bg?: string | null;
   stickers?: string[];
+  /** Up to 3 small image/GIF URLs layered on the template. */
+  overlays?: string[];
 }): string {
   const qs = new URLSearchParams();
   if (bg) qs.set("bg", bg);
   if (stickers?.length)
     qs.set("stickers", stickers.slice(0, 4).join(","));
+  if (overlays?.length) {
+    overlays
+      .map((u) => u.trim())
+      .filter((u) => /^https?:\/\//i.test(u) && u.length <= 2048)
+      .slice(0, 3)
+      .forEach((u, i) => {
+        qs.set(`ov${i}`, encodeURIComponent(u));
+      });
+  }
   const suffix = qs.toString() ? `?${qs.toString()}` : "";
   return `${PREFIX}${id}${suffix}`;
 }

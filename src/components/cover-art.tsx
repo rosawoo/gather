@@ -33,6 +33,7 @@ export function CoverArt({
         title={title}
         className={className}
         stickers={parsed.stickers}
+        overlayUrls={parsed.overlayUrls}
       />
     );
   }
@@ -52,6 +53,7 @@ export function TemplatePreview({
   title,
   className = "",
   stickers = [],
+  overlayUrls = [],
 }: {
   template: CoverTemplate;
   bgOverride?: string | null;
@@ -59,6 +61,8 @@ export function TemplatePreview({
   className?: string;
   /** Sticker preset ids (see COVER_STICKER_PRESETS). */
   stickers?: string[];
+  /** Small custom images or GIFs layered on the template (max 3). */
+  overlayUrls?: string[];
 }) {
   const bg = bgOverride || template.bgPrimary;
   return (
@@ -70,8 +74,9 @@ export function TemplatePreview({
     >
       <Motif motif={template.motif} accent={template.accent} fg={template.fg} />
       <StickerOverlay stickers={stickers} />
+      <TemplateImageOverlays urls={overlayUrls} />
 
-      <div className="relative p-4">
+      <div className="relative z-[2] p-4">
         <span
           className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em]"
           style={{
@@ -94,6 +99,27 @@ export function TemplatePreview({
         </p>
       </div>
     </div>
+  );
+}
+
+function TemplateImageOverlays({ urls }: { urls: string[] }) {
+  const pos = [
+    "left-[8%] top-[22%] z-[11] h-[26%] w-auto max-w-[32%] -rotate-[10deg]",
+    "right-[6%] top-[26%] z-[11] h-[28%] w-auto max-w-[34%] rotate-[8deg]",
+    "left-[14%] top-[40%] z-[11] h-[22%] w-auto max-w-[30%] rotate-[5deg]",
+  ];
+  return (
+    <>
+      {urls.slice(0, 3).map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={`${src}-${i}`}
+          src={src}
+          alt=""
+          className={`pointer-events-none absolute select-none object-contain drop-shadow-xl ${pos[i] ?? pos[0]}`}
+        />
+      ))}
+    </>
   );
 }
 
