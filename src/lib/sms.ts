@@ -9,13 +9,47 @@ export function isSmsConfigured(): boolean {
   return Boolean(sid && token && (from || msid));
 }
 
-function twilioRestDetails(e: unknown): { message: string; code?: number } {
-  if (e instanceof Error) {
-    const any = e as Error & { code?: number };
-    const code = typeof any.code === "number" ? any.code : undefined;
-    return { message: e.message, code };
+/** If Twilio vars are “set” but wrong shape, outbound sends fail oddly or silently at setup time. */
+function twilioOutboundEnvError(): string | null {
+  if (!isSmsConfigured()) return null;
+  const sid = process.env.TWILIO_ACCOUNT_SID!.trim();
+  if (!sid.startsWith("AC")) {
+    return "TWILIO_ACCOUNT_SID must start with AC (Twilio Console → Account info). Keys starting with SK belong in TWILIO_AUTH_TOKEN, not the Account SID.";
   }
-  return { message: String(e) };
+  const msid = process.env.TWILIO_MESSAGING_SERVICE_SID?.trim();
+  const from = process.env.TWILIO_FROM_NUMBER?.trim();
+  if (msid) {
+    if (!msid.startsWith("MG")) {
+      return "TWILIO_MESSAGING_SERVICE_SID must start with MG. If you only use a Twilio phone number as sender, remove this env var entirely and keep TWILIO_FROM_NUMBER (+E.164). Messaging Service SID wins over TWILIO_FROM_NUMBER when both are set.";
+    }
+  } else if (from && !from.startsWith("+")) {
+    return "TWILIO_FROM_NUMBER must be E.164 (start with +, e.g. +15551234567).";
+  }
+  return null;
+}
+
+/** Server UI: show amber alert when env looks configured but inconsistent (before user taps Send). */
+export function describeTwilioSmsSetupIssue(): string | null {
+  return twilioOutboundEnvError();
+}
+
+function parseTwilioErrorCode(e: unknown): number | undefined {
+  if (!e || typeof e !== "object") return undefined;
+  const raw = (e as { code?: unknown }).code;
+  if (typeof raw === "number" && Number.isFinite(raw)) return raw;
+  if (typeof raw === "string" && /^\d+$/.test(raw)) return Number(raw);
+  return undefined;
+}
+
+function twilioRestDetails(e: unknown): { message: string; code?: number } {
+  const msg = e instanceof Error ? e.message : String(e);
+  return { message: msg, code: parseTwilioErrorCode(e) };
+}
+
+function maskE164(e164: string): string {
+  const t = e164.trim();
+  if (t.length < 9) return "[phone]";
+  return `${t.slice(0, Math.max(5, t.length - 6))}…${t.slice(-3)}`;
 }
 
 /** Turn Twilio API errors into actionable copy for onboarding / support. */
@@ -102,6 +136,12 @@ export async function sendSmsToE164(
     return { ok: false, error: "Twilio not configured" };
   }
 
+  const cfgErr = twilioOutboundEnvError();
+  if (cfgErr) {
+    console.error("[sms:bad-env]", cfgErr);
+    return { ok: false, error: cfgErr };
+  }
+
   try {
     const sid = process.env.TWILIO_ACCOUNT_SID!.trim();
     const token = process.env.TWILIO_AUTH_TOKEN!.trim();
@@ -109,13 +149,23 @@ export async function sendSmsToE164(
     const text = appendFooter ? body + gatherFooter : body;
     const msid = process.env.TWILIO_MESSAGING_SERVICE_SID?.trim();
     const from = process.env.TWILIO_FROM_NUMBER?.trim();
-    await client.messages.create({
+    const route = msid
+      ? `messaging_service=${msid.slice(0, 6)}…${msid.slice(-4)}`
+      : `from=${from}`;
+    console.info("[sms:outbound]", "route", route, "to", maskE164(toE164));
+
+    const created = await client.messages.create({
       to: toE164,
       body: text,
-      ...(msid
-        ? { messagingServiceSid: msid }
-        : { from: from! }),
+      ...(msid ? { messagingServiceSid: msid } : { from: from! }),
     });
+    console.info(
+      "[sms:sent]",
+      `sid=${created.sid}`,
+      `status=${created.status}`,
+      "to",
+      maskE164(toE164),
+    );
     return { ok: true };
   } catch (e) {
     const { message, code } = twilioRestDetails(e);

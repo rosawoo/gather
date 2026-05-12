@@ -219,6 +219,26 @@ export default async function GatheringDetailPage({
         </section>
       )}
 
+      {!isHost &&
+        g.status === GatheringStatus.PUBLISHED &&
+        g.startsAt > new Date() && (
+          <div className="mt-8 space-y-4">
+            {!myRequest ? (
+              <JoinRequestForm gatheringId={g.id} tokenCost={g.tokenCost} />
+            ) : myRequest.status === GatheringRequestStatus.PENDING ? (
+              <StatusNote tone="neutral">
+                Your request is pending. You can cancel from Upcoming.
+              </StatusNote>
+            ) : myRequest.status === GatheringRequestStatus.APPROVED ? (
+              <StatusNote tone="approved">You&apos;re approved.</StatusNote>
+            ) : (
+              <StatusNote tone="neutral">
+                You weren&apos;t selected for this gathering.
+              </StatusNote>
+            )}
+          </div>
+        )}
+
       <footer className="mt-10 space-y-4 rounded-2xl border border-gather-teal/25 bg-gather-paper/90 p-4 text-sm text-gather-charcoal shadow-sm ring-1 ring-gather-teal/10">
         <div className="grid grid-cols-2 gap-3">
           <Fact label="Group size">
@@ -240,42 +260,24 @@ export default async function GatheringDetailPage({
           </p>
         ) : null}
 
-        <ul className="space-y-2 italic text-gather-charcoal/90">
-          <li>
-            Exact address and list of other gatherers shared after approval.
-          </li>
-          <li>
-            Tokens are held while the host reviews. If approved, tokens are used;
-            if not a match, they return. Tokens are for cost-sharing not
-            profit.
-          </li>
-        </ul>
-        <p className="text-sm not-italic text-gather-charcoal/85">
-          If the minimum group size isn&apos;t reached two hours before the event,
-          the gathering is automatically cancelled.
-        </p>
+        <div className="space-y-2 border-t border-gather-teal/20 pt-4 text-[13px] leading-[1.5]">
+          <p className="text-gather-charcoal/95">
+            Exact address and list of other gatherers are shared after approval.
+          </p>
+          <p className="text-gather-charcoal/95">
+            Tokens are held while the host reviews your request. If
+            you&apos;re approved, tokens are applied to shared costs. If it
+            isn&apos;t a fit, tokens return to you. Tokens exist for splitting
+            real expenses, not profit.
+          </p>
+          <p className="italic text-gather-charcoal/90">
+            If the minimum group size isn&apos;t reached two hours before the
+            start time, this gathering may be cancelled automatically.
+          </p>
+        </div>
+
         <TokenExplainer />
       </footer>
-
-      {!isHost &&
-        g.status === GatheringStatus.PUBLISHED &&
-        g.startsAt > new Date() && (
-          <div className="mt-8">
-            {!myRequest ? (
-              <JoinRequestForm gatheringId={g.id} tokenCost={g.tokenCost} />
-            ) : myRequest.status === GatheringRequestStatus.PENDING ? (
-              <StatusNote tone="neutral">
-                Your request is pending. You can cancel from Upcoming.
-              </StatusNote>
-            ) : myRequest.status === GatheringRequestStatus.APPROVED ? (
-              <StatusNote tone="approved">You&apos;re approved.</StatusNote>
-            ) : (
-              <StatusNote tone="neutral">
-                You weren&apos;t selected for this gathering.
-              </StatusNote>
-            )}
-          </div>
-        )}
 
       <div className="mt-10 text-center">
         <Link

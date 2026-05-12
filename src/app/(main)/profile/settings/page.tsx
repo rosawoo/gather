@@ -136,9 +136,12 @@ export default async function SettingsPage() {
       </section>
 
       <section>
-        <SectionTitle title="Legal" variant="accountShell" />
+        <SectionTitle title="Legal & policies" variant="accountShell" />
         <Card>
-          <ul className="space-y-3 text-[15px] leading-snug">
+          <p className="font-sans text-[13px] leading-[1.45] text-lc-settings-helper">
+            Terms, privacy, and guidelines for using Gather responsibly.
+          </p>
+          <ul className="mt-5 space-y-3 border-t border-lc-control-brown/12 pt-4 text-[15px] leading-snug">
             <li>
               <Link
                 href="/about"
@@ -172,25 +175,20 @@ export default async function SettingsPage() {
               </Link>
             </li>
           </ul>
-        </Card>
-      </section>
-
-      <section>
-        <SectionTitle title="Policies" variant="accountShell" />
-        <Card>
-          <ul className="space-y-4 font-sans text-[15px] leading-relaxed">
+          <ul className="mt-6 space-y-4 border-t border-lc-control-brown/12 pt-5 font-sans text-[14px] leading-relaxed">
             <Policy title="Cancellation">
-              Guests can withdraw &gt;24h before an event for a full token
-              refund. Within 24h, tokens are forfeited.
+              Guests can withdraw &gt;24h before an event for a full token refund.
+              Within 24h, tokens are forfeited.
             </Policy>
             <Policy title="Auto-cancel">
-              Gatherings that don&apos;t reach minimum group size within 2
-              hours of the start time are automatically cancelled and tokens
-              returned.
+              Gatherings that don&apos;t reach minimum group size within 2 hours of
+              the start time are automatically cancelled and tokens returned.
             </Policy>
             <Policy title="Tokens">
-              Tokens are non-transferable. Held tokens are locked until the
-              request is resolved.
+              Tokens are non-transferable. Held tokens stay locked until a join
+              request is approved or declined. After gatherings end, hosts get
+              in-app reminders and optional SMS prompts to submit shared-cost receipts
+              for reimbursement.
             </Policy>
           </ul>
         </Card>

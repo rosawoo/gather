@@ -17,11 +17,18 @@ const tabs = [
 
 export function ProfileTabs({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
   const pathname = usePathname();
+  const subtleNav = pathname === "/profile/tokens";
 
   return (
-    <div className="mb-7 flex justify-center border-b border-lc-warm-shadow/35">
+    <div
+      className={
+        subtleNav
+          ? "mb-4 flex justify-center border-b border-white/[0.08]"
+          : "mb-7 flex justify-center border-b border-lc-warm-shadow/35"
+      }
+    >
       <nav
-        className="-mb-px flex items-stretch gap-1 sm:gap-2"
+        className={subtleNav ? "-mb-px flex items-stretch gap-1" : "-mb-px flex items-stretch gap-1 sm:gap-2"}
         aria-label="Profile sections"
       >
         {tabs.map((t) => {
@@ -36,7 +43,11 @@ export function ProfileTabs({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               key={t.href}
               href={t.href}
               aria-current={active ? "page" : undefined}
-              className={`relative shrink-0 px-3 py-3.5 text-center font-serif text-[17px] font-semibold lowercase tracking-[0.02em] transition sm:px-5 ${
+              className={`relative shrink-0 text-center lowercase transition ${
+                subtleNav
+                  ? "px-2.5 py-2 font-serif text-[14px] font-medium tracking-[0.04em] sm:px-3.5"
+                  : "px-3 py-3.5 font-serif text-[17px] font-semibold tracking-[0.02em] sm:px-5"
+              } ${
                 active ? "text-lc-cream" : `${lcChrome.tabMutedUnderline}`
               }`}
             >

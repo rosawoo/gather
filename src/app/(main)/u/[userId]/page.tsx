@@ -160,13 +160,14 @@ export default async function PublicProfilePage({
 
         {visibleHosted.length > 0 ? (
           <div className="mt-12 flex flex-col items-center gap-12">
-            {visibleHosted.map((g) => {
+            {visibleHosted.map((g, i) => {
               const filled = g.hostFriendsCount + g.requests.length;
               const spotsLeft = Math.max(0, g.maxTotalSize - filled);
               return (
                 <PolaroidCard
                   key={g.id}
                   variant="static"
+                  scrapbookIndex={i}
                   id={g.id}
                   title={g.title}
                   description={g.description}

@@ -3,7 +3,10 @@
 import { auth } from "@/auth";
 import { getSiteUrl } from "@/lib/site-url";
 import { getStripe } from "@/lib/stripe";
-import { getTokenPack } from "@/lib/token-packs";
+import {
+  effectiveCheckoutAmountCents,
+  getTokenPack,
+} from "@/lib/token-packs";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
@@ -41,7 +44,7 @@ export async function purchaseTokensCheckout(formData: FormData) {
             name: `${def.tokens} Gather token${def.tokens === 1 ? "" : "s"}`,
             description: def.description,
           },
-          unit_amount: def.amountCents,
+          unit_amount: effectiveCheckoutAmountCents(def.amountCents),
         },
         quantity: 1,
       },

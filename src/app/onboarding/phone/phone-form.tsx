@@ -14,12 +14,18 @@ function errMessage(e: unknown) {
 type PhoneFormProps = {
   /** True when Twilio env vars are missing on a production build (e.g. Vercel). */
   showSmsConfigWarning?: boolean;
+  /** SID / FROM format problems when vars appear set — SMS will fail until Vercel env is corrected. */
+  twilioEnvShapeIssue?: string;
 };
 
-export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
+export function PhoneForm({
+  showSmsConfigWarning = false,
+  twilioEnvShapeIssue,
+}: PhoneFormProps) {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
+  const [smsDiagHint, setSmsDiagHint] = useState<string | null>(null);
   const [tone, setTone] = useState<"info" | "error">("info");
   const [pending, setPending] = useState(false);
 
@@ -27,6 +33,7 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
     e.preventDefault();
     setPending(true);
     setMsg(null);
+    setSmsDiagHint(null);
     try {
       const result = await requestPhoneCode(phone);
       if (!result.ok) {
@@ -36,6 +43,9 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
         setTone("info");
         if (result.channel === "sms") {
           setMsg("Code sent. Check your phone for the text.");
+          setSmsDiagHint(
+            "If nothing arrives within a minute, check Twilio Console → Monitor → Logs for this destination. Successful sends log Message SIDs server-side ([sms:sent]); “queued” can still fail afterward (carrier, trial limits, STOP, or geo).",
+          );
         } else {
           setMsg(result.detail);
         }
@@ -52,6 +62,7 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
     e.preventDefault();
     setPending(true);
     setMsg(null);
+    setSmsDiagHint(null);
     try {
       const result = await verifyPhoneCode(phone, code);
       if (result?.ok === false) {
@@ -98,6 +109,16 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
         </div>
       ) : null}
 
+      {twilioEnvShapeIssue && !showSmsConfigWarning ? (
+        <div
+          className="rounded-xl border border-amber-200/90 bg-amber-50/95 px-4 py-3 text-sm text-amber-950 shadow-sm"
+          role="alert"
+        >
+          <p className="font-semibold">Twilio SMS is misconfigured on the server</p>
+          <p className="mt-2 leading-relaxed text-amber-950/95">{twilioEnvShapeIssue}</p>
+        </div>
+      ) : null}
+
       <form onSubmit={onRequestCode} className="space-y-3">
         <label className="flex items-baseline gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
           Phone number
@@ -120,7 +141,7 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
       </form>
 
       {msg ? (
-        <p
+        <div
           role="alert"
           aria-live="polite"
           className={`rounded-xl px-3 py-2 text-sm ${
@@ -129,8 +150,13 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
               : "bg-gather-paper/80 text-gather-ink ring-1 ring-gather-teal/20"
           }`}
         >
-          {msg}
-        </p>
+          <p>{msg}</p>
+          {tone === "info" && smsDiagHint ? (
+            <p className="mt-2 text-xs leading-relaxed text-gather-charcoal/82">
+              {smsDiagHint}
+            </p>
+          ) : null}
+        </div>
       ) : null}
 
       <form onSubmit={onVerify} className="space-y-3">

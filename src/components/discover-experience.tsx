@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { DiscoverFilters } from "@/components/discover-filters";
 import { PolaroidCard, type PolaroidCardData } from "@/components/polaroid-card";
 import { lcChrome } from "@/lib/lc-classes";
@@ -184,6 +185,12 @@ export function DiscoverExperience({
 
       <DiscoverFilters neighborhoods={neighborhoods} chrome="candlelit" />
 
+      {!empty ? (
+        <p className="mb-1 font-handwriting text-center text-[1.05rem] leading-snug lowercase tracking-[0.02em] text-lc-cream/[0.78] sm:text-[1.1rem]">
+          flip through postcards left to right
+        </p>
+      ) : null}
+
       {empty ? (
         <div className="rounded-2xl border border-dashed border-lc-pale-blue-border/20 bg-lc-chip-surface px-5 py-12 text-center backdrop-blur-[2px]">
           <p className={`text-sm font-medium ${lcChrome.body}`}>
@@ -206,7 +213,7 @@ export function DiscoverExperience({
             />
             <div
               ref={stripRef}
-              className="flex min-h-[min(592px,min(84vh,640px))] flex-1 snap-x snap-mandatory gap-8 overflow-x-auto overflow-y-visible py-6 pl-0 pr-1 [scrollbar-width:none] sm:gap-10 sm:py-4 [&::-webkit-scrollbar]:hidden"
+              className="scrapbook-drag flex min-h-[min(592px,min(84vh,640px))] flex-1 snap-x snap-mandatory gap-[2.125rem] overflow-x-auto overflow-y-visible border-y border-dashed border-white/10 bg-[repeating-linear-gradient(105deg,rgb(255_248_239/0.02)_0_12px,rgb(0_0_0/0.02)_12px_14px)] py-8 pl-[min(3vw,1.75rem)] pr-[min(6vw,4rem)] [scrollbar-width:none] sm:gap-14 sm:border-x sm:border-white/14 sm:border-dashed sm:py-6 sm:pl-[min(6vw,3.5rem)] sm:pr-[min(10vw,6rem)] sm:rounded-sm [&::-webkit-scrollbar]:hidden"
             >
               <div
                 className="w-[min(14vw,3.75rem)] max-w-[96px] shrink-0 sm:w-[min(18vw,5rem)]"
@@ -234,10 +241,24 @@ export function DiscoverExperience({
               disabled={items.length <= 1 || activeIdx >= items.length - 1}
             />
           </div>
-          <p className="mx-auto mt-10 max-w-lg px-2 text-center text-xs italic leading-relaxed text-lc-earth-muted">
-            By requesting gatherings with a token cost, you acknowledge tokens
-            are for shared expenses and reimbursements—not host profit.
-          </p>
+          <div className="mx-auto mt-10 max-w-2xl space-y-3 px-3 text-center text-[13px] leading-[1.5] text-lc-earth-muted">
+            <p className="text-lc-caption-warm/88">
+              *By requesting gatherings with token costs, you acknowledge funds
+              are for shared reimbursements—not host profit. Tokens stay on hold
+              while the host reviews whether you&apos;re a match.
+            </p>
+            <p className="italic text-lc-earth-muted">
+              Hosting? *By publishing, you affirm collected funds cover real shared
+              costs—not personal profit (see{" "}
+              <Link
+                href="/terms-of-service"
+                className="font-semibold text-lc-tan-accent underline-offset-4 hover:underline"
+              >
+                Terms
+              </Link>
+              ).
+            </p>
+          </div>
         </>
       )}
     </div>

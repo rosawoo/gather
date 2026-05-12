@@ -187,16 +187,6 @@ export default async function ProfilePage() {
           </div>
         ) : null}
 
-        {/* Bottom invitation — calm CTA */}
-        <div className="mt-[7.5rem] flex flex-col items-center text-center sm:mt-[8.75rem]">
-          <Link
-            href="/host/new"
-            className="font-handwriting text-xl lowercase leading-snug text-lc-cream/[0.92] underline decoration-lc-tan-accent/45 decoration-1 underline-offset-[8px] transition hover:text-lc-cream hover:decoration-lc-caption-warm/65 sm:text-[1.35rem]"
-          >
-            host something small
-          </Link>
-        </div>
-
         {/* Quiet utility prose — no cards */}
         <p className="mx-auto mt-20 max-w-sm text-center font-serif text-[14px] font-light lowercase leading-relaxed tracking-wide text-lc-earth-muted">
           <span className="text-lc-caption-warm/90 tabular-nums">{u.tokensAvailable}</span>

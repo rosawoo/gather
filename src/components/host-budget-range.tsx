@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 const DOLLARS_PER_TOKEN = 7.5;
+const MAX_TOKENS = 5;
 
 function payingGuestSlots(
   minTotal: number,
@@ -23,9 +24,13 @@ export function HostBudgetRange({ formId }: { formId: string }) {
     const formEl: HTMLElement = el;
 
     function read() {
-      const tokenCost = Number(
+      const rawToken = Number(
         (formEl.querySelector('[name="tokenCost"]') as HTMLInputElement)
           ?.value ?? 0,
+      );
+      const tokenCost = Math.min(
+        MAX_TOKENS,
+        Number.isFinite(rawToken) ? Math.max(0, rawToken) : 0,
       );
       const minTotal = Number(
         (formEl.querySelector('[name="minTotalSize"]') as HTMLInputElement)
@@ -53,7 +58,9 @@ export function HostBudgetRange({ formId }: { formId: string }) {
       const low = min * tokenCost * DOLLARS_PER_TOKEN;
       const high = max * tokenCost * DOLLARS_PER_TOKEN;
       setLabel(
-        `If the group fills, tokens could cover on the order of $${low.toFixed(0)}–$${high.toFixed(0)} in shared costs (about $${DOLLARS_PER_TOKEN} per token per spot, not profit).`,
+        `If the group fills, tokens could cover on the order of $${low.toFixed(0)}–$${high.toFixed(
+          0,
+        )} in shared costs (about $${DOLLARS_PER_TOKEN} per paying guest slot at up to ${MAX_TOKENS} tokens—not profit).`,
       );
     }
 
@@ -67,6 +74,13 @@ export function HostBudgetRange({ formId }: { formId: string }) {
   }, [formId]);
 
   return (
-    <p className="text-sm leading-snug italic text-gather-charcoal">{label}</p>
+    <div className="rounded-xl border border-gather-brown/28 bg-white/96 px-4 py-4 shadow-sm ring-1 ring-gather-teal/12 sm:px-5">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gather-brown-mid sm:text-[12px]">
+        Estimated shared-cost budget (max {MAX_TOKENS} tokens / guest)
+      </p>
+      <p className="mt-2 text-[14px] leading-[1.5] italic text-gather-charcoal">
+        {label}
+      </p>
+    </div>
   );
 }

@@ -172,8 +172,8 @@ export default async function HostHubPage() {
       </section>
 
       {canHost ? (
-        <p className="mx-auto mt-12 max-w-md px-2 text-center font-sans text-[13px] leading-[1.5] text-[rgb(244_238_231_/0.78)] italic">
-          *By creating a gathering, you affirm that any funds collected are
+        <p className="mx-auto mt-12 max-w-md px-2 text-center font-sans text-[13px] leading-[1.5] text-[rgb(244_238_231_/0.82)] italic">
+          *By creating this gathering, I affirm that any funds collected are
           intended solely for shared costs and not for personal profit.
         </p>
       ) : null}

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
-import { isSmsConfigured } from "@/lib/sms";
+import { describeTwilioSmsSetupIssue, isSmsConfigured } from "@/lib/sms";
 import { redirect } from "next/navigation";
 import { PhoneForm } from "./phone-form";
 import { OnboardingScaffold } from "@/components/auth/onboarding-scaffold";
@@ -18,6 +18,7 @@ export default async function PhonePage() {
   if (user.phoneVerified) redirect(nextAppPath(user));
 
   const twilioReady = isSmsConfigured();
+  const twilioEnvShapeIssue = describeTwilioSmsSetupIssue();
   const showSmsConfigWarning =
     process.env.NODE_ENV === "production" && !twilioReady;
 
@@ -27,7 +28,10 @@ export default async function PhonePage() {
       title="Add your phone (optional)"
       subtitle="US numbers only. Adds SMS alerts for requests and reminders. You'll still get everything in-app without it."
     >
-      <PhoneForm showSmsConfigWarning={showSmsConfigWarning} />
+      <PhoneForm
+        showSmsConfigWarning={showSmsConfigWarning}
+        twilioEnvShapeIssue={twilioEnvShapeIssue ?? undefined}
+      />
       <div className="mt-6 text-center">
         <a
           href="/onboarding/profile"
