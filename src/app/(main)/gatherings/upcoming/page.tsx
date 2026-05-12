@@ -52,34 +52,36 @@ export default async function UpcomingGatheringsPage() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 w-full bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.12)_0%,transparent_58%)] blur-2xl"
       />
-      <p className="mb-8 text-sm text-gather-cream/65">
+      <p className="mb-8 text-[17px] leading-relaxed text-gather-cream/75">
         Requests, confirmed plans, and past gatherings.
       </p>
 
       <section className="mb-10">
         <SectionTitle title="Pending requests" variant="onDark" />
         {pending.length === 0 ? (
-          <p className="text-sm text-gather-cream/50">None right now.</p>
+          <p className="text-[17px] leading-relaxed text-gather-cream/65">
+            None right now.
+          </p>
         ) : (
           <ul className="space-y-8">
             {pending.map((r) => (
               <li key={r.id} className="list-none">
                 <ScrapbookFrame>
-                  <div className="rounded-2xl border border-gather-teal/30 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
+                  <div className="rounded-2xl border border-gather-teal/30 bg-white p-5 text-[17px] shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
                     <Link
                       href={`/gatherings/${r.gatheringId}`}
                       className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
                     >
                       {r.gathering.title}
                     </Link>
-                    <p className="mt-1 text-xs text-gather-charcoal/80">
+                    <p className="mt-2 text-[15px] leading-snug text-gather-charcoal/85">
                       {r.gathering.startsAt.toLocaleString()} · Pending
                     </p>
-                    <form action={cancelGuestRequestAction} className="mt-2">
+                    <form action={cancelGuestRequestAction} className="mt-3">
                       <input type="hidden" name="gatheringId" value={r.gatheringId} />
                       <button
                         type="submit"
-                        className="text-xs font-semibold text-red-700 transition hover:text-red-800 hover:underline"
+                        className="text-[15px] font-semibold text-red-700 transition hover:text-red-800 hover:underline"
                       >
                         Cancel request (tokens return)
                       </button>
@@ -95,7 +97,9 @@ export default async function UpcomingGatheringsPage() {
       <section className="mb-10">
         <SectionTitle title="Approved" variant="onDark" />
         {approved.length === 0 ? (
-          <p className="text-sm text-gather-cream/50">Nothing on your calendar yet.</p>
+          <p className="text-[17px] leading-relaxed text-gather-cream/65">
+            Nothing on your calendar yet.
+          </p>
         ) : (
           <ul className="space-y-10">
             {approved.map((r) => {
@@ -108,22 +112,22 @@ export default async function UpcomingGatheringsPage() {
               return (
                 <li key={r.id} className="list-none">
                   <ScrapbookFrame>
-                    <div className="rounded-2xl border border-gather-teal/30 bg-white p-5 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
+                    <div className="rounded-2xl border border-gather-teal/30 bg-white p-6 text-[17px] shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
                       <Link
                         href={`/gatherings/${g.id}`}
                         className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
                       >
                         {g.title}
                       </Link>
-                      <p className="mt-1 text-xs text-gather-charcoal/80">
+                      <p className="mt-2 text-[15px] leading-snug text-gather-charcoal/85">
                         {g.startsAt.toLocaleString()} · {g.neighborhood}
                       </p>
-                      <p className="mt-2 text-xs text-gather-charcoal">
+                      <p className="mt-3 text-[15px] leading-snug text-gather-charcoal">
                         Exact address is visible on the gathering page.
                       </p>
 
-                      <div className="mt-4 rounded-xl bg-gather-paper/80 px-3 py-3 ring-1 ring-gather-teal/18">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-gather-brown-mid">
+                      <div className="mt-5 rounded-xl bg-gather-paper/80 px-4 py-4 ring-1 ring-gather-teal/18">
+                        <p className="text-sm font-semibold uppercase tracking-[0.08em] text-gather-brown-mid">
                           Who&apos;s coming
                         </p>
                         <ul className="mt-2 space-y-2.5">
@@ -138,9 +142,9 @@ export default async function UpcomingGatheringsPage() {
                             ) : (
                               <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
                             )}
-                            <span className="text-[15px]">
+                            <span className="text-[17px] leading-snug">
                               {host.profile?.firstName ?? host.name ?? "Host"}{" "}
-                              <span className="text-xs font-medium text-gather-brown-mid">
+                              <span className="text-sm font-medium text-gather-brown-mid">
                                 (host)
                               </span>
                             </span>
@@ -163,9 +167,9 @@ export default async function UpcomingGatheringsPage() {
                                 ) : (
                                   <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
                                 )}
-                                <span className="text-[15px]">
+                                <span className="text-[17px] leading-snug">
                                   {gp.firstName}{" "}
-                                  <span className="text-xs text-gather-charcoal/80">
+                                  <span className="text-sm text-gather-charcoal/80">
                                     · {ageFromDob(gp.dateOfBirth)}
                                   </span>
                                 </span>
@@ -173,7 +177,7 @@ export default async function UpcomingGatheringsPage() {
                             );
                           })}
                           {g.hostFriendsCount > 0 ? (
-                            <li className="text-xs text-gather-charcoal/80">
+                            <li className="text-sm text-gather-charcoal/80">
                               + {g.hostFriendsCount} host friend
                               {g.hostFriendsCount === 1 ? "" : "s"} (not shown)
                             </li>
@@ -185,7 +189,7 @@ export default async function UpcomingGatheringsPage() {
                         <input type="hidden" name="gatheringId" value={g.id} />
                         <button
                           type="submit"
-                          className="text-xs font-medium text-gather-charcoal transition hover:text-gather-ink hover:underline"
+                          className="text-[15px] font-medium text-gather-charcoal transition hover:text-gather-ink hover:underline"
                         >
                           Withdraw (&gt;24h before start returns tokens)
                         </button>
@@ -202,13 +206,15 @@ export default async function UpcomingGatheringsPage() {
       <section>
         <SectionTitle title="Past" variant="onDark" />
         {past.length === 0 ? (
-          <p className="text-sm text-gather-cream/50">No past gatherings yet.</p>
+          <p className="text-[17px] leading-relaxed text-gather-cream/65">
+            No past gatherings yet.
+          </p>
         ) : (
           <ul className="space-y-2">
             {past.map((r) => (
               <li
                 key={r.id}
-                className="rounded-xl border border-gather-teal/20 bg-gather-paper/50 px-3 py-2.5 text-sm text-gather-ink"
+                className="rounded-xl border border-gather-teal/20 bg-gather-paper/50 px-4 py-3.5 text-[17px] leading-snug text-gather-ink"
               >
                 <span className="font-medium text-gather-ink">
                   {r.gathering.title}

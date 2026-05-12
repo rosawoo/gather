@@ -187,7 +187,7 @@ export function DiscoverFilters({
           Filters
           {activeCount > 0 ? (
             <span
-              className={`ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold ${
+              className={`ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold leading-none ${
                 candlelit
                   ? "bg-lc-aged-paper text-lc-ink-on-paper"
                   : espresso
@@ -261,8 +261,8 @@ export function DiscoverFilters({
               onClick={clearAll}
               className={
                 candlelit
-                  ? `text-xs font-semibold ${lcChrome.mutedBody} uppercase tracking-[0.14em] transition hover:text-lc-cream`
-                  : "text-xs font-semibold uppercase tracking-[0.14em] text-gather-charcoal/80 transition hover:text-gather-ink"
+                  ? `text-sm font-semibold ${lcChrome.mutedBody} uppercase tracking-[0.1em] transition hover:text-lc-cream`
+                  : "text-sm font-semibold uppercase tracking-[0.1em] text-gather-charcoal/80 transition hover:text-gather-ink"
               }
             >
               Clear all
@@ -323,7 +323,7 @@ export function DiscoverFilters({
           <button
             type="button"
             onClick={clearAll}
-            className={`text-[11px] font-semibold uppercase tracking-[0.14em] transition ${
+            className={`text-sm font-semibold uppercase tracking-[0.1em] transition ${
               candlelit
                 ? "text-lc-cream/50 hover:text-lc-cream"
                 : espresso
@@ -356,7 +356,7 @@ function FilterBlock({
   return (
     <label className="block">
       <span
-        className={`flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] ${labelClass}`}
+        className={`flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[0.1em] ${labelClass}`}
       >
         {label}
       </span>
@@ -403,7 +403,7 @@ function Chip({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-sm font-medium ${
         darkChrome
           ? "bg-lc-chip-surface text-lc-cream"
           : "bg-gather-brown/[0.08] text-gather-brown"

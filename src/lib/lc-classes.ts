@@ -11,10 +11,11 @@ export const lcChrome = {
     "sticky top-0 z-30 -mx-5 mb-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-lc-warm-shadow/40 bg-lc-bg-void/65 px-5 py-4 backdrop-blur-md sm:-mx-8 sm:px-8 lg:-mx-14 lg:px-14",
 
   bottomNav:
-    "fixed bottom-0 left-0 right-0 z-40 border-t border-lc-pale-blue-border/25 bg-lc-espresso/90 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md supports-[backdrop-filter]:bg-lc-espresso/72",
+    "fixed bottom-0 left-0 right-0 z-40 border-t border-lc-warm-shadow/55 bg-[rgb(34_17_13_/_0.94)] pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-14px_40px_-28px_rgb(12_7_9_/_0.55)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgb(34_17_13_/_0.88)]",
 
-  navIconActive: "text-lc-pale-blue-border",
-  navIconIdle: "text-lc-cream/50 hover:text-lc-cream/80",
+  navIconActive: "text-lc-cream drop-shadow-[0_0_10px_rgb(243_226_219_/_0.18)]",
+  navIconIdle:
+    "text-lc-caption-warm/[0.85] hover:text-lc-cream",
 
   pillUnderline: "bg-lc-dusty-blue",
 

@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect, useMemo } from "react";
-import { NEIGHBORHOOD_AND_CITY_SEEDS } from "@/lib/neighborhood-seeds";
+import {
+  DC_NEIGHBORHOOD_SEEDS,
+  NEIGHBORHOOD_AND_CITY_SEEDS,
+} from "@/lib/neighborhood-seeds";
 
 type NominatimAddress = {
   city?: string;
@@ -184,12 +187,34 @@ export function NeighborhoodInput({
     [extras],
   );
 
+  const prioritizedEmptyList = useMemo(() => {
+    const seen = new Set<string>();
+    const out: string[] = [];
+    for (const x of [...extras].sort((a, b) => a.localeCompare(b))) {
+      if (!x.trim()) continue;
+      if (seen.has(x)) continue;
+      seen.add(x);
+      out.push(x);
+    }
+    for (const x of DC_NEIGHBORHOOD_SEEDS) {
+      if (seen.has(x)) continue;
+      seen.add(x);
+      out.push(x);
+    }
+    for (const x of NEIGHBORHOOD_AND_CITY_SEEDS) {
+      if (seen.has(x)) continue;
+      seen.add(x);
+      out.push(x);
+    }
+    return out;
+  }, [extras]);
+
   const trimmed = value.trim();
   const localMatches = useMemo(() => {
-    if (!trimmed) return localAll.slice(0, 12);
+    if (!trimmed) return prioritizedEmptyList.slice(0, 52);
     const q = trimmed.toLowerCase();
-    return localAll.filter((n) => n.toLowerCase().includes(q)).slice(0, 6);
-  }, [trimmed, localAll]);
+    return localAll.filter((n) => n.toLowerCase().includes(q)).slice(0, 12);
+  }, [trimmed, localAll, prioritizedEmptyList]);
 
   const combined = useMemo(() => {
     const seen = new Set<string>();

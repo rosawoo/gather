@@ -25,13 +25,13 @@ export default async function SettingsPage() {
   const stripeOk = isStripeConfigured();
 
   return (
-    <div className="space-y-8 pb-10 font-sans">
-      <p className="text-sm text-gather-charcoal">
+    <div className="mx-auto max-w-xl space-y-10 pb-12 font-serif">
+      <p className="text-[15px] leading-relaxed text-lc-earth-muted">
         Account, plan, and notification preferences.
       </p>
 
       <section>
-        <SectionTitle title="Account" />
+        <SectionTitle title="Account" variant="accountShell" />
         <Card>
           <Row label="Name">
             {user.profile?.firstName ?? user.name ?? "None"}
@@ -40,13 +40,13 @@ export default async function SettingsPage() {
           <Row label="Phone">
             <span>{user.phone ?? "Not set"}</span>
             {user.phoneVerified ? (
-              <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-700 ring-1 ring-emerald-200">
+              <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-emerald-900/[0.08] px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-emerald-900 ring-1 ring-emerald-800/25">
                 Verified
               </span>
             ) : (
               <a
                 href="/onboarding/phone"
-                className="ml-2 text-xs font-medium text-gather-brown underline-offset-4 hover:underline"
+                className="ml-2 text-[13px] font-semibold text-gather-accent underline-offset-4 hover:underline"
               >
                 Add for SMS alerts (US only)
               </a>
@@ -56,7 +56,7 @@ export default async function SettingsPage() {
       </section>
 
       <section>
-        <SectionTitle title="Plan & tokens" />
+        <SectionTitle title="Plan & tokens" variant="accountShell" />
         <Card>
           <Row label="Current plan">{planLabels[user.plan] ?? user.plan}</Row>
           {user.planStartedAt && (
@@ -67,18 +67,18 @@ export default async function SettingsPage() {
           <Row label="Tokens available">{user.tokensAvailable}</Row>
           {user.tokensHeld > 0 && (
             <Row label="Tokens held">
-              <span className="text-amber-600">{user.tokensHeld}</span>
+              <span className="text-amber-800">{user.tokensHeld}</span>
             </Row>
           )}
           {stripeOk && user.stripeCustomerId ? (
-            <form action={billingPortalRedirect} className="pt-3">
+            <form action={billingPortalRedirect} className="pt-2">
               <button
                 type="submit"
-                className="w-full rounded-full bg-gather-brown py-2.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid"
+                className="w-full rounded-full bg-gather-accent py-3 text-[15px] font-semibold text-gather-cream shadow-[0_6px_20px_-8px_rgb(26_93_116_/_0.55)] transition hover:bg-gather-brown-mid"
               >
                 Manage billing & invoices
               </button>
-              <p className="mt-2 text-[11px] text-gather-charcoal/80">
+              <p className="mt-3 font-sans text-[13px] leading-[1.45] text-lc-settings-helper">
                 Opens Stripe&apos;s customer portal (payment methods, history,
                 cancellations). Subscription changes and downgrades usually take
                 effect at the end of the current billing period; see Stripe for
@@ -86,29 +86,31 @@ export default async function SettingsPage() {
               </p>
             </form>
           ) : stripeOk ? (
-            <p className="pt-1 text-xs text-gather-charcoal/80">
+            <p className="pt-2 font-sans text-[13px] leading-[1.45] text-lc-settings-helper">
               Complete a token purchase with card checkout to link a Stripe
               customer. Then you can manage payment methods and receipts here.
             </p>
           ) : (
-            <p className="pt-1 text-xs text-gather-charcoal/80">
+            <p className="pt-2 font-sans text-[13px] leading-[1.45] text-lc-settings-helper">
               Stripe isn&apos;t configured in this environment. See{" "}
-              <code className="text-xs text-gather-ink">.env.example</code> for
-              setup.
+              <code className="rounded bg-black/[0.04] px-1 font-mono text-[12px] text-lc-settings-ink-strong">
+                .env.example
+              </code>{" "}
+              for setup.
             </p>
           )}
         </Card>
       </section>
 
       <section>
-        <SectionTitle title="Notifications" />
+        <SectionTitle title="Notifications" variant="accountShell" />
         <Card>
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold text-gather-ink">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0 pr-2">
+              <p className="text-[15px] font-semibold text-lc-settings-ink-strong">
                 SMS notifications
               </p>
-              <p className="mt-0.5 text-xs text-gather-charcoal/80">
+              <p className="mt-2 font-sans text-[13px] leading-[1.45] text-lc-settings-helper">
                 Receive texts for join requests, approvals, and cancellations.
                 Hosts also get SMS nudges to submit reimbursements after a
                 gathering when expenses are pending.
@@ -116,31 +118,31 @@ export default async function SettingsPage() {
             </div>
             <SmsToggle optedOut={user.smsOptOut} />
           </div>
-          <div className="flex items-start justify-between gap-3 border-t border-gather-line/50 pt-4">
-            <div>
-              <p className="text-sm font-semibold text-gather-ink">
+          <div className="flex items-start justify-between gap-4 border-t border-lc-control-brown/14 pt-5">
+            <div className="min-w-0 pr-2">
+              <p className="text-[15px] font-semibold text-lc-settings-ink-strong">
                 In-app notifications
               </p>
-              <p className="mt-0.5 text-xs text-gather-charcoal/80">
+              <p className="mt-2 font-sans text-[13px] leading-[1.45] text-lc-settings-helper">
                 Always on. Includes join and approval updates, plus reimbursement
                 reminders for hosts after events.
               </p>
             </div>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-charcoal/55">
+            <span className="shrink-0 pt-1 font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-lc-settings-helper">
               Always on
             </span>
           </div>
         </Card>
       </section>
 
-      <section className="font-sans">
-        <SectionTitle title="Legal" />
+      <section>
+        <SectionTitle title="Legal" variant="accountShell" />
         <Card>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-3 text-[15px] leading-snug">
             <li>
               <Link
                 href="/about"
-                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+                className="font-semibold text-gather-accent underline-offset-4 hover:underline"
               >
                 How it works
               </Link>
@@ -148,7 +150,7 @@ export default async function SettingsPage() {
             <li>
               <Link
                 href="/terms-of-service"
-                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+                className="font-semibold text-gather-accent underline-offset-4 hover:underline"
               >
                 Terms of service
               </Link>
@@ -156,7 +158,7 @@ export default async function SettingsPage() {
             <li>
               <Link
                 href="/privacy-policy"
-                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+                className="font-semibold text-gather-accent underline-offset-4 hover:underline"
               >
                 Privacy policy
               </Link>
@@ -164,7 +166,7 @@ export default async function SettingsPage() {
             <li>
               <Link
                 href="/community-guidelines"
-                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+                className="font-semibold text-gather-accent underline-offset-4 hover:underline"
               >
                 Community guidelines
               </Link>
@@ -173,10 +175,10 @@ export default async function SettingsPage() {
         </Card>
       </section>
 
-      <section className="font-sans">
-        <SectionTitle title="Policies" />
+      <section>
+        <SectionTitle title="Policies" variant="accountShell" />
         <Card>
-          <ul className="space-y-3 text-sm text-gather-ink">
+          <ul className="space-y-4 font-sans text-[15px] leading-relaxed">
             <Policy title="Cancellation">
               Guests can withdraw &gt;24h before an event for a full token
               refund. Within 24h, tokens are forfeited.
@@ -198,7 +200,7 @@ export default async function SettingsPage() {
         <form action={signOutAction}>
           <button
             type="submit"
-            className="w-full rounded-full border border-gather-teal/35 bg-white py-3 text-sm font-semibold text-gather-ink transition hover:bg-gather-teal/5"
+            className="w-full rounded-full border border-lc-control-brown/38 bg-lc-settings-parchment-soft py-3.5 text-[15px] font-semibold text-lc-settings-ink-strong shadow-[inset_0_1px_0_rgb(255_255_255_/_0.45)] backdrop-blur-sm transition hover:border-lc-control-brown/50 hover:bg-lc-settings-parchment"
           >
             Sign out
           </button>
@@ -206,13 +208,13 @@ export default async function SettingsPage() {
       </section>
 
       <section>
-        <SectionTitle title="Danger zone" />
-        <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm ring-1 ring-red-100">
-          <p className="text-xs text-gather-charcoal/80">
+        <SectionTitle title="Danger zone" variant="accountShell" />
+        <div className="rounded-2xl border border-red-900/28 bg-[rgb(246_229_229_/_0.88)] p-5 shadow-[0_14px_40px_-22px_rgb(92_26_26_/_0.45)] ring-1 ring-red-950/[0.08] backdrop-blur-[2px]">
+          <p className="font-sans text-[13px] leading-[1.45] text-lc-body-rich">
             Deleting your account removes all your data including your profile,
             photos, notifications, and token history.
           </p>
-          <div className="mt-3">
+          <div className="mt-4">
             <DeleteAccountButton />
           </div>
         </div>
@@ -221,9 +223,17 @@ export default async function SettingsPage() {
   );
 }
 
-function Card({ children }: { children: React.ReactNode }) {
+function Card({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="space-y-4 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
+    <div
+      className={`space-y-4 rounded-xl border border-lc-pale-blue-border/55 bg-lc-settings-parchment-soft px-[1.125rem] py-5 shadow-[0_20px_52px_-28px_rgb(26_14_12_/_0.78)] ring-1 ring-black/[0.04] sm:px-5 ${className}`}
+    >
       {children}
     </div>
   );
@@ -237,9 +247,13 @@ function Row({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 text-sm">
-      <span className="text-gather-charcoal/80">{label}</span>
-      <span className="font-semibold text-gather-ink">{children}</span>
+    <div className="flex items-center justify-between gap-4 text-[15px]">
+      <span className="shrink-0 font-medium text-lc-settings-label">
+        {label}
+      </span>
+      <span className="min-w-0 text-right font-semibold text-lc-settings-ink-strong">
+        {children}
+      </span>
     </div>
   );
 }
@@ -253,8 +267,8 @@ function Policy({
 }) {
   return (
     <li>
-      <span className="font-semibold text-gather-ink">{title}:</span>{" "}
-      <span className="text-gather-charcoal">{children}</span>
+      <span className="font-semibold text-lc-settings-ink-strong">{title}:</span>{" "}
+      <span className="text-lc-settings-helper">{children}</span>
     </li>
   );
 }

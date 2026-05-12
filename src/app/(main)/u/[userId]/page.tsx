@@ -192,17 +192,19 @@ export default async function PublicProfilePage({
         {PERSONALITY_PROMPTS.some((pr) =>
           u.promptAnswers.some((a) => a.promptKey === pr.key),
         ) ? (
-          <section className="mt-20 space-y-6">
+          <section className="mt-20 space-y-10">
             {PERSONALITY_PROMPTS.map((pr) => {
               const ans = u.promptAnswers.find((a) => a.promptKey === pr.key);
               if (!ans) return null;
               return (
-                <p
-                  key={pr.key}
-                  className="max-w-md font-serif text-base italic leading-relaxed text-lc-verse-dust/95"
-                >
-                  {ans.body}
-                </p>
+                <div key={pr.key} className="mx-auto max-w-[min(34ch,88vw)] text-center">
+                  <p className="font-serif text-[14px] leading-snug text-lc-earth-muted">
+                    {pr.label}
+                  </p>
+                  <p className="mt-4 max-w-md font-serif text-[17px] font-light italic leading-relaxed text-lc-verse-dust/[0.95] sm:text-lg">
+                    {ans.body.trim()}
+                  </p>
+                </div>
               );
             })}
           </section>

@@ -34,16 +34,15 @@ export function JoinRequestForm({
         });
       }}
     >
-      <p className="text-sm leading-relaxed text-gather-ink">
-        This costs{" "}
+      <p className="text-[15px] leading-snug text-gather-charcoal/90">
+        Joining reserves{" "}
         <strong className="text-gather-brown">
           {tokenCost} token{tokenCost === 1 ? "" : "s"}
-        </strong>
-        . Tokens are held while the host reviews. If approved, tokens are
-        used. If not a match, they return.
+        </strong>{" "}
+        from your balance until the host responds.
       </p>
       <div>
-        <label className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+        <label className="flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[0.1em] text-gather-brown-mid">
           Anything the host should know?
         </label>
         <textarea

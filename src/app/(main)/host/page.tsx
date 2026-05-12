@@ -1,8 +1,15 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { GatheringRequestStatus, GatheringStatus, Plan } from "@prisma/client";
+import {
+  GatheringRequestStatus,
+  GatheringStatus,
+  Plan,
+} from "@prisma/client";
 import Link from "next/link";
 import { SectionTitle } from "@/components/ui/page-header";
+
+const parchmentCard =
+  "rounded-2xl border border-lc-pale-blue-border/50 bg-lc-settings-parchment-soft shadow-[0_18px_48px_-34px_rgb(34_26_26_/_0.55)] ring-1 ring-black/[0.04] backdrop-blur-[1px]";
 
 export default async function HostHubPage() {
   const session = await auth();
@@ -36,29 +43,34 @@ export default async function HostHubPage() {
   );
 
   return (
-    <div className="pb-8">
+    <div className="mx-auto max-w-xl pb-10 font-serif">
       {canHost ? (
-        <div className="flex justify-center pt-2">
+        <div className="flex justify-center px-1 pt-1">
           <Link
             href="/host/new"
-            className="inline-flex w-full items-center justify-center rounded-full bg-gather-brown px-6 py-3.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.99] sm:w-auto"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-gather-accent px-7 py-3.5 font-sans text-[15px] font-semibold text-gather-cream shadow-[0_10px_32px_-12px_rgb(30_93_116_/_0.65)] transition hover:bg-gather-brown-mid hover:shadow-[0_14px_36px_-14px_rgb(30_93_116_/_0.48)] active:scale-[0.99] sm:min-h-[52px] sm:w-auto sm:px-10"
           >
             Start a new gathering
           </Link>
         </div>
       ) : (
-        <div className="rounded-2xl border border-gather-teal/25 bg-white p-4 text-sm text-gather-charcoal shadow-sm">
-          Your plan doesn&apos;t include hosting yet. Upgrade when Member is
-          available.
+        <div
+          className={`${parchmentCard} font-sans p-5 text-[15px] leading-relaxed text-lc-settings-helper`}
+        >
+          <span className="font-semibold text-lc-settings-ink-strong">
+            Hosting isn&apos;t on your plan yet.
+          </span>{" "}
+          Upgrade when Member is available.
         </div>
       )}
 
-      <section className="mb-10 mt-10">
-        <SectionTitle title="Current gatherings" />
+      <section className="mb-12 mt-8">
+        <SectionTitle title="Current gatherings" variant="hostShell" />
         {upcoming.length === 0 ? (
           <EmptyState
-            title="Nothing scheduled"
-            body="Your next gathering will live here once you publish it."
+            title="No gatherings yet"
+            subtitle="Start one when you’re ready to set the table."
+            body="Published dates and RSVP counts will settle in here."
           />
         ) : (
           <ul className="space-y-3">
@@ -79,18 +91,22 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className="block rounded-2xl border border-gather-teal/25 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:border-gather-accent/40 hover:shadow-md"
+                    className={`block p-5 font-sans transition ${parchmentCard} hover:border-gather-accent/45 hover:shadow-[0_22px_48px_-30px_rgb(22_96_118_/_0.35)]`}
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="font-semibold text-gather-ink">{g.title}</p>
-                      {pending > 0 && (
-                        <span className="shrink-0 rounded-full bg-gather-brown px-2 py-0.5 text-[11px] font-semibold text-gather-cream shadow-sm">
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="text-[17px] font-semibold leading-snug text-lc-settings-ink-strong">
+                        {g.title}
+                      </p>
+                      {pending > 0 ? (
+                        <span className="shrink-0 rounded-full bg-gather-accent px-3 py-1 font-sans text-[12px] font-semibold text-gather-cream shadow-sm">
                           {pending} pending
                         </span>
-                      )}
+                      ) : null}
                     </div>
-                    <p className="mt-1 text-xs text-gather-charcoal/80">{dateStr}</p>
-                    <p className="mt-2 text-xs text-gather-brown-mid">
+                    <p className="mt-2 font-sans text-[14px] text-lc-settings-helper">
+                      {dateStr}
+                    </p>
+                    <p className="mt-2 font-sans text-[14px] font-medium text-gather-accent">
                       {attending} / {g.maxTotalSize} attending
                     </p>
                   </Link>
@@ -102,14 +118,18 @@ export default async function HostHubPage() {
       </section>
 
       <section>
-        <SectionTitle title="Past gatherings & reimbursements" />
+        <SectionTitle
+          title="Past gatherings & reimbursements"
+          variant="hostShell"
+        />
         {past.length === 0 ? (
           <EmptyState
-            title="Nothing yet"
-            body="Finished gatherings and their reimbursement status appear here."
+            title="Nothing in the ledger yet"
+            subtitle="Past tables & reimbursements appear here."
+            body="Finished gatherings show headcount and payout status."
           />
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {past.map((g) => {
               const approved = g.requests.filter(
                 (r) => r.status === GatheringRequestStatus.APPROVED,
@@ -126,14 +146,21 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className="block rounded-xl border border-gather-teal/20 bg-gather-paper/50 px-3 py-2.5 text-sm transition hover:bg-white"
+                    className={`block px-4 py-4 font-sans transition sm:px-5 ${parchmentCard} hover:border-gather-accent/40 hover:bg-[rgb(246_243_239_/_0.98)]`}
                   >
-                    <p className="font-medium text-gather-ink">{g.title}</p>
-                    <p className="mt-0.5 text-xs text-gather-charcoal/80">
-                      {g.startsAt.toLocaleDateString()} · {approved} attended ·
-                      ${budget}
+                    <p className="text-[15px] font-semibold text-lc-settings-ink-strong">
+                      {g.title}
                     </p>
-                    <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-gather-brown-mid">
+                    <p className="mt-1.5 text-[13px] leading-snug text-lc-settings-helper">
+                      {g.startsAt.toLocaleDateString(undefined, {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}{" "}
+                      · {approved} attended · ${budget}
+                    </p>
+                    <p className="mt-2 font-sans text-[12px] font-semibold uppercase tracking-[0.1em] text-gather-accent">
                       {reimburseLabel}
                     </p>
                   </Link>
@@ -145,7 +172,7 @@ export default async function HostHubPage() {
       </section>
 
       {canHost ? (
-        <p className="mt-10 text-center text-xs italic text-gather-charcoal/85">
+        <p className="mx-auto mt-12 max-w-md px-2 text-center font-sans text-[13px] leading-[1.5] text-[rgb(244_238_231_/0.78)] italic">
           *By creating a gathering, you affirm that any funds collected are
           intended solely for shared costs and not for personal profit.
         </p>
@@ -154,11 +181,28 @@ export default async function HostHubPage() {
   );
 }
 
-function EmptyState({ title, body }: { title: string; body: string }) {
+function EmptyState({
+  title,
+  subtitle,
+  body,
+}: {
+  title: string;
+  subtitle: string;
+  body: string;
+}) {
   return (
-    <div className="rounded-2xl border border-dashed border-gather-teal/35 bg-white/40 px-4 py-8 text-center">
-      <p className="text-sm font-semibold text-gather-ink">{title}</p>
-      <p className="mt-1 text-xs text-gather-charcoal/80">{body}</p>
+    <div
+      className={`${parchmentCard} px-6 py-10 text-center sm:px-10 sm:py-12`}
+    >
+      <p className="text-[18px] font-semibold leading-snug tracking-tight text-lc-settings-ink-strong">
+        {title}
+      </p>
+      <p className="mt-4 font-handwriting text-[1.375rem] leading-snug lowercase text-[#2b7890]/95">
+        {subtitle}
+      </p>
+      <p className="mx-auto mt-4 max-w-[28ch] font-sans text-[14px] leading-[1.45] text-lc-settings-helper">
+        {body}
+      </p>
     </div>
   );
 }

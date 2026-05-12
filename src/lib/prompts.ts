@@ -4,7 +4,7 @@ export const PERSONALITY_PROMPTS = [
   { key: "billion", label: "If I had a billion dollars I would…" },
   {
     key: "skill_competition",
-    label: "A random skill I'd dominate a competition in is…",
+    label: "A random skill I\u2019d dominate a competition in is…",
   },
   { key: "heart", label: "The quickest way to my heart is…" },
   { key: "roman_empire", label: "My Roman Empire is…" },

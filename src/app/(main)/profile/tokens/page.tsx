@@ -40,16 +40,16 @@ function TokenPackOffer({
             token{p.tokens === 1 ? "" : "s"}
           </span>
           {p.tag ? (
-            <span className="rounded-full bg-gather-accent/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+            <span className="rounded-full bg-gather-accent/15 px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-gather-brown-mid">
               {p.tag}
             </span>
           ) : null}
         </div>
-        <p className="mt-1 text-xs text-gather-charcoal/80">{p.perTokenLabel}</p>
+        <p className="mt-1 text-sm leading-snug text-gather-charcoal/85">{p.perTokenLabel}</p>
       </div>
       <div className="text-right">
         <p className="font-serif text-2xl font-light text-gather-brown">{p.priceLabel}</p>
-        <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid transition group-hover:text-gather-brown enabled:group-hover:text-gather-brown">
+        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-gather-brown-mid transition group-hover:text-gather-brown enabled:group-hover:text-gather-brown">
           Buy →
         </p>
       </div>
@@ -159,7 +159,7 @@ export default async function BuyTokensPage({ searchParams }: Props) {
           ))}
         </div>
 
-        <p className="mt-4 text-xs text-gather-charcoal/80">
+        <p className="mt-5 text-[15px] leading-relaxed text-gather-charcoal/85">
           Checkout runs through Stripe. Payments fund host reimbursements (Venmo or bank transfer).
         </p>
       </section>

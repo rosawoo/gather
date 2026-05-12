@@ -223,7 +223,7 @@ export function PhotoUpload({
         <p className="text-sm font-semibold text-gather-ink">
           Drop photos here or click to browse
         </p>
-        <p className="text-xs text-gather-charcoal/80">
+        <p className="text-sm leading-snug text-gather-charcoal/85">
           JPG, PNG, WEBP, GIF, or HEIC, up to 8 MB each. Fun GIFs welcome.
         </p>
         <input
@@ -241,7 +241,7 @@ export function PhotoUpload({
       </div>
 
       {uploading ? (
-        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+        <p className="mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-gather-brown-mid">
           Uploading {progress?.done ?? 0} / {progress?.total ?? 0}…
         </p>
       ) : null}
@@ -276,7 +276,7 @@ export function PhotoUpload({
       ) : null}
 
       {notice ? (
-        <p className="mt-3 rounded-xl bg-gather-cream/60 px-3 py-2 text-xs leading-relaxed text-gather-brown-mid ring-1 ring-gather-accent/20">
+        <p className="mt-3 rounded-xl bg-gather-cream/60 px-3 py-2 text-sm leading-relaxed text-gather-brown-mid ring-1 ring-gather-accent/20">
           {notice}
         </p>
       ) : null}
@@ -297,7 +297,7 @@ export function PhotoUpload({
                 className="h-full w-full object-cover"
               />
               {i === 0 ? (
-                <span className="absolute left-1 top-1 rounded-full bg-gather-brown px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-gather-cream shadow-sm">
+                <span className="absolute left-1 top-1 rounded-full bg-gather-brown px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-gather-cream shadow-sm leading-none">
                   Primary
                 </span>
               ) : null}

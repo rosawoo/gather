@@ -12,7 +12,7 @@ export function DeleteAccountButton() {
       <button
         type="button"
         onClick={() => setConfirming(true)}
-        className="text-sm font-medium text-red-600 hover:underline"
+        className="text-[15px] font-semibold text-red-800 underline-offset-4 hover:underline"
       >
         Delete my account
       </button>
@@ -20,18 +20,18 @@ export function DeleteAccountButton() {
   }
 
   return (
-    <div className="rounded-xl border border-red-200 bg-red-50 p-4">
-      <p className="text-sm font-medium text-red-800">
+    <div className="rounded-xl border border-red-900/25 bg-[rgb(250_239_239_/_0.95)] p-4 ring-1 ring-red-900/[0.06] backdrop-blur-[1px]">
+      <p className="font-sans text-[14px] font-medium leading-relaxed text-red-950">
         This will permanently delete your account, profile, photos, and all
         associated data. This cannot be undone.
       </p>
-      <div className="mt-3 flex gap-3">
+      <div className="mt-4 flex flex-wrap gap-3">
         <button
           type="button"
           disabled={pending}
           onClick={() => startTransition(() => deleteAccount())}
-          className={`rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white ${
-            pending ? "opacity-50" : "hover:bg-red-700"
+          className={`rounded-full bg-red-800 px-5 py-2.5 text-[14px] font-semibold text-white transition hover:bg-red-950 ${
+            pending ? "opacity-50" : ""
           }`}
         >
           {pending ? "Deleting..." : "Yes, delete everything"}
@@ -39,7 +39,7 @@ export function DeleteAccountButton() {
         <button
           type="button"
           onClick={() => setConfirming(false)}
-          className="rounded-full border border-gather-teal/35 px-4 py-2 text-sm font-medium text-gather-ink hover:bg-gather-teal/5"
+          className="rounded-full border border-lc-control-brown/38 bg-lc-settings-parchment/90 px-5 py-2.5 text-[14px] font-semibold text-lc-settings-ink-strong shadow-[inset_0_1px_0_rgb(255_255_255_/_0.35)] hover:border-lc-control-brown/50"
         >
           Cancel
         </button>

@@ -12,6 +12,24 @@ import {
   profileInputCls,
 } from "@/components/profile-form-fields";
 
+type Fields = {
+  firstName: string;
+  dateOfBirth: string;
+  neighborhood: string;
+  college: string;
+  job: string;
+  bio: string;
+};
+
+const emptyFields: Fields = {
+  firstName: "",
+  dateOfBirth: "",
+  neighborhood: "",
+  college: "",
+  job: "",
+  bio: "",
+};
+
 export function OnboardingProfileForm({
   usedNeighborhoods,
 }: {
@@ -19,6 +37,10 @@ export function OnboardingProfileForm({
 }) {
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [fields, setFields] = useState<Fields>(emptyFields);
+  const [locationKey, setLocationKey] = useState(0);
+  const [photoBlockKey, setPhotoBlockKey] = useState(0);
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
 
   return (
     <form
@@ -32,6 +54,22 @@ export function OnboardingProfileForm({
             await completeProfile(fd);
           } catch (err) {
             if (isRedirectError(err)) throw err;
+            const rawPhotos = String(fd.get("photoUrls") ?? "").trim();
+            const restoredPhotos = rawPhotos
+              .split(/[\n,]/)
+              .map((s) => s.trim())
+              .filter(Boolean);
+            setFields({
+              firstName: String(fd.get("firstName") ?? "").trim(),
+              dateOfBirth: String(fd.get("dateOfBirth") ?? "").trim(),
+              neighborhood: String(fd.get("neighborhood") ?? "").trim(),
+              college: String(fd.get("college") ?? "").trim(),
+              job: String(fd.get("job") ?? "").trim(),
+              bio: String(fd.get("bio") ?? "").trim(),
+            });
+            setPhotoUrls(restoredPhotos);
+            setPhotoBlockKey((k) => k + 1);
+            setLocationKey((k) => k + 1);
             setError(
               err instanceof Error ? err.message : "Something went wrong.",
             );
@@ -50,13 +88,25 @@ export function OnboardingProfileForm({
 
       <ProfileFieldGroup title="Basics">
         <ProfileField label="First name" required>
-          <input name="firstName" required className={profileInputCls} />
+          <input
+            name="firstName"
+            required
+            value={fields.firstName}
+            onChange={(e) =>
+              setFields((f) => ({ ...f, firstName: e.target.value }))
+            }
+            className={profileInputCls}
+          />
         </ProfileField>
         <ProfileField label="Date of birth" hint="Must be 21 or older." required>
           <input
             name="dateOfBirth"
             type="date"
             required
+            value={fields.dateOfBirth}
+            onChange={(e) =>
+              setFields((f) => ({ ...f, dateOfBirth: e.target.value }))
+            }
             className={profileInputCls}
           />
         </ProfileField>
@@ -66,13 +116,15 @@ export function OnboardingProfileForm({
         title="Photos (optional)"
         hint="Add a face—or skip for now and upload later from your profile. First photo becomes primary."
       >
-        <PhotoUpload />
+        <PhotoUpload key={photoBlockKey} initialUrls={photoUrls} />
       </ProfileFieldGroup>
 
       <ProfileFieldGroup title="Optional">
         <ProfileField label="Neighborhood">
           <NeighborhoodInput
+            key={`hood-${locationKey}`}
             name="neighborhood"
+            defaultValue={fields.neighborhood}
             extras={usedNeighborhoods}
             className={profileInputCls}
           />
@@ -81,6 +133,10 @@ export function OnboardingProfileForm({
           <input
             name="college"
             placeholder="Where'd you go?"
+            value={fields.college}
+            onChange={(e) =>
+              setFields((f) => ({ ...f, college: e.target.value }))
+            }
             className={profileInputCls}
           />
         </ProfileField>
@@ -88,6 +144,8 @@ export function OnboardingProfileForm({
           <input
             name="job"
             placeholder="What do you do?"
+            value={fields.job}
+            onChange={(e) => setFields((f) => ({ ...f, job: e.target.value }))}
             className={profileInputCls}
           />
         </ProfileField>
@@ -97,7 +155,14 @@ export function OnboardingProfileForm({
         title="Bio"
         hint="Introduce yourself. What should people know?"
       >
-        <textarea name="bio" required rows={4} className={profileInputCls} />
+        <textarea
+          name="bio"
+          required
+          rows={4}
+          value={fields.bio}
+          onChange={(e) => setFields((f) => ({ ...f, bio: e.target.value }))}
+          className={profileInputCls}
+        />
       </ProfileFieldGroup>
 
       <ProfileFieldGroup

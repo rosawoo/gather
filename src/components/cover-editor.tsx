@@ -165,6 +165,11 @@ export function CoverEditor({
           Upload / URL
         </ModeTab>
       </div>
+      <p className="mt-3 text-xs leading-relaxed text-gather-charcoal/80">
+        Templates with stickers and small image overlays usually read clearer on
+        the discover wall than a single dark phone photo—mix and match until it
+        feels like a polaroid on a table.
+      </p>
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-gather-teal/25 bg-white shadow-sm ring-1 ring-gather-teal/10">
         <div className="aspect-[16/9] w-full bg-gather-line/40">
@@ -257,9 +262,10 @@ export function CoverEditor({
           <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
             Stickers (optional, max 4)
           </p>
-          <p className="mt-1 text-xs text-gather-charcoal/80">
-            Tap to add tiny accents on the polaroid template, great with GIFs in
-            upload mode too.
+          <p className="text-xs text-gather-charcoal/80">
+            Stickers use simple marks; overlays accept transparent PNG/GIF URLs
+            or uploads layered on top. Combine up to four stickers with three
+            overlays.
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {COVER_STICKER_PRESETS.map((s) => {
@@ -377,8 +383,8 @@ export function CoverEditor({
             className="w-full rounded-xl border border-gather-teal/25 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
           />
           <p className="text-xs text-gather-charcoal/80">
-            Animated GIFs work as cover art. With Blob storage connected, uploads
-            go straight to your gallery URL.
+            Use a GIF or crisp image (~900px wide or larger reads best on cards).
+            With Blob connected, uploads go straight to public URLs.
           </p>
         </div>
       )}

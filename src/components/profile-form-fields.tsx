@@ -16,7 +16,7 @@ export function ProfileFieldGroup({
     <section>
       <SectionTitle title={title} />
       {hint ? (
-        <p className="-mt-2 mb-3 text-xs text-gather-charcoal/80">{hint}</p>
+        <p className="-mt-2 mb-3 text-sm leading-snug text-gather-charcoal/85">{hint}</p>
       ) : null}
       <div className="space-y-4 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
         {children}
@@ -38,7 +38,7 @@ export function ProfileField({
 }) {
   return (
     <div>
-      <label className="flex items-baseline gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+      <label className="flex items-baseline gap-1.5 text-sm font-semibold uppercase tracking-[0.1em] text-gather-brown-mid">
         <span>{label}</span>
         {required ? (
           <span className="text-gather-accent" aria-hidden>
@@ -47,7 +47,7 @@ export function ProfileField({
         ) : null}
       </label>
       {hint ? (
-        <p className="mt-0.5 text-xs text-gather-charcoal/80">{hint}</p>
+        <p className="mt-0.5 text-sm leading-snug text-gather-charcoal/85">{hint}</p>
       ) : null}
       <div className="mt-1.5">{children}</div>
     </div>

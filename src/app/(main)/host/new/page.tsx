@@ -3,7 +3,7 @@ import { createGathering } from "@/app/actions/gathering";
 import { GatheringType } from "@prisma/client";
 import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
-import { PageHeader, SectionTitle } from "@/components/ui/page-header";
+import { SectionTitle } from "@/components/ui/page-header";
 import { HostBudgetRange } from "@/components/host-budget-range";
 import { CoverEditor } from "@/components/cover-editor";
 
@@ -38,14 +38,7 @@ export default async function NewGatheringPage() {
         Back
       </Link>
 
-      <div className="mt-5">
-        <PageHeader
-          title="Host a gathering"
-          subtitle="Set the stage. You can refine details after publishing."
-        />
-      </div>
-
-      <form id="new-gathering-form" action={createGathering} className="space-y-8">
+      <form id="new-gathering-form" action={createGathering} className="mt-6 space-y-8">
         <Group title="The basics">
           <Field label="Title" required>
             <input name="title" required className={input} />

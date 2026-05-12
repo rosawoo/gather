@@ -42,7 +42,7 @@ export function OnboardingScaffold({
                   aria-current={state === "active" ? "step" : undefined}
                 >
                   <span
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold transition ${
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-semibold transition ${
                       state === "done"
                         ? "bg-gather-wine text-lc-cream"
                         : state === "active"
@@ -70,7 +70,7 @@ export function OnboardingScaffold({
                     )}
                   </span>
                   <span
-                    className={`truncate text-[11px] font-semibold uppercase tracking-[0.14em] ${
+                    className={`truncate text-[13px] font-semibold uppercase tracking-[0.1em] sm:text-sm sm:tracking-[0.12em] ${
                       state === "todo"
                         ? "text-lc-tan-accent/75"
                         : "text-lc-link-soft"

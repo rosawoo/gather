@@ -147,7 +147,7 @@ export function EditProfileForm({
           />
           <span className="text-sm text-gather-ink">
             <span className="font-semibold">Enable mood board look</span>
-            <span className="mt-0.5 block text-xs text-gather-charcoal">
+            <span className="mt-0.5 block text-sm leading-snug text-gather-charcoal/95">
               Name and age stay centered; you add playful emoji orbiters below.
             </span>
           </span>

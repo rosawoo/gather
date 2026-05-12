@@ -120,26 +120,6 @@ export default async function GatheringDetailPage({
             </p>
           ) : null}
 
-          <div className="grid grid-cols-2 gap-3 pt-1">
-            <Fact label="Group size">
-              {capacityLine(g.minTotalSize, g.maxTotalSize, g.hostFriendsCount)}
-            </Fact>
-            <Fact label="Cost">
-              {g.tokenCost === 0
-                ? "Free to join"
-                : `${g.tokenCost} token${g.tokenCost === 1 ? "" : "s"}`}
-            </Fact>
-          </div>
-
-          {g.budgetExplanation ? (
-            <p className="rounded-xl bg-gather-paper/70 px-3 py-2 text-sm text-gather-ink ring-1 ring-gather-teal/18">
-              <span className="font-semibold text-gather-brown-mid">
-                Event budget ·{" "}
-              </span>
-              {g.budgetExplanation}
-            </p>
-          ) : null}
-
           {isHost ? (
             <Link
               href={`/host/${g.id}`}
@@ -182,11 +162,11 @@ export default async function GatheringDetailPage({
                   <span>
                     {g.host.profile?.firstName ?? g.host.name}{" "}
                     {g.host.profile?.dateOfBirth ? (
-                      <span className="text-xs text-gather-charcoal/80">
+                      <span className="text-sm text-gather-charcoal/80">
                         · {ageFromDob(g.host.profile.dateOfBirth)}
                       </span>
                     ) : null}{" "}
-                    <span className="text-xs font-medium text-gather-brown-mid">
+                    <span className="text-sm font-medium text-gather-brown-mid">
                       (host)
                     </span>
                   </span>
@@ -214,7 +194,7 @@ export default async function GatheringDetailPage({
                       )}
                       <span>
                         {gp.firstName}{" "}
-                        <span className="text-xs text-gather-charcoal/80">
+                        <span className="text-sm text-gather-charcoal/80">
                           · {ageFromDob(gp.dateOfBirth)}
                         </span>
                       </span>
@@ -223,14 +203,14 @@ export default async function GatheringDetailPage({
                 );
               })}
               {g.hostFriendsCount > 0 ? (
-                <li className="text-xs text-gather-charcoal/80">
+                <li className="text-sm text-gather-charcoal/80">
                   + {g.hostFriendsCount} host friend
                   {g.hostFriendsCount === 1 ? "" : "s"} (profiles not shown)
                 </li>
               ) : null}
             </ul>
             {isHost ? (
-              <p className="mt-4 border-t border-gather-line/50 pt-3 text-xs text-gather-charcoal/80">
+              <p className="mt-4 border-t border-gather-line/50 pt-3 text-sm text-gather-charcoal/80">
                 Event budget available: ${budgetDollars} ($7.50 per approved
                 guest token)
               </p>
@@ -238,6 +218,44 @@ export default async function GatheringDetailPage({
           </div>
         </section>
       )}
+
+      <footer className="mt-10 space-y-4 rounded-2xl border border-gather-teal/25 bg-gather-paper/90 p-4 text-sm text-gather-charcoal shadow-sm ring-1 ring-gather-teal/10">
+        <div className="grid grid-cols-2 gap-3">
+          <Fact label="Group size">
+            {capacityLine(g.minTotalSize, g.maxTotalSize, g.hostFriendsCount)}
+          </Fact>
+          <Fact label="Cost">
+            {g.tokenCost === 0
+              ? "Free to join"
+              : `${g.tokenCost} token${g.tokenCost === 1 ? "" : "s"}`}
+          </Fact>
+        </div>
+
+        {g.budgetExplanation ? (
+          <p className="rounded-xl bg-white/80 px-3 py-2 text-sm text-gather-ink ring-1 ring-gather-teal/15">
+            <span className="font-semibold text-gather-brown-mid">
+              Event budget ·{" "}
+            </span>
+            {g.budgetExplanation}
+          </p>
+        ) : null}
+
+        <ul className="space-y-2 italic text-gather-charcoal/90">
+          <li>
+            Exact address and list of other gatherers shared after approval.
+          </li>
+          <li>
+            Tokens are held while the host reviews. If approved, tokens are used;
+            if not a match, they return. Tokens are for cost-sharing not
+            profit.
+          </li>
+        </ul>
+        <p className="text-sm not-italic text-gather-charcoal/85">
+          If the minimum group size isn&apos;t reached two hours before the event,
+          the gathering is automatically cancelled.
+        </p>
+        <TokenExplainer />
+      </footer>
 
       {!isHost &&
         g.status === GatheringStatus.PUBLISHED &&
@@ -259,28 +277,10 @@ export default async function GatheringDetailPage({
           </div>
         )}
 
-      <footer className="mt-10 space-y-3 rounded-2xl border border-gather-teal/25 bg-gather-paper/90 p-4 text-sm text-gather-charcoal shadow-sm ring-1 ring-gather-teal/10">
-        <ul className="space-y-2 italic text-gather-charcoal/90">
-          <li>
-            Exact address and list of other gatherers shared after approval.
-          </li>
-          <li>
-            Tokens are held while the host reviews. If approved, tokens are used;
-            if not a match, they return. Tokens are for cost-sharing not
-            profit.
-          </li>
-        </ul>
-        <p className="text-xs not-italic text-gather-charcoal/80">
-          If the minimum group size isn&apos;t reached two hours before the event,
-          the gathering is automatically cancelled.
-        </p>
-        <TokenExplainer />
-      </footer>
-
       <div className="mt-10 text-center">
         <Link
           href={`/report?type=gathering&id=${g.id}`}
-          className="text-xs text-gather-cream/45 transition hover:text-gather-cream hover:underline"
+          className="text-sm text-gather-cream/55 transition hover:text-gather-cream hover:underline"
         >
           Report this gathering
         </Link>
@@ -298,7 +298,7 @@ function Fact({
 }) {
   return (
     <div className="rounded-xl border border-gather-teal/25 bg-gather-paper/60 px-3 py-2.5">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
+      <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-gather-brown-mid sm:text-sm">
         {label}
       </p>
       <p className="mt-1 text-sm text-gather-ink">{children}</p>

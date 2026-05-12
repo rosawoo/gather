@@ -32,12 +32,13 @@
   --lc-tab-muted: #9c8474;
   --lc-earth-muted: #8f7268;
   --lc-caption-warm: #e8ddd2;
-  --lc-dusty-blue: #266b7e;
-  --lc-dusty-blue-hover: #2c7a8f;
-  --lc-dusty-blue-bright-hover: #2f7f95;
-  --lc-pale-blue-border: #c6d8e3;
+  /* Candlelit accents (utility names lc-dusty-* / lc-pale-blue-* are legacy; values are warm brick + oyster). */
+  --lc-dusty-blue: #6b3932;
+  --lc-dusty-blue-hover: #7f453c;
+  --lc-dusty-blue-bright-hover: #925346;
+  --lc-pale-blue-border: #d4c2b6;
   --lc-ink-on-paper: #3a1a0f;
-  --lc-link-soft: rgb(214 230 239);
+  --lc-link-soft: rgb(236 218 206);
   --lc-chip-surface: rgb(255 255 255 / 0.12);
   --lc-card-overlay: rgb(32 11 4 / 0.92);
 
@@ -57,6 +58,13 @@
   --lc-disk-plum: #3d2528;
   --lc-soft-rose: #b89a8c;
   --lc-verse-dust: #d4c4b8;
+
+  /* Warm parchment surfaces (settings / account on espresso shell) */
+  --lc-settings-parchment: #f3eee6;
+  --lc-settings-parchment-soft: rgb(243 238 231 / 0.94);
+  --lc-settings-label: #5f5149;
+  --lc-settings-helper: #6f625a;
+  --lc-settings-ink-strong: #3a160f;
 }
 
 @theme inline {
@@ -109,6 +117,11 @@
   --color-lc-disk-plum: var(--lc-disk-plum);
   --color-lc-soft-rose: var(--lc-soft-rose);
   --color-lc-verse-dust: var(--lc-verse-dust);
+  --color-lc-settings-parchment: var(--lc-settings-parchment);
+  --color-lc-settings-parchment-soft: var(--lc-settings-parchment-soft);
+  --color-lc-settings-label: var(--lc-settings-label);
+  --color-lc-settings-helper: var(--lc-settings-helper);
+  --color-lc-settings-ink-strong: var(--lc-settings-ink-strong);
 
   --font-sans: var(--font-barlow), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
@@ -122,6 +135,12 @@ body {
   color: var(--gather-ink);
   font-family: var(--font-sans);
 }
+
+/*
+  Readability baseline: explanatory / body-weight copy should be at least ~15px
+  (Tailwind ~text-[15px] or text-base). Prefer text-sm (~14px) only for dense
+  stacked UI rows; avoid text-[10–12px] for sentences.
+*/
 
 /* Polaroid 3D flip (discover) */
 .polaroid-perspective {
@@ -230,8 +249,8 @@ body {
 }
 
 .landing-btn-cta {
-  background: #266b7e;
-  color: #f4eee7;
+  background: var(--lc-dusty-blue);
+  color: var(--lc-cream);
   height: 48px;
   font-family: var(--font-landing-body), serif;
   font-weight: 700;
@@ -248,8 +267,8 @@ body {
 
 .landing-btn-about {
   background: transparent;
-  border: 2px solid #c6d8e3;
-  color: #f4eee7;
+  border: 2px solid var(--lc-pale-blue-border);
+  color: var(--lc-cream);
   padding: 12px clamp(1.25rem, 4vw, 3rem);
   font-family: var(--font-landing-body), serif;
   font-weight: 700;
@@ -264,7 +283,7 @@ body {
 }
 
 .landing-btn-about:hover {
-  background: rgba(198, 216, 227, 0.12);
+  background: color-mix(in srgb, var(--lc-pale-blue-border) 14%, transparent);
 }
 
 .landing-btn-about--compact {
@@ -346,7 +365,7 @@ body {
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 5px;
-  text-decoration-color: rgba(198, 216, 227, 0.55);
+  text-decoration-color: color-mix(in srgb, var(--lc-pale-blue-border) 55%, transparent);
   margin: 2.25rem 0 1rem;
 }
 
@@ -375,7 +394,7 @@ body {
 }
 
 .terms-doc-body a {
-  color: #c6d8e3;
+  color: var(--lc-link-soft);
   text-underline-offset: 4px;
 }
 
@@ -433,7 +452,7 @@ body {
 }
 
 .about-manifesto-ol li::marker {
-  color: #c6d8e3;
+  color: var(--lc-tan-accent);
   font-weight: 500;
 }
 
@@ -471,9 +490,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #266b7e;
-  color: #f4eee7;
-  border: 1px solid #c6d8e3;
+  background: var(--lc-dusty-blue);
+  color: var(--lc-cream);
+  border: 1px solid var(--lc-pale-blue-border);
   padding: 10px 32px;
   font-family: var(--font-landing-body), ui-serif, Georgia, serif;
   font-size: clamp(1.15rem, 2.5vw, 1.45rem);
@@ -487,7 +506,7 @@ body {
 }
 
 .about-manifesto-join:hover {
-  background: #2c7a8f;
+  background: var(--lc-dusty-blue-hover);
   color: #fff8ef;
 }
 
@@ -499,7 +518,7 @@ body {
 }
 
 .about-manifesto-join-sub a {
-  color: #c6d8e3;
+  color: var(--lc-link-soft);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -552,7 +571,7 @@ body {
 }
 
 .about-manifesto-footer-links a:hover {
-  color: #c6d8e3;
+  color: var(--lc-tan-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

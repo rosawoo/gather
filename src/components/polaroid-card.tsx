@@ -77,11 +77,6 @@ export function PolaroidCard(props: PolaroidCardProps) {
 
   const typeLine = `${gatheringTypeCaptionLabel(props.gatheringType)}, ${shortNeighborhoodForCaption(props.neighborhood)}`;
 
-  const tokenLabel =
-    props.tokenCost === 0
-      ? "free"
-      : `${props.tokenCost} token${props.tokenCost === 1 ? "" : "s"}`;
-
   const hostLabel = props.hostFirstName?.trim() || "Host";
   const hostDob = props.hostDateOfBirth
     ? new Date(props.hostDateOfBirth)
@@ -89,6 +84,10 @@ export function PolaroidCard(props: PolaroidCardProps) {
   const hostAge = hostDob != null ? ageFromDob(hostDob) : null;
 
   if (variant === "static") {
+    const tokenLabel =
+      props.tokenCost === 0
+        ? "free"
+        : `${props.tokenCost} token${props.tokenCost === 1 ? "" : "s"}`;
     return (
       <div
         className={`relative w-[min(100%,320px)] ${tiltClass} transition duration-300 hover:rotate-0 hover:scale-[1.02]`}
@@ -176,8 +175,27 @@ export function PolaroidCard(props: PolaroidCardProps) {
               <p className="font-handwriting text-[1.45rem] text-lc-writing-ink/92">
                 {dateCaption}
               </p>
-              <p className="pt-2 font-serif text-[11px] font-medium uppercase tracking-[0.14em] text-lc-dusty-blue/90">
-                Turn over for details
+              <Link
+                href={`/u/${props.hostId}`}
+                className="mt-3 flex items-center gap-2.5 px-0.5 transition hover:opacity-90"
+              >
+                {props.hostImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={props.hostImage}
+                    alt=""
+                    className="h-10 w-10 shrink-0 rounded-full object-cover shadow-md ring-2 ring-lc-cream/80"
+                  />
+                ) : (
+                  <div className="h-10 w-10 shrink-0 rounded-full bg-lc-earth-muted/35 ring-2 ring-lc-cream/70" />
+                )}
+                <span className="font-serif text-[15px] font-medium lowercase leading-snug tracking-wide text-lc-writing-ink">
+                  {hostLabel}
+                  {hostAge != null ? `, ${hostAge}` : ""}
+                </span>
+              </Link>
+              <p className="mt-3 font-handwriting text-[1.2rem] leading-snug lowercase tracking-[0.02em] text-lc-earth-muted italic">
+                turn over for details
               </p>
             </div>
           </div>
@@ -189,8 +207,8 @@ export function PolaroidCard(props: PolaroidCardProps) {
               aria-label="Gathering details"
               className="polaroid-card-back-scroll relative min-h-0 flex-1 touch-pan-y overflow-y-auto px-6 pb-6 pt-6"
             >
-              <p className="font-serif text-[12px] font-semibold uppercase tracking-[0.2em] text-lc-dusty-blue">
-                The evening
+              <p className="font-handwriting text-[1.15rem] font-normal lowercase leading-none tracking-wide italic text-lc-muted-tan">
+                the evening
               </p>
               <h3 className="mt-4 font-handwriting text-2xl font-medium leading-[1.2] tracking-tight text-lc-writing-ink">
                 {props.title}
@@ -235,9 +253,6 @@ export function PolaroidCard(props: PolaroidCardProps) {
                       props.hostFriendsCount,
                     )}
                   </span>
-                </p>
-                <p className="mt-3 text-[14px] font-medium tabular-nums leading-snug text-lc-ink-on-paper">
-                  Tokens: {tokenLabel} · exact address after approval
                 </p>
               </div>
             </div>

@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { TokenExplainer } from "@/components/token-explainer";
 import { prisma } from "@/lib/prisma";
 import { PERSONALITY_PROMPTS } from "@/lib/prompts";
 import { ageFromDob } from "@/lib/gathering-display";
@@ -33,177 +32,243 @@ export default async function ProfilePage() {
           startsAt: { gt: new Date() },
         },
         orderBy: { startsAt: "asc" },
-        take: 5,
+        take: 12,
       },
     },
   });
 
   const primary = u.photos.find((p) => p.isPrimary) ?? u.photos[0];
   const p = u.profile!;
-  const extraPhotos = u.photos.filter((ph) => ph.id !== primary?.id);
+  const extras = u.photos.filter((ph) => ph.id !== primary?.id);
   const age = ageFromDob(p.dateOfBirth);
   const hood = neighborhoodLine(p.neighborhood);
   const subline = [p.college, p.job].filter(Boolean).join(" · ").toLowerCase();
 
+  const promptBlocks = PERSONALITY_PROMPTS.flatMap((pr) => {
+    const ans = u.promptAnswers.find((a) => a.promptKey === pr.key);
+    if (!ans?.body?.trim()) return [];
+    return [{ key: pr.key, label: pr.label, body: ans.body.trim() }];
+  });
+
+  const hosted = u.hostedGatherings;
+  const zipLen = Math.max(hosted.length, extras.length);
+
   return (
-    <div className="relative -mx-4 min-h-[calc(100dvh-6rem)] bg-gradient-to-b from-lc-profile-gradient-from via-lc-profile-gradient-via to-lc-profile-gradient-to px-5 py-8 pb-28 sm:-mx-6 sm:px-8">
-      <div className="relative mx-auto max-w-lg">
+    <div className="relative -mx-4 min-h-[calc(100dvh-6rem)] bg-gradient-to-b from-lc-profile-gradient-from via-lc-profile-gradient-via to-lc-profile-gradient-to pb-36 pt-12 sm:-mx-6 sm:pb-44 sm:pt-14">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-96 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(184,154,140,0.06)_0%,transparent_62%)]" />
+
+      <div className="relative mx-auto flex max-w-md flex-col px-6 sm:px-10">
         {p.moodBoardEnabled ? (
-          <div className="pointer-events-none absolute -top-6 left-1/2 z-10 -translate-x-1/2 opacity-90">
+          <div className="pointer-events-none absolute -top-10 left-1/2 z-10 w-[min(100%,520px)] -translate-x-1/2 opacity-[0.35]">
             <MoodBoardAura decorJson={p.moodBoardDecor} />
           </div>
         ) : null}
 
-        <header className="pt-4 text-center">
-          <div className="relative mx-auto w-fit">
-            {primary?.url || u.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={primary?.url ?? u.image!}
-                alt=""
-                className="h-44 w-44 rounded-full object-cover shadow-[0_20px_50px_rgba(0,0,0,0.45)] ring-4 ring-lc-cream/12"
-              />
-            ) : (
-              <div className="flex h-44 w-44 items-center justify-center rounded-full bg-lc-disk-plum font-serif text-sm text-lc-tab-muted">
-                no photo
-              </div>
-            )}
-          </div>
-          <h1 className="mt-8 font-serif text-3xl font-light lowercase tracking-tight text-lc-cream sm:text-[2.1rem]">
-            {p.firstName}, {age}
+        {/* Intro — airy, editorial */}
+        <header className="text-center">
+          <h1 className="font-display text-[2.125rem] font-light lowercase leading-[1.1] tracking-[-0.02em] text-lc-cream sm:text-[2.35rem]">
+            {p.firstName.trim().toLowerCase()}, {age}
           </h1>
           {hood ? (
-            <p className="mt-2 font-serif text-base lowercase text-lc-soft-rose">
+            <p className="mt-3 font-serif text-[1.05rem] font-normal lowercase leading-snug tracking-[0.01em] text-lc-soft-rose/88">
               {hood}
             </p>
           ) : null}
           {subline ? (
-            <p className="mt-1 font-serif text-sm lowercase text-lc-earth-muted/90">
+            <p className="mt-2 font-serif text-[15px] font-light lowercase tracking-wide text-lc-earth-muted/85">
               {subline}
             </p>
           ) : null}
         </header>
 
+        <div className="mx-auto mt-20 w-[min(19rem,min(74vw,20rem))] shrink-0 sm:mt-[5.25rem] sm:w-[min(21rem,80vw)]">
+          {primary?.url || u.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={primary?.url ?? u.image!}
+              alt=""
+              className="aspect-square w-full rounded-full object-cover shadow-[0_24px_60px_rgba(0,0,0,0.42)] ring-1 ring-lc-cream/[0.14]"
+            />
+          ) : (
+            <div className="flex aspect-square w-full items-center justify-center rounded-full bg-lc-disk-plum font-serif text-sm lowercase italic text-lc-tab-muted ring-1 ring-lc-cream/[0.1]">
+              add a portrait from edit profile
+            </div>
+          )}
+        </div>
+
         {p.bio?.trim() ? (
-          <p className="mx-auto mt-14 max-w-md text-center font-serif text-lg italic leading-relaxed text-lc-caption-warm/95">
-            {p.bio}
+          <p className="mx-auto mt-16 max-w-[26ch] text-center font-serif text-lg font-light italic leading-relaxed tracking-[0.01em] text-lc-caption-warm/93 sm:mt-[4.25rem] sm:text-xl sm:leading-[1.6]">
+            {p.bio.trim()}
           </p>
         ) : null}
 
-        {u.hostedGatherings.length > 0 ? (
-          <section className="mt-16 space-y-3 text-center">
-            {u.hostedGatherings.map((g) => (
-              <p
-                key={g.id}
-                className="font-handwriting text-[1.35rem] leading-snug text-lc-verse-dust"
-              >
-                hosting “{g.title.toLowerCase()}”
-              </p>
-            ))}
-          </section>
-        ) : null}
-
-        {PERSONALITY_PROMPTS.some((pr) =>
-          u.promptAnswers.some((a) => a.promptKey === pr.key),
-        ) ? (
-          <section className="mt-20 space-y-6">
-            {PERSONALITY_PROMPTS.map((pr) => {
-              const ans = u.promptAnswers.find((a) => a.promptKey === pr.key);
-              if (!ans) return null;
-              return (
-                <p
-                  key={pr.key}
-                  className="max-w-md font-serif text-base italic leading-relaxed text-lc-verse-dust/95"
-                >
-                  {ans.body}
-                </p>
-              );
-            })}
-          </section>
-        ) : null}
-
-        {extraPhotos.length > 0 ? (
-          <section className="mt-20 space-y-14">
-            {extraPhotos.map((ph, i) => (
+        {/* Personality excerpts — spaced like margin notes */}
+        {promptBlocks.length > 0 ? (
+          <div className={`${p.bio?.trim() ? "mt-20" : "mt-24"} space-y-[4.75rem]`}>
+            {promptBlocks.map((block) => (
               <div
-                key={ph.id}
-                className={`flex ${i % 2 === 0 ? "justify-start pl-2" : "justify-end pr-4"}`}
+                key={block.key}
+                className="mx-auto max-w-[min(34ch,88vw)] text-center sm:max-w-[36ch]"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={ph.url}
-                  alt=""
-                  className="h-48 w-48 rounded-full object-cover shadow-[0_16px_40px_rgba(0,0,0,0.4)] ring-2 ring-lc-cream/10 sm:h-52 sm:w-52"
-                />
+                <p className="font-serif text-[14px] font-normal leading-snug tracking-[0.02em] text-lc-earth-muted">
+                  {block.label}
+                </p>
+                <p className="mt-4 font-serif text-[17px] font-light italic leading-[1.55] tracking-[0.01em] text-lc-verse-dust/[0.96] sm:text-lg">
+                  {block.body}
+                </p>
               </div>
             ))}
-          </section>
+          </div>
         ) : null}
 
-        <section className="mt-20 rounded-2xl border border-lc-cream/12 bg-lc-espresso/80 px-5 py-6 text-lc-cream backdrop-blur-sm">
-          <div className="flex items-start justify-between gap-3">
-            <h2 className="font-serif text-[11px] font-semibold uppercase tracking-[0.16em] text-lc-tan-accent">
-              tokens
-            </h2>
-            <span className="rounded-full bg-lc-cream/10 px-2.5 py-0.5 font-serif text-[10px] uppercase tracking-wider text-lc-caption-warm">
-              {u.plan}
-            </span>
+        {/* Hosted moments + staggered circles — scrapbook rhythm */}
+        {zipLen > 0 ? (
+          <div className={`${promptBlocks.length > 0 || p.bio?.trim() ? "mt-28" : "mt-28"} flex flex-col gap-[4.75rem]`}>
+            {Array.from({ length: zipLen }, (_, i) => {
+              const g = hosted[i];
+              const ph = extras[i];
+              const staggerRight = i % 2 === 1;
+              return (
+                <div key={`zip-${i}`} className="flex flex-col gap-[4.75rem]">
+                  {g ? (
+                    <p className="mx-auto max-w-[28ch] text-center font-handwriting text-[1.375rem] leading-snug lowercase text-lc-caption-warm/94 sm:text-[1.55rem] sm:leading-[1.35]">
+                      hosted “{g.title.toLowerCase()}”
+                    </p>
+                  ) : null}
+                  {ph ? (
+                    <div
+                      className={
+                        staggerRight
+                          ? "flex justify-end pr-[7%]"
+                          : "flex justify-start pl-[4%]"
+                      }
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={ph.url}
+                        alt=""
+                        className={
+                          staggerRight && i % 3 === 1
+                            ? "h-[10.75rem] w-[10.75rem] rounded-full object-cover shadow-[0_14px_40px_rgba(0,0,0,0.38)] ring-1 ring-lc-cream/[0.1] sm:h-[13rem] sm:w-[13rem]"
+                            : "h-[11.75rem] w-[11.75rem] rounded-full object-cover shadow-[0_14px_40px_rgba(0,0,0,0.38)] ring-1 ring-lc-cream/[0.1] sm:h-[13.75rem] sm:w-[13.75rem]"
+                        }
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
-          <div className="mt-5 grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-black/25 px-3 py-3 text-center ring-1 ring-white/5">
-              <p className="font-serif text-3xl font-light tabular-nums text-lc-cream">
-                {u.tokensAvailable}
-              </p>
-              <p className="mt-0.5 font-serif text-[10px] uppercase tracking-[0.14em] text-lc-soft-rose">
-                available
-              </p>
-            </div>
-            <div className="rounded-xl bg-black/25 px-3 py-3 text-center ring-1 ring-white/5">
-              <p className="font-serif text-3xl font-light tabular-nums text-lc-cream">
-                {u.tokensHeld}
-              </p>
-              <p className="mt-0.5 font-serif text-[10px] uppercase tracking-[0.14em] text-lc-soft-rose">
-                held
-              </p>
-            </div>
+        ) : null}
+
+        {/* Trailing photos if more images than hosted captions */}
+        {extras.length > hosted.length ? (
+          <div className="mt-24 flex flex-col gap-[5rem]">
+            {extras.slice(hosted.length).map((ph, j) => {
+              const staggerRight = (hosted.length + j) % 2 === 1;
+              return (
+                <div
+                  key={ph.id}
+                  className={
+                    staggerRight
+                      ? "flex justify-end pr-[5%]"
+                      : "flex justify-start pl-[8%]"
+                  }
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={ph.url}
+                    alt=""
+                    className="h-[11rem] w-[11rem] rounded-full object-cover shadow-[0_14px_40px_rgba(0,0,0,0.36)] ring-1 ring-lc-cream/[0.1] sm:h-[13rem] sm:w-[13rem]"
+                  />
+                </div>
+              );
+            })}
           </div>
-          <TokenExplainer variant="onDark" className="mt-4" />
+        ) : null}
+
+        {/* Bottom invitation — calm CTA */}
+        <div className="mt-[7.5rem] flex flex-col items-center gap-10 text-center sm:mt-[8.75rem]">
           <Link
-            href="/profile/tokens"
-            className="mt-5 flex w-full items-center justify-center rounded-md border border-lc-pale-blue-border bg-lc-dusty-blue py-3 font-serif text-sm lowercase tracking-wide text-lc-cream transition hover:bg-lc-dusty-blue-bright-hover"
+            href="/host/new"
+            className="font-handwriting text-xl lowercase leading-snug text-lc-cream/[0.92] underline decoration-lc-tan-accent/45 decoration-1 underline-offset-[8px] transition hover:text-lc-cream hover:decoration-lc-caption-warm/65 sm:text-[1.35rem]"
           >
-            buy tokens
+            host something small
           </Link>
-        </section>
-
-        <nav
-          className="mt-12 flex flex-col items-center gap-3 font-serif text-sm lowercase tracking-wide text-lc-pale-blue-border"
-          aria-label="Profile actions"
-        >
-          <Link href="/profile/edit" className="hover:text-lc-cream">
-            edit profile
+          <Link
+            href={`/u/${userId}`}
+            className="font-serif text-[15px] font-light lowercase italic tracking-wide text-lc-tab-muted transition hover:text-lc-caption-warm sm:text-base"
+          >
+            see how your profile reads to guests
           </Link>
-          <Link href="/profile/notifications" className="hover:text-lc-cream">
-            notifications
-          </Link>
-          <Link href="/profile/settings" className="hover:text-lc-cream">
-            settings
-          </Link>
-          <Link href="/report" className="text-lc-earth-muted hover:text-lc-pale-blue-border">
-            report an issue
-          </Link>
-        </nav>
-
-        <div className="mt-10 pb-6">
-          <form action={signOutAction}>
-            <button
-              type="submit"
-              className="w-full rounded-md border border-lc-cream/25 py-3 font-serif text-sm lowercase tracking-wide text-lc-cream transition hover:bg-lc-cream/8"
-            >
-              sign out
-            </button>
-          </form>
         </div>
+
+        {/* Quiet utility prose — no cards */}
+        <p className="mx-auto mt-20 max-w-sm text-center font-serif text-[14px] font-light lowercase leading-relaxed tracking-wide text-lc-earth-muted">
+          <span className="text-lc-caption-warm/90 tabular-nums">{u.tokensAvailable}</span>
+          {" · "}
+          <Link href="/profile/tokens" className="underline decoration-from-font underline-offset-[4px] transition hover:text-lc-caption-warm">
+            tokens
+          </Link>
+          {u.tokensHeld > 0 ? (
+            <>
+              {" · "}
+              <span className="tabular-nums">{u.tokensHeld}</span> held on requests
+            </>
+          ) : null}
+          {" · plan "}
+          <span className="lowercase text-lc-tab-muted">{u.plan}</span>
+        </p>
+
+        <div className="-mx-6 mt-16 flex justify-center overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10">
+          <nav
+            className="inline-flex shrink-0 flex-nowrap items-center gap-x-2.5 font-serif text-sm font-light lowercase tracking-[0.06em] text-lc-earth-muted sm:gap-x-3 sm:tracking-[0.08em]"
+            aria-label="Profile shortcuts"
+          >
+            <Link
+              href="/profile/edit"
+              className="shrink-0 whitespace-nowrap transition hover:text-lc-caption-warm"
+            >
+              edit profile
+            </Link>
+            <span className="shrink-0 opacity-35" aria-hidden>
+              ·
+            </span>
+            <Link
+              href="/profile/notifications"
+              className="shrink-0 whitespace-nowrap transition hover:text-lc-caption-warm"
+            >
+              notifications
+            </Link>
+            <span className="shrink-0 opacity-35" aria-hidden>
+              ·
+            </span>
+            <Link
+              href="/profile/settings"
+              className="shrink-0 whitespace-nowrap transition hover:text-lc-caption-warm"
+            >
+              settings
+            </Link>
+            <span className="shrink-0 opacity-35" aria-hidden>
+              ·
+            </span>
+            <Link
+              href="/report"
+              className="shrink-0 whitespace-nowrap transition hover:text-lc-caption-warm"
+            >
+              report an issue
+            </Link>
+          </nav>
+        </div>
+
+        <form action={signOutAction} className="mx-auto mt-10">
+          <button
+            type="submit"
+            className="font-serif text-[12px] font-light lowercase tracking-[0.2em] text-lc-tab-muted/70 transition hover:text-lc-earth-muted sm:text-[13px]"
+          >
+            sign out
+          </button>
+        </form>
       </div>
     </div>
   );

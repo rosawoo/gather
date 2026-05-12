@@ -106,7 +106,7 @@ export type ParsedCover =
   | { kind: "none" };
 
 /** Preset sticker ids for template covers (comma-separated in stored URL). */
-/** Dingbat-style marks only (no emoji) so stickers stay on-brand. */
+/** Dingbat-style marks + simple shapes (no emoji) so stickers stay on-brand. */
 export const COVER_STICKER_PRESETS = [
   { id: "heart", glyph: "\u2665" },
   { id: "star", glyph: "\u2605" },
@@ -118,6 +118,14 @@ export const COVER_STICKER_PRESETS = [
   { id: "party", glyph: "\u2736" },
   { id: "coffee", glyph: "\u2299" },
   { id: "pizza", glyph: "\u25C6" },
+  { id: "leaf", glyph: "\u2731" },
+  { id: "book", glyph: "\u2630" },
+  { id: "flag", glyph: "\u2691" },
+  { id: "compass", glyph: "\u2733" },
+  { id: "wave", glyph: "\u223C" },
+  { id: "check", glyph: "\u2713" },
+  { id: "smile_arc", glyph: "\u2311" },
+  { id: "hourglass", glyph: "\u29D7" },
 ] as const;
 
 export function stickerGlyph(id: string): string {

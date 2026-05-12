@@ -5,10 +5,10 @@ import { DiscoverFilters } from "@/components/discover-filters";
 import { PolaroidCard, type PolaroidCardData } from "@/components/polaroid-card";
 import { lcChrome } from "@/lib/lc-classes";
 
-/** Inline gradient stops mirror `:root --lc-deep-brown`, dusty teal, plum, amber, etc. */
+/** Inline gradient stops mirror `:root` candlelit hues (brown, muted rust, plum, amber). */
 const MOOD_BACKGROUNDS = [
   "linear-gradient(165deg, #230b04 0%, #3d1808 45%, #120602 100%)",
-  "linear-gradient(165deg, #163640 0%, #266b7e 42%, #0d2328 100%)",
+  "linear-gradient(165deg, #221410 0%, #5a3f36 42%, #120a08 100%)",
   "linear-gradient(165deg, #291012 0%, #4f2130 46%, #150608 100%)",
   "linear-gradient(165deg, #33220c 0%, #664218 38%, #1a0f06 100%)",
   "linear-gradient(165deg, #17102a 0%, #362c5c 45%, #0d0818 100%)",
@@ -189,50 +189,56 @@ export function DiscoverExperience({
           <p className={`text-sm font-medium ${lcChrome.body}`}>
             {hasActiveFilters ? "No gatherings match" : "Nothing open right now"}
           </p>
-          <p className={`mt-2 text-xs ${lcChrome.mutedBody}`}>
+          <p className={`mt-2 text-sm leading-relaxed ${lcChrome.mutedBody}`}>
             {hasActiveFilters
               ? "Try loosening your filters."
               : "New gatherings drop regularly, or host one from the Host tab."}
           </p>
         </div>
       ) : (
-        <div className="relative flex items-center gap-2 sm:gap-4">
-          <CarouselArrow
-            dir="prev"
-            label="Previous gathering"
-            onClick={scrollPrev}
-            disabled={items.length <= 1 || activeIdx === 0}
-          />
-          <div
-            ref={stripRef}
-            className="flex min-h-[min(592px,min(84vh,640px))] flex-1 snap-x snap-mandatory gap-10 overflow-x-auto overflow-y-visible py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            <div
-              className="w-[min(28vw,7.5rem)] max-w-[180px] shrink-0 sm:w-[min(22vw,6rem)]"
-              aria-hidden
+        <>
+          <div className="relative flex items-center gap-2 sm:gap-4">
+            <CarouselArrow
+              dir="prev"
+              label="Previous gathering"
+              onClick={scrollPrev}
+              disabled={items.length <= 1 || activeIdx === 0}
             />
-            {items.map((data, i) => (
-              <div
-                key={data.id}
-                data-discover-card
-                className="flex shrink-0 snap-center justify-center"
-                style={{ minWidth: "min(92vw, 360px)" }}
-              >
-                <PolaroidCard {...data} scrapbookIndex={i} />
-              </div>
-            ))}
             <div
-              className="w-[min(28vw,7.5rem)] max-w-[180px] shrink-0 sm:w-[min(22vw,6rem)]"
-              aria-hidden
+              ref={stripRef}
+              className="flex min-h-[min(592px,min(84vh,640px))] flex-1 snap-x snap-mandatory gap-8 overflow-x-auto overflow-y-visible py-6 pl-0 pr-1 [scrollbar-width:none] sm:gap-10 sm:py-4 [&::-webkit-scrollbar]:hidden"
+            >
+              <div
+                className="w-[min(14vw,3.75rem)] max-w-[96px] shrink-0 sm:w-[min(18vw,5rem)]"
+                aria-hidden
+              />
+              {items.map((data, i) => (
+                <div
+                  key={data.id}
+                  data-discover-card
+                  className="flex shrink-0 snap-center justify-center"
+                  style={{ minWidth: "min(92vw, 360px)" }}
+                >
+                  <PolaroidCard {...data} scrapbookIndex={i} />
+                </div>
+              ))}
+              <div
+                className="w-[min(22vw,5.25rem)] max-w-[120px] shrink-0 sm:w-[min(16vw,4.25rem)]"
+                aria-hidden
+              />
+            </div>
+            <CarouselArrow
+              dir="next"
+              label="Next gathering"
+              onClick={scrollNext}
+              disabled={items.length <= 1 || activeIdx >= items.length - 1}
             />
           </div>
-          <CarouselArrow
-            dir="next"
-            label="Next gathering"
-            onClick={scrollNext}
-            disabled={items.length <= 1 || activeIdx >= items.length - 1}
-          />
-        </div>
+          <p className="mx-auto mt-10 max-w-lg px-2 text-center text-xs italic leading-relaxed text-lc-earth-muted">
+            By requesting gatherings with a token cost, you acknowledge tokens
+            are for shared expenses and reimbursements—not host profit.
+          </p>
+        </>
       )}
     </div>
   );
