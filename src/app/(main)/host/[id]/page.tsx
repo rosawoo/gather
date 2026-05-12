@@ -97,7 +97,7 @@ export default async function HostManageGatheringPage({
         Back
       </Link>
 
-      <div className="mt-5 overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm ring-1 ring-black/[0.02]">
+      <div className="mt-5 overflow-hidden rounded-2xl border border-gather-teal/25 bg-white shadow-sm ring-1 ring-gather-teal/10">
         <div className="h-2 bg-gather-brown" />
 
         <div className="p-5">
@@ -112,7 +112,7 @@ export default async function HostManageGatheringPage({
                   : isCancelled
                     ? "bg-red-50 text-red-600 ring-1 ring-red-200"
                     : isPast
-                      ? "bg-neutral-100 text-neutral-500 ring-1 ring-neutral-200"
+                      ? "bg-gather-line/40 text-gather-charcoal/80 ring-1 ring-gather-teal/20"
                       : "bg-amber-50 text-amber-700 ring-1 ring-amber-200"
               }`}
             >
@@ -120,18 +120,18 @@ export default async function HostManageGatheringPage({
             </span>
           </div>
 
-          <p className="mt-2 text-sm text-neutral-500">
+          <p className="mt-2 text-sm text-gather-charcoal/80">
             {dateStr} at {timeStr} · {g.neighborhood}
           </p>
 
-          <div className="my-5 border-t border-neutral-100" />
+          <div className="my-5 border-t border-gather-line/50" />
 
           <div className="grid grid-cols-3 gap-4 text-center">
             <Stat
               value={
                 <>
                   {attending}
-                  <span className="text-base font-normal text-neutral-300">
+                  <span className="text-base font-normal text-gather-line">
                     /{g.maxTotalSize}
                   </span>
                 </>
@@ -143,7 +143,7 @@ export default async function HostManageGatheringPage({
           </div>
 
           {g.minTotalSize > 1 && (
-            <p className="mt-4 text-center text-xs text-neutral-500">
+            <p className="mt-4 text-center text-xs text-gather-charcoal/80">
               Min {g.minTotalSize} needed
               {attending < g.minTotalSize ? "; not yet met" : "; met"}
               {g.hostFriendsCount > 0 &&
@@ -153,7 +153,7 @@ export default async function HostManageGatheringPage({
 
           {!isPast && isActive && (
             <>
-              <div className="my-5 border-t border-neutral-100" />
+              <div className="my-5 border-t border-gather-line/50" />
               <form action={cancelGatheringAsHostAction}>
                 <input type="hidden" name="gatheringId" value={id} />
                 <button
@@ -172,7 +172,7 @@ export default async function HostManageGatheringPage({
         <section className="mt-10">
           <SectionTitle title="Requests" />
           {pending.length === 0 ? (
-            <p className="text-sm text-neutral-500">No pending requests.</p>
+            <p className="text-sm text-gather-charcoal/80">No pending requests.</p>
           ) : (
             <ul className="space-y-3">
               {pending.map((r) => {
@@ -182,7 +182,7 @@ export default async function HostManageGatheringPage({
                 return (
                   <li
                     key={r.id}
-                    className="rounded-2xl border border-neutral-200/80 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]"
+                    className="rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10"
                   >
                     <Link
                       href={`/u/${r.guestId}`}
@@ -196,7 +196,7 @@ export default async function HostManageGatheringPage({
                           className="h-14 w-14 rounded-full object-cover ring-2 ring-white shadow-sm"
                         />
                       ) : (
-                        <div className="h-14 w-14 rounded-full bg-neutral-200" />
+                        <div className="h-14 w-14 rounded-full bg-gather-line/50" />
                       )}
                       <div>
                         <p className="font-semibold text-gather-ink">
@@ -226,7 +226,7 @@ export default async function HostManageGatheringPage({
                         <input type="hidden" name="requestId" value={r.id} />
                         <button
                           type="submit"
-                          className="rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-100"
+                          className="rounded-full border border-gather-teal/35 px-4 py-2 text-sm font-medium text-gather-ink transition hover:bg-gather-cream/80"
                         >
                           Not selected
                         </button>
@@ -252,7 +252,7 @@ export default async function HostManageGatheringPage({
                 <li key={r.id}>
                   <Link
                     href={`/u/${r.guestId}`}
-                    className="flex items-center gap-3 rounded-2xl border border-neutral-200/70 bg-white p-3 shadow-sm transition hover:border-gather-accent/40 hover:shadow-md"
+                    className="flex items-center gap-3 rounded-2xl border border-gather-teal/25 bg-white p-3 shadow-sm transition hover:border-gather-accent/40 hover:shadow-md"
                   >
                     {ph?.url ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -262,13 +262,13 @@ export default async function HostManageGatheringPage({
                         className="h-10 w-10 rounded-full object-cover ring-2 ring-white shadow-sm"
                       />
                     ) : (
-                      <div className="h-10 w-10 rounded-full bg-neutral-200" />
+                      <div className="h-10 w-10 rounded-full bg-gather-line/50" />
                     )}
                     <div className="text-sm">
                       <p className="font-semibold text-gather-ink">
                         {gp.firstName}
                       </p>
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-xs text-gather-charcoal/80">
                         {ageFromDob(gp.dateOfBirth)} · Approved
                       </p>
                     </div>
@@ -283,12 +283,12 @@ export default async function HostManageGatheringPage({
       {isPast && (
         <section className="mt-10">
           <SectionTitle title="Reimbursement" />
-          <div className="rounded-2xl border border-neutral-200/80 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
-            <p className="text-sm text-neutral-700">
+          <div className="rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
+            <p className="text-sm text-gather-ink">
               {approved.length} guest{approved.length !== 1 ? "s" : ""} attended
               · ${budget} budget
             </p>
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-gather-charcoal/80">
               Submit a receipt up to the budget amount. Payouts via Venmo or
               Zelle.
             </p>
@@ -352,7 +352,7 @@ function Stat({
       >
         {value}
       </p>
-      <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+      <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-charcoal/55">
         {label}
       </p>
     </div>
@@ -360,4 +360,4 @@ function Stat({
 }
 
 const inlineInput =
-  "w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
+  "w-full rounded-xl border border-gather-teal/25 bg-white px-4 py-2.5 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";

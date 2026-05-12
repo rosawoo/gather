@@ -96,7 +96,7 @@ export default async function GatheringDetailPage({
 
       <ScrapbookFrame>
       <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.04]">
-        <div className="aspect-[16/9] w-full bg-neutral-100">
+        <div className="aspect-[16/9] w-full bg-gather-line/40">
           <CoverArt cover={g.coverImageUrl} title={g.title} eager />
         </div>
         <div className="space-y-4 p-5">
@@ -104,7 +104,7 @@ export default async function GatheringDetailPage({
             <h1 className="font-handwriting text-3xl font-medium leading-tight tracking-tight text-gather-ink sm:text-4xl">
               {g.title}
             </h1>
-            <p className="mt-2 text-sm text-neutral-500">
+            <p className="mt-2 text-sm text-gather-charcoal/80">
               {dateStr} at {timeStr} · {g.neighborhood}
             </p>
           </div>
@@ -132,7 +132,7 @@ export default async function GatheringDetailPage({
           </div>
 
           {g.budgetExplanation ? (
-            <p className="rounded-xl bg-gather-paper/70 px-3 py-2 text-sm text-neutral-700 ring-1 ring-neutral-200/60">
+            <p className="rounded-xl bg-gather-paper/70 px-3 py-2 text-sm text-gather-ink ring-1 ring-gather-teal/18">
               <span className="font-semibold text-gather-brown-mid">
                 Event budget ·{" "}
               </span>
@@ -156,9 +156,9 @@ export default async function GatheringDetailPage({
             </Link>
           )}
 
-          <div className="space-y-3 border-t border-neutral-100 pt-4">
+          <div className="space-y-3 border-t border-gather-line/50 pt-4">
             {!canSeePrivate && !isHost ? (
-              <ul className="space-y-1.5 text-sm italic text-neutral-500">
+              <ul className="space-y-1.5 text-sm italic text-gather-charcoal/80">
                 <li>
                   Exact address and list of other gatherers shared after approval.
                 </li>
@@ -169,7 +169,7 @@ export default async function GatheringDetailPage({
                 </li>
               </ul>
             ) : null}
-            <p className="text-xs text-neutral-500">
+            <p className="text-xs text-gather-charcoal/80">
               If the minimum group size isn&apos;t reached two hours before the
               event, the gathering is automatically cancelled.
             </p>
@@ -182,7 +182,7 @@ export default async function GatheringDetailPage({
       {(canSeePrivate || isHost) && (
         <section className="mt-8">
           <SectionTitle title="Who's coming" variant="onDark" />
-          <div className="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+          <div className="rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
             <ul className="space-y-2.5 text-sm">
               <li className="flex items-center gap-2.5">
                 {g.host.photos[0]?.url || g.host.image ? (
@@ -193,7 +193,7 @@ export default async function GatheringDetailPage({
                     className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
                   />
                 ) : (
-                  <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
+                  <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
                 )}
                 <span>
                   {g.host.profile?.firstName ?? g.host.name}{" "}
@@ -216,11 +216,11 @@ export default async function GatheringDetailPage({
                         className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
                       />
                     ) : (
-                      <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
+                      <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
                     )}
                     <span>
                       {gp.firstName}{" "}
-                      <span className="text-xs text-neutral-500">
+                      <span className="text-xs text-gather-charcoal/80">
                         · {ageFromDob(gp.dateOfBirth)}
                       </span>
                     </span>
@@ -228,14 +228,14 @@ export default async function GatheringDetailPage({
                 );
               })}
               {g.hostFriendsCount > 0 ? (
-                <li className="text-xs text-neutral-500">
+                <li className="text-xs text-gather-charcoal/80">
                   + {g.hostFriendsCount} host friend
                   {g.hostFriendsCount === 1 ? "" : "s"} (profiles not shown)
                 </li>
               ) : null}
             </ul>
             {isHost ? (
-              <p className="mt-4 border-t border-neutral-100 pt-3 text-xs text-neutral-500">
+              <p className="mt-4 border-t border-gather-line/50 pt-3 text-xs text-gather-charcoal/80">
                 Event budget available: ${budgetDollars} ($7.50 per approved
                 guest token)
               </p>
@@ -284,7 +284,7 @@ function Fact({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-neutral-200/70 bg-gather-paper/60 px-3 py-2.5">
+    <div className="rounded-xl border border-gather-teal/25 bg-gather-paper/60 px-3 py-2.5">
       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
         {label}
       </p>
@@ -303,7 +303,7 @@ function StatusNote({
   const styles =
     tone === "approved"
       ? "bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200"
-      : "bg-gather-paper/70 text-neutral-700 ring-1 ring-neutral-200/70";
+      : "bg-gather-paper/70 text-gather-ink ring-1 ring-gather-teal/20";
   return (
     <p className={`rounded-2xl px-4 py-3 text-sm ${styles}`}>{children}</p>
   );

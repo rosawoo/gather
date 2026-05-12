@@ -65,14 +65,14 @@ export default async function UpcomingGatheringsPage() {
             {pending.map((r) => (
               <li key={r.id} className="list-none">
                 <ScrapbookFrame>
-                  <div className="rounded-2xl border border-neutral-200/90 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
+                  <div className="rounded-2xl border border-gather-teal/30 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
                     <Link
                       href={`/gatherings/${r.gatheringId}`}
                       className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
                     >
                       {r.gathering.title}
                     </Link>
-                    <p className="mt-1 text-xs text-neutral-500">
+                    <p className="mt-1 text-xs text-gather-charcoal/80">
                       {r.gathering.startsAt.toLocaleString()} · Pending
                     </p>
                     <form action={cancelGuestRequestAction} className="mt-2">
@@ -108,21 +108,21 @@ export default async function UpcomingGatheringsPage() {
               return (
                 <li key={r.id} className="list-none">
                   <ScrapbookFrame>
-                    <div className="rounded-2xl border border-neutral-200/90 bg-white p-5 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
+                    <div className="rounded-2xl border border-gather-teal/30 bg-white p-5 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:shadow-md">
                       <Link
                         href={`/gatherings/${g.id}`}
                         className="font-semibold text-gather-brown transition hover:text-gather-brown-mid hover:underline"
                       >
                         {g.title}
                       </Link>
-                      <p className="mt-1 text-xs text-neutral-500">
+                      <p className="mt-1 text-xs text-gather-charcoal/80">
                         {g.startsAt.toLocaleString()} · {g.neighborhood}
                       </p>
-                      <p className="mt-2 text-xs text-neutral-600">
+                      <p className="mt-2 text-xs text-gather-charcoal">
                         Exact address is visible on the gathering page.
                       </p>
 
-                      <div className="mt-4 rounded-xl bg-gather-paper/80 px-3 py-3 ring-1 ring-neutral-200/60">
+                      <div className="mt-4 rounded-xl bg-gather-paper/80 px-3 py-3 ring-1 ring-gather-teal/18">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-gather-brown-mid">
                           Who&apos;s coming
                         </p>
@@ -136,7 +136,7 @@ export default async function UpcomingGatheringsPage() {
                                 className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
                               />
                             ) : (
-                              <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
+                              <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
                             )}
                             <span className="text-[15px]">
                               {host.profile?.firstName ?? host.name ?? "Host"}{" "}
@@ -161,11 +161,11 @@ export default async function UpcomingGatheringsPage() {
                                     className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
                                   />
                                 ) : (
-                                  <div className="h-9 w-9 rounded-full bg-neutral-200 ring-2 ring-white" />
+                                  <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
                                 )}
                                 <span className="text-[15px]">
                                   {gp.firstName}{" "}
-                                  <span className="text-xs text-neutral-500">
+                                  <span className="text-xs text-gather-charcoal/80">
                                     · {ageFromDob(gp.dateOfBirth)}
                                   </span>
                                 </span>
@@ -173,7 +173,7 @@ export default async function UpcomingGatheringsPage() {
                             );
                           })}
                           {g.hostFriendsCount > 0 ? (
-                            <li className="text-xs text-neutral-500">
+                            <li className="text-xs text-gather-charcoal/80">
                               + {g.hostFriendsCount} host friend
                               {g.hostFriendsCount === 1 ? "" : "s"} (not shown)
                             </li>
@@ -185,7 +185,7 @@ export default async function UpcomingGatheringsPage() {
                         <input type="hidden" name="gatheringId" value={g.id} />
                         <button
                           type="submit"
-                          className="text-xs font-medium text-neutral-600 transition hover:text-gather-ink hover:underline"
+                          className="text-xs font-medium text-gather-charcoal transition hover:text-gather-ink hover:underline"
                         >
                           Withdraw (&gt;24h before start returns tokens)
                         </button>
@@ -208,12 +208,12 @@ export default async function UpcomingGatheringsPage() {
             {past.map((r) => (
               <li
                 key={r.id}
-                className="rounded-xl border border-neutral-200/60 bg-gather-paper/50 px-3 py-2.5 text-sm text-neutral-700"
+                className="rounded-xl border border-gather-teal/20 bg-gather-paper/50 px-3 py-2.5 text-sm text-gather-ink"
               >
                 <span className="font-medium text-gather-ink">
                   {r.gathering.title}
                 </span>
-                <span className="text-neutral-500">
+                <span className="text-gather-charcoal/80">
                   {" "}
                   · {r.gathering.startsAt.toLocaleDateString()} ·{" "}
                   {r.status === GatheringRequestStatus.APPROVED

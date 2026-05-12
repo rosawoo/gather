@@ -118,10 +118,10 @@ export function DiscoverFilters({
                 setParam("q", draft.q);
               }
             }}
-            className={`w-full rounded-full border px-4 py-2.5 pl-9 text-sm outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40 ${
+            className={`w-full rounded-full border px-4 py-2.5 pl-9 text-sm outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40 ${
               espresso
                 ? "border-white/20 bg-white/95 text-gather-ink"
-                : "border-neutral-200 bg-white text-gather-ink"
+                : "border-gather-teal/25 bg-white text-gather-ink"
             }`}
           />
           <svg
@@ -133,7 +133,7 @@ export function DiscoverFilters({
             strokeLinecap="round"
             strokeLinejoin="round"
             className={`pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${
-              espresso ? "text-neutral-500" : "text-neutral-400"
+              espresso ? "text-gather-charcoal/80" : "text-gather-charcoal/55"
             }`}
           >
             <circle cx="11" cy="11" r="7" />
@@ -150,7 +150,7 @@ export function DiscoverFilters({
                 : "border-gather-brown bg-gather-brown text-gather-cream"
               : espresso
                 ? "border-white/25 bg-white/10 text-gather-cream hover:bg-white/15"
-                : "border-neutral-200 bg-white text-gather-ink hover:border-gather-brown/40"
+                : "border-gather-teal/25 bg-white text-gather-ink hover:border-gather-brown/40"
           }`}
           aria-expanded={open}
         >
@@ -184,7 +184,7 @@ export function DiscoverFilters({
       </div>
 
       {open ? (
-        <div className="space-y-3 rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+        <div className="space-y-3 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
           <FilterBlock label="Neighborhood">
             <Select
               value={draft.neighborhood}
@@ -230,7 +230,7 @@ export function DiscoverFilters({
             <button
               type="button"
               onClick={clearAll}
-              className="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500 transition hover:text-gather-ink"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-gather-charcoal/80 transition hover:text-gather-ink"
             >
               Clear all
             </button>
@@ -289,7 +289,7 @@ export function DiscoverFilters({
             className={`text-[11px] font-semibold uppercase tracking-[0.14em] transition ${
               espresso
                 ? "text-gather-cream/50 hover:text-gather-cream"
-                : "text-neutral-500 hover:text-gather-ink"
+                : "text-gather-charcoal/80 hover:text-gather-ink"
             }`}
           >
             Clear all
@@ -330,7 +330,7 @@ function Select({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm text-gather-ink outline-none transition focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
+      className="w-full rounded-xl border border-gather-teal/25 bg-white px-3 py-2 text-sm text-gather-ink outline-none transition focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
     >
       {options.map((o) => (
         <option key={o.value || "_"} value={o.value}>

@@ -5,7 +5,7 @@ import { requestPhoneCode, verifyPhoneCode } from "@/app/actions/phone";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 const inputCls =
-  "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
+  "w-full rounded-xl border border-gather-teal/25 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
 
 function errMessage(e: unknown) {
   return e instanceof Error ? e.message : "Something went wrong";
@@ -103,7 +103,7 @@ export function PhoneForm() {
           className={`rounded-xl px-3 py-2 text-sm ${
             tone === "error"
               ? "bg-red-50 text-red-700 ring-1 ring-red-200"
-              : "bg-gather-paper/80 text-neutral-700 ring-1 ring-neutral-200"
+              : "bg-gather-paper/80 text-gather-ink ring-1 ring-gather-teal/20"
           }`}
         >
           {msg}

@@ -28,7 +28,7 @@ function TokenPackOffer({
   const shellClass = `group flex w-full items-center justify-between rounded-2xl border p-4 text-left shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
     p.highlight
       ? "border-gather-accent/40 bg-white ring-1 ring-gather-accent/10 enabled:hover:border-gather-accent enabled:hover:shadow-md"
-      : "border-neutral-200/80 bg-white ring-1 ring-black/[0.02] enabled:hover:border-gather-accent/40 enabled:hover:shadow-md"
+      : "border-gather-teal/25 bg-white ring-1 ring-gather-teal/10 enabled:hover:border-gather-accent/40 enabled:hover:shadow-md"
   }`;
 
   const inner = (
@@ -45,7 +45,7 @@ function TokenPackOffer({
             </span>
           ) : null}
         </div>
-        <p className="mt-1 text-xs text-neutral-500">{p.perTokenLabel}</p>
+        <p className="mt-1 text-xs text-gather-charcoal/80">{p.perTokenLabel}</p>
       </div>
       <div className="text-right">
         <p className="font-serif text-2xl font-light text-gather-brown">{p.priceLabel}</p>
@@ -127,27 +127,27 @@ export default async function BuyTokensPage({ searchParams }: Props) {
         </p>
       ) : null}
 
-      <div className="mt-6 rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+      <div className="mt-6 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
         <TokenExplainer />
       </div>
 
       {!stripeOk ? (
         <p
-          className="mt-6 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700"
+          className="mt-6 rounded-xl border border-gather-teal/25 bg-gather-cream/60 px-4 py-3 text-sm text-gather-ink"
           role="status"
         >
           Checkout needs{" "}
-          <code className="rounded bg-white px-1 py-0.5 text-neutral-900">
+          <code className="rounded bg-white px-1 py-0.5 text-gather-ink">
             STRIPE_SECRET_KEY
           </code>{" "}
           in this environment (e.g. Vercel → Project → Settings → Environment Variables →{" "}
           <strong className="font-medium">Production</strong>, then redeploy). Add{" "}
-          <code className="rounded bg-white px-1 py-0.5 text-neutral-900">
+          <code className="rounded bg-white px-1 py-0.5 text-gather-ink">
             STRIPE_WEBHOOK_SECRET
           </code>{" "}
           too so paid checkouts can credit tokens via{" "}
-          <code className="text-neutral-900">/api/stripe/webhook</code>. See{" "}
-          <code className="text-neutral-900">.env.example</code>.
+          <code className="text-gather-ink">/api/stripe/webhook</code>. See{" "}
+          <code className="text-gather-ink">.env.example</code>.
         </p>
       ) : null}
 
@@ -159,7 +159,7 @@ export default async function BuyTokensPage({ searchParams }: Props) {
           ))}
         </div>
 
-        <p className="mt-4 text-xs text-neutral-500">
+        <p className="mt-4 text-xs text-gather-charcoal/80">
           Checkout runs through Stripe. Payments fund host reimbursements (Venmo or bank transfer).
         </p>
       </section>

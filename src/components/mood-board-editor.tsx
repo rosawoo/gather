@@ -43,7 +43,7 @@ export function MoodBoardEditor({
   return (
     <div className="space-y-3">
       <input type="hidden" name="moodBoardDecor" value={json} />
-      <p className="text-xs text-neutral-500">
+      <p className="text-xs text-gather-charcoal/80">
         Tap a square to cycle stickers. They orbit your name and photo on your
         public profile.
       </p>
@@ -68,14 +68,14 @@ export function MoodBoardEditor({
               e.preventDefault();
               setSlot(i, "");
             }}
-            className="flex aspect-square items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-gather-paper/60 text-xl transition hover:border-gather-accent/50 hover:bg-white"
+            className="flex aspect-square items-center justify-center rounded-xl border border-dashed border-gather-teal/35 bg-gather-paper/60 text-xl transition hover:border-gather-accent/50 hover:bg-white"
             title="Click to change. Right-click or long-press to clear."
           >
-            {val || <span className="text-xs text-neutral-400">+</span>}
+            {val || <span className="text-xs text-gather-charcoal/55">+</span>}
           </button>
         ))}
       </div>
-      <p className="text-[11px] text-neutral-400">
+      <p className="text-[11px] text-gather-charcoal/55">
         Right-click (desktop) a slot to clear. {MOOD_SLOT_COUNT} positions.
       </p>
     </div>

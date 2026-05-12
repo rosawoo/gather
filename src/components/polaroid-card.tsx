@@ -57,7 +57,7 @@ export function PolaroidCard(props: PolaroidCardProps) {
       ) : null}
       <div className="rounded-xl bg-white p-3 pb-14 shadow-lg shadow-black/10 ring-1 ring-black/[0.07] transition duration-300 hover:shadow-xl hover:ring-gather-accent/25">
         <Link href={`/gatherings/${props.id}`} className="group block">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-neutral-200">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gather-line/50">
             <CoverArt cover={props.coverImageUrl} title={props.title} />
             <span className="absolute bottom-2 right-2 inline-flex rounded-full bg-gather-cream/95 px-2.5 py-0.5 text-[11px] font-semibold text-gather-brown shadow-sm ring-1 ring-black/5">
               {tokenLabel}
@@ -68,8 +68,8 @@ export function PolaroidCard(props: PolaroidCardProps) {
               {props.title}
             </h3>
             <p className="text-xs font-medium text-gather-brown-mid/90">{dateStr}</p>
-            <p className="text-xs text-neutral-600">{props.neighborhood}</p>
-            <p className="text-xs text-neutral-500">
+            <p className="text-xs text-gather-charcoal">{props.neighborhood}</p>
+            <p className="text-xs text-gather-charcoal/80">
               {capacityLine(
                 props.minTotalSize,
                 props.maxTotalSize,
@@ -78,7 +78,7 @@ export function PolaroidCard(props: PolaroidCardProps) {
             </p>
           </div>
         </Link>
-        <div className="mt-2.5 border-t border-neutral-100 pt-2.5">
+        <div className="mt-2.5 border-t border-gather-line/50 pt-2.5">
           <Link
             href={`/u/${props.hostId}`}
             className="flex items-center gap-2 rounded-lg px-0.5 py-1 transition hover:bg-gather-paper/80"
@@ -93,12 +93,12 @@ export function PolaroidCard(props: PolaroidCardProps) {
                 className="h-7 w-7 rounded-full object-cover ring-2 ring-white shadow-sm"
               />
             ) : (
-              <div className="h-7 w-7 rounded-full bg-neutral-300 ring-2 ring-white" />
+              <div className="h-7 w-7 rounded-full bg-gather-line/55 ring-2 ring-white" />
             )}
-            <span className="text-xs font-medium text-neutral-700">
+            <span className="text-xs font-medium text-gather-ink">
               {hostLabel}
               {hostAge != null ? (
-                <span className="font-normal text-neutral-500"> · {hostAge}</span>
+                <span className="font-normal text-gather-charcoal/80"> · {hostAge}</span>
               ) : null}
             </span>
           </Link>

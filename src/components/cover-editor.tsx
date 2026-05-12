@@ -154,7 +154,7 @@ export function CoverEditor({
 
   return (
     <div>
-      <div className="flex gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1">
+      <div className="flex gap-1 rounded-full border border-gather-teal/25 bg-gather-cream/60 p-1">
         <ModeTab
           active={mode === "template"}
           onClick={() => setMode("template")}
@@ -166,8 +166,8 @@ export function CoverEditor({
         </ModeTab>
       </div>
 
-      <div className="mt-4 overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm ring-1 ring-black/[0.02]">
-        <div className="aspect-[16/9] w-full bg-neutral-100">
+      <div className="mt-4 overflow-hidden rounded-2xl border border-gather-teal/25 bg-white shadow-sm ring-1 ring-gather-teal/10">
+        <div className="aspect-[16/9] w-full bg-gather-line/40">
           {mode === "template" ? (
             <TemplatePreview
               template={activeTemplate}
@@ -199,7 +199,7 @@ export function CoverEditor({
                 className={`overflow-hidden rounded-xl border text-left transition ${
                   templateId === t.id
                     ? "border-gather-brown ring-2 ring-gather-accent/40"
-                    : "border-neutral-200 hover:border-gather-accent/40"
+                    : "border-gather-teal/25 hover:border-gather-accent/40"
                 }`}
                 aria-pressed={templateId === t.id}
               >
@@ -242,7 +242,7 @@ export function CoverEditor({
                 label={c}
               />
             ))}
-            <label className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-2 py-1 text-xs text-gather-brown-mid">
+            <label className="inline-flex items-center gap-2 rounded-full border border-gather-teal/25 px-2 py-1 text-xs text-gather-brown-mid">
               <input
                 type="color"
                 value={bg || activeTemplate.bgPrimary}
@@ -257,7 +257,7 @@ export function CoverEditor({
           <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
             Stickers (optional, max 4)
           </p>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-gather-charcoal/80">
             Tap to add tiny accents on the polaroid template, great with GIFs in
             upload mode too.
           </p>
@@ -279,7 +279,7 @@ export function CoverEditor({
                   className={`flex h-10 w-10 items-center justify-center rounded-xl border text-lg transition ${
                     on
                       ? "border-gather-brown bg-gather-cream/80 ring-2 ring-gather-accent/40"
-                      : "border-neutral-200 bg-white hover:border-gather-accent/40"
+                      : "border-gather-teal/25 bg-white hover:border-gather-accent/40"
                   }`}
                   aria-pressed={on}
                   title={s.id}
@@ -293,7 +293,7 @@ export function CoverEditor({
           <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
             Image or GIF overlays (optional, max 3)
           </p>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-gather-charcoal/80">
             Layer small graphics on the template: logos, memes, or transparent
             PNGs. Paste a URL or upload.
           </p>
@@ -310,7 +310,7 @@ export function CoverEditor({
                   })
                 }
                 placeholder={`Image URL ${slot + 1}`}
-                className="min-w-[12rem] flex-1 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
+                className="min-w-[12rem] flex-1 rounded-xl border border-gather-teal/25 bg-white px-3 py-2 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
               />
               <input
                 ref={ovRefs[slot]}
@@ -325,7 +325,7 @@ export function CoverEditor({
                 type="button"
                 disabled={uploading}
                 onClick={() => ovRefs[slot].current?.click()}
-                className="shrink-0 rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-gather-brown transition hover:border-gather-brown disabled:opacity-50"
+                className="shrink-0 rounded-full border border-gather-teal/35 bg-white px-3 py-1.5 text-xs font-semibold text-gather-brown transition hover:border-gather-brown disabled:opacity-50"
               >
                 Upload
               </button>
@@ -339,7 +339,7 @@ export function CoverEditor({
                       return next;
                     })
                   }
-                  className="text-xs font-medium text-neutral-500 hover:text-red-600"
+                  className="text-xs font-medium text-gather-charcoal/80 hover:text-red-600"
                 >
                   Clear
                 </button>
@@ -374,9 +374,9 @@ export function CoverEditor({
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Or paste URL (image or GIF)"
-            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
+            className="w-full rounded-xl border border-gather-teal/25 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
           />
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-gather-charcoal/80">
             Animated GIFs work as cover art. With Blob storage connected, uploads
             go straight to your gallery URL.
           </p>
@@ -433,7 +433,7 @@ function SwatchButton({
       className={`h-8 w-8 rounded-full border transition ${
         active
           ? "border-gather-brown ring-2 ring-gather-accent/40"
-          : "border-neutral-200 hover:border-gather-accent/40"
+          : "border-gather-teal/25 hover:border-gather-accent/40"
       }`}
       style={{ backgroundColor: color }}
     />

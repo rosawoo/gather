@@ -19,7 +19,7 @@ export default async function ReportPage({
         Back
       </Link>
       <h1 className="mt-4 text-xl font-semibold">Report</h1>
-      <p className="mt-2 text-sm text-neutral-600">
+      <p className="mt-2 text-sm text-gather-charcoal">
         Tell us what happened. Our team reviews every submission.
       </p>
       <form action={submitReport} className="mt-6 space-y-4">
@@ -30,7 +30,7 @@ export default async function ReportPage({
           required
           rows={6}
           placeholder="Describe the issue…"
-          className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
+          className="w-full rounded-xl border border-gather-teal/25 bg-white px-4 py-3 text-sm outline-none ring-gather-accent focus:ring-2"
         />
         <button
           type="submit"

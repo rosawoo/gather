@@ -13,7 +13,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200/70 bg-gather-paper/92 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-gather-teal/25 bg-gather-paper/92 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md">
       <div className="mx-auto flex max-w-lg">
         {tabs.map((t) => {
           const Icon = t.icon;
@@ -31,8 +31,8 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               aria-current={active ? "page" : undefined}
               className={`relative flex flex-1 flex-col items-center justify-center gap-1 px-3 pt-2.5 pb-2 text-center transition ${
                 active
-                  ? "text-gather-brown"
-                  : "text-neutral-500 hover:text-gather-ink"
+                  ? "text-gather-teal"
+                  : "text-gather-charcoal/80 hover:text-gather-ink"
               }`}
             >
               <span className="relative">
@@ -45,7 +45,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               </span>
               <span
                 className={`text-[11px] font-semibold tracking-tight ${
-                  active ? "text-gather-brown" : "text-neutral-500"
+                  active ? "text-gather-teal" : "text-gather-charcoal/80"
                 }`}
               >
                 {t.label}
@@ -53,7 +53,7 @@ export function BottomNav({ unreadNotifs = 0 }: { unreadNotifs?: number }) {
               {active ? (
                 <span
                   aria-hidden
-                  className="absolute left-1/2 top-0 h-[2px] w-8 -translate-x-1/2 rounded-full bg-gather-brown"
+                  className="absolute left-1/2 top-0 h-[2px] w-8 -translate-x-1/2 rounded-full bg-gather-teal"
                 />
               ) : null}
             </Link>

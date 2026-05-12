@@ -198,7 +198,7 @@ export function PhotoUpload({
         className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-8 text-center transition ${
           dragging
             ? "border-gather-brown bg-gather-cream/60"
-            : "border-neutral-300 bg-gather-paper/40 hover:border-gather-accent hover:bg-white"
+            : "border-gather-teal/35 bg-gather-paper/40 hover:border-gather-accent hover:bg-white"
         }`}
       >
         <svg
@@ -218,7 +218,7 @@ export function PhotoUpload({
         <p className="text-sm font-semibold text-gather-ink">
           Drop photos here or click to browse
         </p>
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-gather-charcoal/80">
           JPG, PNG, WEBP, GIF, or HEIC, up to 8 MB each.
         </p>
         <input
@@ -253,12 +253,12 @@ export function PhotoUpload({
             }
           }}
           placeholder="Or paste an image URL"
-          className="flex-1 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
+          className="flex-1 rounded-xl border border-gather-teal/25 bg-white px-4 py-2.5 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
         />
         <button
           type="button"
           onClick={addFromUrl}
-          className="shrink-0 rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm font-semibold text-gather-brown transition hover:border-gather-brown hover:bg-gather-paper"
+          className="shrink-0 rounded-xl border border-gather-teal/35 bg-white px-4 py-2.5 text-sm font-semibold text-gather-brown transition hover:border-gather-brown hover:bg-gather-paper"
         >
           Add
         </button>

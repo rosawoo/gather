@@ -147,7 +147,7 @@ export default async function NewGatheringPage() {
 
         <HostBudgetRange formId="new-gathering-form" />
 
-        <p className="text-center text-xs italic text-neutral-600">
+        <p className="text-center text-xs italic text-gather-charcoal">
           *By creating this gathering, I affirm that any funds collected are
           intended solely for shared costs and not for personal profit.
         </p>
@@ -173,7 +173,7 @@ function Group({
   return (
     <section>
       <SectionTitle title={title} />
-      <div className="space-y-4 rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+      <div className="space-y-4 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
         {children}
       </div>
     </section>
@@ -202,7 +202,7 @@ function Field({
         ) : null}
       </label>
       {hint ? (
-        <p className="mt-0.5 text-xs text-neutral-500">{hint}</p>
+        <p className="mt-0.5 text-xs text-gather-charcoal/80">{hint}</p>
       ) : null}
       <div className="mt-1.5">{children}</div>
     </div>
@@ -210,4 +210,4 @@ function Field({
 }
 
 const input =
-  "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";
+  "w-full rounded-xl border border-gather-teal/25 bg-white px-4 py-3 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40";

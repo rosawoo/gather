@@ -37,7 +37,7 @@ export default async function HostHubPage() {
 
   return (
     <div className="pb-8">
-      <p className="mb-8 text-sm text-neutral-600">
+      <p className="mb-8 text-sm text-gather-charcoal">
         Plan small, warm gatherings for your neighbors.
       </p>
 
@@ -53,7 +53,7 @@ export default async function HostHubPage() {
           </Link>
         </div>
       ) : (
-          <div className="rounded-2xl border border-neutral-200/70 bg-white p-4 text-sm text-neutral-600 shadow-sm">
+          <div className="rounded-2xl border border-gather-teal/25 bg-white p-4 text-sm text-gather-charcoal shadow-sm">
             Your plan doesn&apos;t include hosting yet. Upgrade when Member is
             available.
           </div>
@@ -86,7 +86,7 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className="block rounded-2xl border border-neutral-200/80 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:border-gather-accent/40 hover:shadow-md"
+                    className="block rounded-2xl border border-gather-teal/25 bg-white p-4 text-sm shadow-sm ring-1 ring-black/[0.03] transition hover:border-gather-accent/40 hover:shadow-md"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-semibold text-gather-ink">{g.title}</p>
@@ -96,7 +96,7 @@ export default async function HostHubPage() {
                         </span>
                       )}
                     </div>
-                    <p className="mt-1 text-xs text-neutral-500">{dateStr}</p>
+                    <p className="mt-1 text-xs text-gather-charcoal/80">{dateStr}</p>
                     <p className="mt-2 text-xs text-gather-brown-mid">
                       {attending} / {g.maxTotalSize} attending
                     </p>
@@ -133,10 +133,10 @@ export default async function HostHubPage() {
                 <li key={g.id}>
                   <Link
                     href={`/host/${g.id}`}
-                    className="block rounded-xl border border-neutral-200/60 bg-gather-paper/50 px-3 py-2.5 text-sm transition hover:bg-white"
+                    className="block rounded-xl border border-gather-teal/20 bg-gather-paper/50 px-3 py-2.5 text-sm transition hover:bg-white"
                   >
                     <p className="font-medium text-gather-ink">{g.title}</p>
-                    <p className="mt-0.5 text-xs text-neutral-500">
+                    <p className="mt-0.5 text-xs text-gather-charcoal/80">
                       {g.startsAt.toLocaleDateString()} · {approved} attended ·
                       ${budget}
                     </p>
@@ -156,9 +156,9 @@ export default async function HostHubPage() {
 
 function EmptyState({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/40 px-4 py-8 text-center">
+    <div className="rounded-2xl border border-dashed border-gather-teal/35 bg-white/40 px-4 py-8 text-center">
       <p className="text-sm font-semibold text-gather-ink">{title}</p>
-      <p className="mt-1 text-xs text-neutral-500">{body}</p>
+      <p className="mt-1 text-xs text-gather-charcoal/80">{body}</p>
     </div>
   );
 }

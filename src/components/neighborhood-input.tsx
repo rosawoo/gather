@@ -435,7 +435,7 @@ export function NeighborhoodInput({
       {showList && (
         <ul
           ref={listRef}
-          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-56 overflow-y-auto rounded-xl border border-neutral-200 bg-white py-1 shadow-lg"
+          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-56 overflow-y-auto rounded-xl border border-gather-teal/25 bg-white py-1 shadow-lg"
         >
           {combined.map((item, i) => (
             <li
@@ -447,19 +447,19 @@ export function NeighborhoodInput({
               className={`flex cursor-pointer items-center justify-between gap-2 px-4 py-2 text-sm ${
                 i === activeIdx
                   ? "bg-gather-cream text-gather-brown"
-                  : "text-neutral-700 hover:bg-neutral-50"
+                  : "text-gather-ink hover:bg-gather-teal/5"
               }`}
             >
               <span className="truncate">{item.label}</span>
               {item.source === "api" ? (
-                <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+                <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-gather-charcoal/55">
                   OSM
                 </span>
               ) : null}
             </li>
           ))}
           {error ? (
-            <li className="px-4 py-1.5 text-[11px] text-neutral-500">
+            <li className="px-4 py-1.5 text-[11px] text-gather-charcoal/80">
               Live search unavailable. Suggestions from your local list only.
             </li>
           ) : null}

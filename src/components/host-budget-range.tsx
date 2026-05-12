@@ -66,5 +66,5 @@ export function HostBudgetRange({ formId }: { formId: string }) {
     };
   }, [formId]);
 
-  return <p className="text-xs text-neutral-600">{label}</p>;
+  return <p className="text-xs text-gather-charcoal">{label}</p>;
 }

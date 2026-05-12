@@ -10,7 +10,7 @@ import { MoodBoardAura } from "@/components/mood-board-aura";
 
 function MetaChip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 text-xs font-medium text-neutral-700 shadow-sm">
+    <span className="inline-flex items-center rounded-full border border-gather-teal/30 bg-white/90 px-3 py-1 text-xs font-medium text-gather-ink shadow-sm">
       {children}
     </span>
   );
@@ -58,7 +58,7 @@ export default async function ProfilePage() {
                 className="h-32 w-32 rounded-full object-cover shadow-lg ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30"
               />
             ) : (
-              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-neutral-200/90 text-neutral-400 ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30">
+              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gather-line/55 text-gather-charcoal/55 ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30">
                 <span className="text-xs">No photo</span>
               </div>
             )}
@@ -87,7 +87,7 @@ export default async function ProfilePage() {
 
       <section>
         <SectionTitle title="About" />
-        <div className="rounded-2xl border border-neutral-200/70 bg-white px-5 py-4 shadow-sm ring-1 ring-black/[0.02]">
+        <div className="rounded-2xl border border-gather-teal/25 bg-white px-5 py-4 shadow-sm ring-1 ring-gather-teal/10">
           <p className="text-[15px] leading-relaxed text-gather-ink">{p.bio}</p>
         </div>
       </section>
@@ -104,7 +104,7 @@ export default async function ProfilePage() {
             return (
               <article
                 key={pr.key}
-                className={`rounded-2xl border border-neutral-200/70 bg-white px-4 py-4 shadow-sm ring-1 ring-black/[0.02] ${
+                className={`rounded-2xl border border-gather-teal/25 bg-white px-4 py-4 shadow-sm ring-1 ring-gather-teal/10 ${
                   p.moodBoardEnabled ? `${tilt} bg-[#fffef8] shadow-md ring-amber-100/80` : ""
                 }`}
               >
@@ -177,7 +177,7 @@ export default async function ProfilePage() {
       <form action={signOutAction}>
         <button
           type="submit"
-          className="w-full rounded-full border border-neutral-300 bg-white py-3 text-sm font-semibold text-neutral-700 shadow-sm transition hover:border-gather-brown-mid hover:bg-neutral-50 hover:text-gather-brown"
+          className="w-full rounded-full border border-gather-teal/35 bg-white py-3 text-sm font-semibold text-gather-ink shadow-sm transition hover:border-gather-brown-mid hover:bg-gather-teal/5 hover:text-gather-brown"
         >
           Sign out
         </button>
@@ -199,8 +199,8 @@ function QuickAction({
     "flex items-center justify-center rounded-2xl py-3.5 text-sm transition";
   const styles =
     variant === "dashed"
-      ? "border border-dashed border-neutral-300 bg-gather-paper font-medium text-neutral-600 hover:border-gather-brown-mid hover:text-gather-brown"
-      : "border border-neutral-200/80 bg-white font-semibold text-gather-ink shadow-sm ring-1 ring-black/[0.02] hover:border-gather-accent/40 hover:shadow-md";
+      ? "border border-dashed border-gather-teal/35 bg-gather-paper font-medium text-gather-charcoal hover:border-gather-brown-mid hover:text-gather-brown"
+      : "border border-gather-teal/25 bg-white font-semibold text-gather-ink shadow-sm ring-1 ring-gather-teal/10 hover:border-gather-accent/40 hover:shadow-md";
   return (
     <Link href={href} className={`${base} ${styles}`}>
       {children}

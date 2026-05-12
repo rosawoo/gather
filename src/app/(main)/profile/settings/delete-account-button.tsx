@@ -39,7 +39,7 @@ export function DeleteAccountButton() {
         <button
           type="button"
           onClick={() => setConfirming(false)}
-          className="rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+          className="rounded-full border border-gather-teal/35 px-4 py-2 text-sm font-medium text-gather-ink hover:bg-gather-teal/5"
         >
           Cancel
         </button>

@@ -11,7 +11,7 @@ import { MoodBoardAura } from "@/components/mood-board-aura";
 
 function MetaChip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-neutral-200/90 bg-white/90 px-3 py-1 text-xs font-medium text-neutral-700 shadow-sm">
+    <span className="inline-flex items-center rounded-full border border-gather-teal/30 bg-white/90 px-3 py-1 text-xs font-medium text-gather-ink shadow-sm">
       {children}
     </span>
   );
@@ -106,7 +106,7 @@ export default async function PublicProfilePage({
                 className="h-32 w-32 rounded-full object-cover shadow-lg ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30"
               />
             ) : (
-              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-neutral-200/90 text-xs text-neutral-400 ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30">
+              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gather-line/55 text-xs text-gather-charcoal/55 ring-[5px] ring-white ring-offset-4 ring-offset-gather-cream/30">
                 No photo
               </div>
             )}
@@ -136,7 +136,7 @@ export default async function PublicProfilePage({
       {visibleHosted.length > 0 ? (
         <section>
           <SectionTitle title="Upcoming gatherings" />
-          <p className="mb-6 text-sm text-neutral-600">
+          <p className="mb-6 text-sm text-gather-charcoal">
             Open postings they&apos;re hosting. Tap a card to view or request to
             join.
           </p>
@@ -164,7 +164,7 @@ export default async function PublicProfilePage({
       ) : u.hostedGatherings.length > 0 ? (
         <section>
           <SectionTitle title="Upcoming gatherings" />
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-gather-charcoal/80">
             {viewer.plan === Plan.OBSERVER
               ? "This host has gatherings that aren’t available on your current plan."
               : "Nothing upcoming."}
@@ -174,7 +174,7 @@ export default async function PublicProfilePage({
 
       <section>
         <SectionTitle title="About" />
-        <div className="rounded-2xl border border-neutral-200/70 bg-white px-5 py-4 shadow-sm ring-1 ring-black/[0.02]">
+        <div className="rounded-2xl border border-gather-teal/25 bg-white px-5 py-4 shadow-sm ring-1 ring-gather-teal/10">
           <p className="text-[15px] leading-relaxed text-gather-ink">{p.bio}</p>
         </div>
       </section>
@@ -191,7 +191,7 @@ export default async function PublicProfilePage({
             return (
               <article
                 key={pr.key}
-                className={`rounded-2xl border border-neutral-200/70 bg-white px-4 py-4 shadow-sm ring-1 ring-black/[0.02] ${
+                className={`rounded-2xl border border-gather-teal/25 bg-white px-4 py-4 shadow-sm ring-1 ring-gather-teal/10 ${
                   p.moodBoardEnabled ? `${tilt} bg-[#fffef8] shadow-md ring-amber-100/80` : ""
                 }`}
               >
@@ -227,7 +227,7 @@ export default async function PublicProfilePage({
       <div className="pt-2 text-center">
         <Link
           href={`/report?type=user&id=${userId}`}
-          className="text-xs text-neutral-500 transition hover:text-gather-ink hover:underline"
+          className="text-xs text-gather-charcoal/80 transition hover:text-gather-ink hover:underline"
         >
           Report profile
         </Link>

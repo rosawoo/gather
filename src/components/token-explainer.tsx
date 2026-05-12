@@ -6,7 +6,7 @@ export function TokenExplainer({
   variant?: "default" | "onDark";
 }) {
   const tone =
-    variant === "onDark" ? "text-gather-cream/75" : "text-neutral-600";
+    variant === "onDark" ? "text-gather-cream/75" : "text-gather-charcoal";
   return (
     <p className={`text-xs leading-relaxed ${tone} ${className}`.trim()}>
       Tokens are for cost-sharing: they help cover food, drinks, reservations,

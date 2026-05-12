@@ -25,7 +25,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-8 pb-10">
-      <p className="text-sm text-neutral-600">
+      <p className="text-sm text-gather-charcoal">
         Account, plan, and notification preferences.
       </p>
 
@@ -77,20 +77,20 @@ export default async function SettingsPage() {
               >
                 Manage billing & invoices
               </button>
-              <p className="mt-2 text-[11px] text-neutral-500">
+              <p className="mt-2 text-[11px] text-gather-charcoal/80">
                 Opens Stripe&apos;s customer portal (payment methods, history).
                 Configure subscription products there if you use recurring plans.
               </p>
             </form>
           ) : stripeOk ? (
-            <p className="pt-1 text-xs text-neutral-500">
+            <p className="pt-1 text-xs text-gather-charcoal/80">
               Complete a token purchase with card checkout to link a Stripe
               customer. Then you can manage payment methods and receipts here.
             </p>
           ) : (
-            <p className="pt-1 text-xs text-neutral-500">
+            <p className="pt-1 text-xs text-gather-charcoal/80">
               Stripe isn&apos;t configured in this environment. See{" "}
-              <code className="text-xs text-neutral-700">.env.example</code> for
+              <code className="text-xs text-gather-ink">.env.example</code> for
               setup.
             </p>
           )}
@@ -105,22 +105,22 @@ export default async function SettingsPage() {
               <p className="text-sm font-semibold text-gather-ink">
                 SMS notifications
               </p>
-              <p className="mt-0.5 text-xs text-neutral-500">
+              <p className="mt-0.5 text-xs text-gather-charcoal/80">
                 Receive texts for join requests, approvals, and cancellations.
               </p>
             </div>
             <SmsToggle optedOut={user.smsOptOut} />
           </div>
-          <div className="flex items-start justify-between gap-3 border-t border-neutral-100 pt-4">
+          <div className="flex items-start justify-between gap-3 border-t border-gather-line/50 pt-4">
             <div>
               <p className="text-sm font-semibold text-gather-ink">
                 In-app notifications
               </p>
-              <p className="mt-0.5 text-xs text-neutral-500">
+              <p className="mt-0.5 text-xs text-gather-charcoal/80">
                 Always on. Check the Notifications tab for updates.
               </p>
             </div>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-charcoal/55">
               Always on
             </span>
           </div>
@@ -168,7 +168,7 @@ export default async function SettingsPage() {
       <section>
         <SectionTitle title="Policies" />
         <Card>
-          <ul className="space-y-3 text-sm text-neutral-700">
+          <ul className="space-y-3 text-sm text-gather-ink">
             <Policy title="Cancellation">
               Guests can withdraw &gt;24h before an event for a full token
               refund. Within 24h, tokens are forfeited.
@@ -190,7 +190,7 @@ export default async function SettingsPage() {
         <form action={signOutAction}>
           <button
             type="submit"
-            className="w-full rounded-full border border-neutral-300 bg-white py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50"
+            className="w-full rounded-full border border-gather-teal/35 bg-white py-3 text-sm font-semibold text-gather-ink transition hover:bg-gather-teal/5"
           >
             Sign out
           </button>
@@ -200,7 +200,7 @@ export default async function SettingsPage() {
       <section>
         <SectionTitle title="Danger zone" />
         <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm ring-1 ring-red-100">
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-gather-charcoal/80">
             Deleting your account removes all your data including your profile,
             photos, notifications, and token history.
           </p>
@@ -215,7 +215,7 @@ export default async function SettingsPage() {
 
 function Card({ children }: { children: React.ReactNode }) {
   return (
-    <div className="space-y-4 rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
+    <div className="space-y-4 rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
       {children}
     </div>
   );
@@ -230,7 +230,7 @@ function Row({
 }) {
   return (
     <div className="flex items-center justify-between gap-3 text-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-gather-charcoal/80">{label}</span>
       <span className="font-semibold text-gather-ink">{children}</span>
     </div>
   );
@@ -246,7 +246,7 @@ function Policy({
   return (
     <li>
       <span className="font-semibold text-gather-ink">{title}:</span>{" "}
-      <span className="text-neutral-600">{children}</span>
+      <span className="text-gather-charcoal">{children}</span>
     </li>
   );
 }

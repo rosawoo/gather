@@ -26,10 +26,10 @@ export function OnboardingScaffold({
       <div className="mx-auto flex w-full max-w-md flex-col">
         <Link
           href="/"
-          className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-gather-brown-mid/90 transition hover:text-gather-brown"
+          className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-gather-teal/90 transition hover:text-gather-teal"
         >
           <span
-            className="h-1 w-4 rounded-full bg-gather-accent/90"
+            className="h-1 w-4 rounded-full bg-gather-teal/90"
             aria-hidden
           />
           Gather
@@ -48,10 +48,10 @@ export function OnboardingScaffold({
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold transition ${
                     state === "done"
-                      ? "bg-gather-brown text-gather-cream"
+                      ? "bg-gather-wine text-gather-cream"
                       : state === "active"
-                        ? "bg-gather-brown text-gather-cream ring-4 ring-gather-accent/25"
-                        : "bg-neutral-200 text-neutral-500"
+                        ? "bg-gather-teal text-gather-cream ring-4 ring-gather-teal/25"
+                        : "bg-gather-line/50 text-gather-charcoal/80"
                   }`}
                 >
                   {state === "done" ? (
@@ -76,15 +76,15 @@ export function OnboardingScaffold({
                 <span
                   className={`truncate text-[11px] font-semibold uppercase tracking-[0.14em] ${
                     state === "todo"
-                      ? "text-neutral-400"
-                      : "text-gather-brown-mid"
+                      ? "text-gather-charcoal/55"
+                      : "text-gather-teal"
                   }`}
                 >
                   {s.label}
                 </span>
                 {i < STEPS.length - 1 ? (
                   <span
-                    className={`h-px flex-1 ${i < activeIndex ? "bg-gather-brown" : "bg-neutral-200"}`}
+                    className={`h-px flex-1 ${i < activeIndex ? "bg-gather-wine/70" : "bg-gather-line/50"}`}
                     aria-hidden
                   />
                 ) : null}
@@ -98,7 +98,7 @@ export function OnboardingScaffold({
             {title}
           </h1>
           {subtitle ? (
-            <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+            <p className="mt-2 text-sm leading-relaxed text-gather-charcoal">
               {subtitle}
             </p>
           ) : null}

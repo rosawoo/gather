@@ -98,7 +98,7 @@ export default async function PlanPage() {
         <>
           For the beta, only <strong>OG</strong> is available, free for your
           first month. Observer and Member arrive after beta.
-          <span className="mt-3 block text-xs font-normal text-neutral-600">
+          <span className="mt-3 block text-xs font-normal text-gather-charcoal">
             Paid plans renew automatically each billing cycle (you&apos;ll see
             this at checkout). You can change tiers when a period ends so the new
             plan starts on your next renewal date.
@@ -125,7 +125,7 @@ export default async function PlanPage() {
                 <button
                   type="button"
                   disabled
-                  className="w-full cursor-not-allowed rounded-full border border-neutral-300 bg-white py-3.5 text-sm font-semibold text-neutral-400"
+                  className="w-full cursor-not-allowed rounded-full border border-gather-teal/35 bg-white py-3.5 text-sm font-semibold text-gather-charcoal/55"
                   aria-disabled
                 >
                   Available after beta
@@ -154,7 +154,7 @@ function PlanCard({
       className={`relative overflow-hidden rounded-3xl border bg-white p-6 shadow-sm ring-1 transition ${
         highlight
           ? "border-gather-accent/40 ring-gather-accent/10 shadow-md"
-          : "border-neutral-200/80 ring-black/[0.02]"
+          : "border-gather-teal/25 ring-black/[0.02]"
       }`}
     >
       {highlight ? (
@@ -179,9 +179,9 @@ function PlanCard({
           <span className="font-serif text-4xl font-light tracking-tight text-gather-ink">
             {priceMain}
           </span>
-          <span className="text-sm text-neutral-500">{priceSub}</span>
+          <span className="text-sm text-gather-charcoal/80">{priceSub}</span>
         </div>
-        <p className="mt-1 text-sm text-neutral-600">{tagline}</p>
+        <p className="mt-1 text-sm text-gather-charcoal">{tagline}</p>
 
         <ul className="mt-5 space-y-2.5 text-sm text-gather-ink">
           {perks.map((perk) => (
@@ -191,13 +191,13 @@ function PlanCard({
                 className={`mt-[3px] flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
                   perk.included
                     ? "bg-gather-brown text-gather-cream"
-                    : "bg-neutral-200 text-neutral-400"
+                    : "bg-gather-line/50 text-gather-charcoal/55"
                 }`}
               >
                 {perk.included ? "+" : "\u2212"}
               </span>
               <span
-                className={perk.included ? "" : "text-neutral-500 line-through"}
+                className={perk.included ? "" : "text-gather-charcoal/80 line-through"}
               >
                 {perk.label}
               </span>
@@ -205,11 +205,11 @@ function PlanCard({
           ))}
         </ul>
 
-        <div className="mt-5 rounded-2xl bg-gather-paper/80 px-4 py-3 ring-1 ring-neutral-200/70">
+        <div className="mt-5 rounded-2xl bg-gather-paper/80 px-4 py-3 ring-1 ring-gather-teal/20">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
             What your month could look like
           </p>
-          <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-neutral-700">
+          <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-gather-ink">
             {month.map((line) => (
               <li key={line} className="flex gap-2">
                 <span aria-hidden className="text-gather-accent">

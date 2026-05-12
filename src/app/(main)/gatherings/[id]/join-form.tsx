@@ -17,7 +17,7 @@ export function JoinRequestForm({
 
   return (
     <form
-      className="space-y-4 rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm ring-1 ring-black/[0.02]"
+      className="space-y-4 rounded-2xl border border-gather-teal/25 bg-white p-5 shadow-sm ring-1 ring-gather-teal/10"
       action={(fd) => {
         setErr(null);
         start(async () => {
@@ -33,7 +33,7 @@ export function JoinRequestForm({
         });
       }}
     >
-      <p className="text-sm leading-relaxed text-neutral-700">
+      <p className="text-sm leading-relaxed text-gather-ink">
         This costs{" "}
         <strong className="text-gather-brown">
           {tokenCost} token{tokenCost === 1 ? "" : "s"}
@@ -48,7 +48,7 @@ export function JoinRequestForm({
         <textarea
           name="comment"
           rows={3}
-          className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
+          className="mt-2 w-full rounded-xl border border-gather-teal/25 bg-white px-3 py-2.5 text-sm text-gather-ink outline-none transition placeholder:text-gather-charcoal/55 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
           placeholder="e.g. My friend Ava is also requesting; we'd love to come together."
         />
       </div>

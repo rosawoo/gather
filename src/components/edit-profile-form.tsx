@@ -137,7 +137,7 @@ export function EditProfileForm({
         title="Mood board (optional)"
         hint="Scatter stickers around your name on your public profile, or keep the classic layout off."
       >
-        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-neutral-200/80 bg-gather-paper/40 px-3 py-3">
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-gather-teal/25 bg-gather-paper/40 px-3 py-3">
           <input
             type="checkbox"
             name="moodBoardEnabled"
@@ -147,7 +147,7 @@ export function EditProfileForm({
           />
           <span className="text-sm text-gather-ink">
             <span className="font-semibold">Enable mood board look</span>
-            <span className="mt-0.5 block text-xs text-neutral-600">
+            <span className="mt-0.5 block text-xs text-gather-charcoal">
               Name and age stay centered; you add playful emoji orbiters below.
             </span>
           </span>

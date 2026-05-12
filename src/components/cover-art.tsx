@@ -40,7 +40,7 @@ export function CoverArt({
 
   return (
     <div
-      className={`flex h-full w-full items-center justify-center bg-neutral-100 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-400 ${className}`}
+      className={`flex h-full w-full items-center justify-center bg-gather-line/40 text-[11px] font-semibold uppercase tracking-[0.12em] text-gather-charcoal/55 ${className}`}
     >
       No cover
     </div>
