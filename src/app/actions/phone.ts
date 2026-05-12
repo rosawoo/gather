@@ -8,19 +8,26 @@ import { redirect } from "next/navigation";
 
 export type RequestPhoneCodeResult =
   | { ok: true; channel: "sms" }
-  | { ok: true; channel: "console"; detail: string };
+  | { ok: true; channel: "console"; detail: string }
+  | { ok: false; error: string };
 
+/** Return `{ ok: false, error }` instead of throwing for user-facing faults so production builds still show the message (Next.js strips thrown Error.message over the Server Action boundary). */
 export async function requestPhoneCode(
   phoneRaw: string,
 ): Promise<RequestPhoneCodeResult> {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id)
+    return { ok: false, error: "You need to be signed in to verify a phone." };
 
   let phoneE164: string;
   try {
     phoneE164 = normalizeToE164(phoneRaw);
   } catch (e) {
-    throw new Error(e instanceof Error ? e.message : "Invalid phone");
+    return {
+      ok: false,
+      error:
+        e instanceof Error ? e.message : "Could not parse that phone number.",
+    };
   }
 
   const code = String(Math.floor(100000 + Math.random() * 900000));
@@ -38,10 +45,12 @@ export async function requestPhoneCode(
   if (isSmsConfigured()) {
     const result = await sendSmsToE164(phoneE164, otpBody, false);
     if (!result.ok) {
-      throw new Error(
-        result.error ??
-          "Could not send SMS. Check Twilio credentials, trial verified numbers, and server logs.",
-      );
+      return {
+        ok: false,
+        error:
+          result.error ??
+          "Could not send SMS. Check Twilio credentials, trial verified numbers, and Vercel logs for [sms:outbound].",
+      };
     }
     return { ok: true, channel: "sms" };
   }
@@ -58,20 +67,28 @@ export async function requestPhoneCode(
     };
   }
 
-  throw new Error(
-    "SMS is not configured on the server. In Vercel: Project → Settings → Environment Variables → add TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_FROM_NUMBER (or TWILIO_MESSAGING_SERVICE_SID) for Production, then redeploy.",
-  );
+  return {
+    ok: false,
+    error:
+      "SMS is not configured on the server. In Vercel: Project → Settings → Environment Variables → add TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_FROM_NUMBER (or TWILIO_MESSAGING_SERVICE_SID) for Production, then redeploy.",
+  };
 }
 
-export async function verifyPhoneCode(phoneRaw: string, code: string) {
+export type VerifyPhoneCodeResult = { ok: false; error: string };
+
+export async function verifyPhoneCode(
+  phoneRaw: string,
+  code: string,
+): Promise<VerifyPhoneCodeResult | void> {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  if (!session?.user?.id)
+    return { ok: false, error: "You need to be signed in to verify a phone." };
 
   let phoneE164: string;
   try {
     phoneE164 = normalizeToE164(phoneRaw);
   } catch {
-    throw new Error("Invalid phone");
+    return { ok: false, error: "Invalid phone number." };
   }
 
   const twilioReady = isSmsConfigured();
@@ -88,7 +105,7 @@ export async function verifyPhoneCode(phoneRaw: string, code: string) {
       },
       orderBy: { createdAt: "desc" },
     });
-    if (!row) throw new Error("Invalid or expired code");
+    if (!row) return { ok: false, error: "Invalid or expired code." };
     await prisma.phoneOtp.update({
       where: { id: row.id },
       data: { consumed: true },

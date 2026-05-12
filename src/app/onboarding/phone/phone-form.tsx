@@ -29,11 +29,16 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
     setMsg(null);
     try {
       const result = await requestPhoneCode(phone);
-      setTone("info");
-      if (result.channel === "sms") {
-        setMsg("Code sent. Check your phone for the text.");
+      if (!result.ok) {
+        setTone("error");
+        setMsg(result.error);
       } else {
-        setMsg(result.detail);
+        setTone("info");
+        if (result.channel === "sms") {
+          setMsg("Code sent. Check your phone for the text.");
+        } else {
+          setMsg(result.detail);
+        }
       }
     } catch (e) {
       setTone("error");
@@ -48,7 +53,11 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
     setPending(true);
     setMsg(null);
     try {
-      await verifyPhoneCode(phone, code);
+      const result = await verifyPhoneCode(phone, code);
+      if (result?.ok === false) {
+        setTone("error");
+        setMsg(result.error);
+      }
     } catch (e) {
       if (isRedirectError(e)) throw e;
       setTone("error");
@@ -110,6 +119,20 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
         </button>
       </form>
 
+      {msg ? (
+        <p
+          role="alert"
+          aria-live="polite"
+          className={`rounded-xl px-3 py-2 text-sm ${
+            tone === "error"
+              ? "bg-red-50 text-red-700 ring-1 ring-red-200"
+              : "bg-gather-paper/80 text-gather-ink ring-1 ring-gather-teal/20"
+          }`}
+        >
+          {msg}
+        </p>
+      ) : null}
+
       <form onSubmit={onVerify} className="space-y-3">
         <label className="flex items-baseline gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
           SMS code
@@ -131,18 +154,6 @@ export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
           {pending ? "Verifying…" : "Verify"}
         </button>
       </form>
-
-      {msg ? (
-        <p
-          className={`rounded-xl px-3 py-2 text-sm ${
-            tone === "error"
-              ? "bg-red-50 text-red-700 ring-1 ring-red-200"
-              : "bg-gather-paper/80 text-gather-ink ring-1 ring-gather-teal/20"
-          }`}
-        >
-          {msg}
-        </p>
-      ) : null}
     </div>
   );
 }
