@@ -188,18 +188,12 @@ export default async function ProfilePage() {
         ) : null}
 
         {/* Bottom invitation — calm CTA */}
-        <div className="mt-[7.5rem] flex flex-col items-center gap-10 text-center sm:mt-[8.75rem]">
+        <div className="mt-[7.5rem] flex flex-col items-center text-center sm:mt-[8.75rem]">
           <Link
             href="/host/new"
             className="font-handwriting text-xl lowercase leading-snug text-lc-cream/[0.92] underline decoration-lc-tan-accent/45 decoration-1 underline-offset-[8px] transition hover:text-lc-cream hover:decoration-lc-caption-warm/65 sm:text-[1.35rem]"
           >
             host something small
-          </Link>
-          <Link
-            href={`/u/${userId}`}
-            className="font-serif text-[15px] font-light lowercase italic tracking-wide text-lc-tab-muted transition hover:text-lc-caption-warm sm:text-base"
-          >
-            see how your profile reads to guests
           </Link>
         </div>
 

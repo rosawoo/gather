@@ -28,11 +28,6 @@ export default async function NotificationsPage() {
 
   return (
     <div className="pb-10">
-      <p className="mb-8 max-w-prose font-serif text-[15px] leading-relaxed text-lc-earth-muted sm:text-[16px]">
-        In-app copies of important updates. SMS uses the welcome / STOP flow
-        from your phone step.
-      </p>
-
       <NotificationsFeed items={rows} />
     </div>
   );
