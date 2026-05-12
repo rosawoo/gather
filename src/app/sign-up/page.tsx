@@ -1,18 +1,12 @@
 import { auth } from "@/auth";
+import { oauthCallbackPath } from "@/lib/oauth-callback-url";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
 import { redirect } from "next/navigation";
 
 type Props = {
-  searchParams: Promise<{ callbackUrl?: string }>;
+  searchParams: Promise<{ callbackUrl?: string | string[] }>;
 };
-
-function normalizeCallback(raw: string | undefined): string {
-  if (typeof raw !== "string") return "/";
-  if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
-  if (raw.includes("://") || raw.includes("..")) return "/";
-  return raw;
-}
 
 /** Canonical welcome / sign-up lives at `/`; keep `/sign-up` as a redirect for old links. */
 export default async function SignUpPageRedirect({ searchParams }: Props) {
@@ -26,9 +20,9 @@ export default async function SignUpPageRedirect({ searchParams }: Props) {
   }
 
   const sp = await searchParams;
-  const params = new URLSearchParams();
-  if (typeof sp.callbackUrl === "string") {
-    params.set("callbackUrl", normalizeCallback(sp.callbackUrl));
+  if (sp.callbackUrl !== undefined) {
+    const cb = oauthCallbackPath(sp.callbackUrl, "/gatherings");
+    redirect(`/?callbackUrl=${encodeURIComponent(cb)}`);
   }
-  redirect(params.size ? `/?${params.toString()}` : "/");
+  redirect("/");
 }

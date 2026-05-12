@@ -64,8 +64,15 @@ function buildAuthConfig(): NextAuthConfig {
       signIn: "/sign-in",
     },
     callbacks: {
-      session({ session, user }) {
-        if (session.user) session.user.id = user.id;
+      /**
+       * Database sessions pass `user`; JWT paths pass `token` only.
+       * Reading `user.id` when `user` is undefined caused hard 500s on /sign-in.
+       */
+      session({ session, user, token }) {
+        if (session.user) {
+          const id = user?.id ?? token?.sub;
+          if (id) session.user.id = id;
+        }
         return session;
       },
     },

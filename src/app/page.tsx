@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { AuthPanel } from "@/components/auth/auth-panel";
 import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
 import { prisma } from "@/lib/prisma";
+import { oauthCallbackPath } from "@/lib/oauth-callback-url";
 import { nextAppPath } from "@/lib/onboarding";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -14,15 +15,8 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{ callbackUrl?: string }>;
+  searchParams: Promise<{ callbackUrl?: string | string[] }>;
 };
-
-function normalizeCallback(raw: string | undefined): string {
-  if (typeof raw !== "string") return "/";
-  if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
-  if (raw.includes("://") || raw.includes("..")) return "/";
-  return raw;
-}
 
 export default async function HomePage({ searchParams }: Props) {
   const session = await auth();
@@ -35,10 +29,7 @@ export default async function HomePage({ searchParams }: Props) {
   }
 
   const sp = await searchParams;
-  const callbackUrl =
-    sp.callbackUrl !== undefined
-      ? normalizeCallback(sp.callbackUrl)
-      : "/gatherings";
+  const callbackUrl = oauthCallbackPath(sp.callbackUrl, "/gatherings");
 
   return (
     <CandlelitPageShell>
