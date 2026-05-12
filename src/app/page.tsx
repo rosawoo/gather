@@ -1,8 +1,13 @@
 import { auth } from "@/auth";
+import { CandlelitPageShell } from "@/components/landing/candlelit-page-shell";
+import { LandingWaitlistForm } from "@/components/landing/landing-waitlist-form";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+const POLAROID_PHOTO_SRC =
+  "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&q=80";
 
 export default async function LandingPage() {
   const session = await auth();
@@ -15,132 +20,102 @@ export default async function LandingPage() {
   }
 
   return (
-    <div className="min-h-full bg-gather-cream text-gather-ink">
-      <div className="w-full px-6 pb-20 pt-[calc(env(safe-area-inset-top,0px)+2rem)] sm:px-8 lg:px-12 xl:px-16">
-        <header className="text-center">
-          <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-gather-teal">
-            gather{" "}
-            <span className="text-gather-charcoal/50" aria-hidden>
-              |
-            </span>{" "}
-            find local gatherings
-          </p>
-          <h1 className="mt-10 font-handwriting text-[2.35rem] font-normal leading-[1.2] sm:text-[2.75rem]">
-            treat new friends like old ones.
-          </h1>
-          <p className="mt-4 text-sm font-normal leading-relaxed text-gather-charcoal">
-            Coming to Washington, D.C. Host-led gatherings, real rooms, no
-            awkward Venmo moments. Small groups you actually want to be in.
-          </p>
-        </header>
-
-        <div className="mt-10 space-y-3 border border-gather-teal bg-white/35 p-5 shadow-sm">
-          <p className="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-gather-teal">
-            Get started
-          </p>
-          <Link
-            href="/sign-up"
-            className="block w-full border border-gather-teal bg-gather-wine py-3.5 text-center text-sm font-semibold text-gather-cream transition hover:bg-gather-charcoal"
-          >
-            Create account
-          </Link>
-          <Link
-            href="/sign-in"
-            className="block w-full border border-gather-teal bg-transparent py-3.5 text-center text-sm font-semibold text-gather-teal transition hover:bg-gather-teal/10"
-          >
-            Log in
-          </Link>
+    <CandlelitPageShell>
+      <main className="mx-auto mt-10 w-full max-w-6xl flex-1">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8 lg:pt-4">
+          <div className="lg:col-span-6 lg:pt-2 xl:col-span-5">
+            <h2 className="landing-font-display landing-candlelit-hero-glow text-[2.15rem] font-normal leading-[1.08] tracking-[-0.02em] text-[#f4eee7] sm:text-3xl md:text-[2.75rem]">
+              treat new friends like old ones.
+            </h2>
+            <p className="mt-4 text-lg text-[#f4eee7]/88 sm:text-xl">
+              coming soon to d.c.
+            </p>
+          </div>
+          <div className="flex flex-col items-start justify-end lg:col-span-6 lg:items-end xl:col-span-7">
+            <p className="mb-3 max-w-[320px] text-[0.95rem] leading-relaxed text-[#eee9e1]/85">
+              we&apos;re quietly opening a list for the first hosts and guests.
+              leave your email—we&apos;ll write like friends, not a marketing
+              robot.
+            </p>
+            <LandingWaitlistForm />
+            <p className="mt-4 text-sm text-[#a98974]">
+              already in?{" "}
+              <Link
+                href="/sign-in"
+                className="text-[#f4eee7] underline decoration-[#c6d8e3]/50 underline-offset-4 hover:decoration-[#c6d8e3]"
+              >
+                log in
+              </Link>
+            </p>
+          </div>
         </div>
 
-        <section className="mt-16 border-b-2 border-gather-teal pb-2">
-          <p className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-gather-teal">
-            How you gather
-          </p>
-          <h2 className="mt-3 font-display text-xl font-bold leading-snug sm:text-2xl">
-            we want you to meet people gathering
-          </h2>
+        <section className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-12 lg:pt-8">
+          <div className="flex justify-center lg:col-span-5 lg:justify-start">
+            <figure className="landing-polaroid w-full max-w-[300px]">
+              <div className="aspect-[4/3] w-full overflow-hidden bg-[#321308]">
+                {/* eslint-disable-next-line @next/next/no-img-element -- remote mood photo; avoid coupling to image config */}
+                <img
+                  src={POLAROID_PHOTO_SRC}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  width={800}
+                  height={600}
+                />
+              </div>
+              <figcaption className="mt-3 text-center text-sm italic text-[#3a1a0f]/85">
+                same table, softer light
+              </figcaption>
+            </figure>
+          </div>
+          <div className="space-y-6 text-[1.05rem] leading-relaxed text-[#f4eee7]/90 lg:col-span-7 lg:pt-6">
+            <p>we want you to meet people gathering how you gather.</p>
+            <div>
+              <p className="text-[#a98974]">think</p>
+              <ul className="mt-2 space-y-2 pl-0">
+                <li className="flex gap-2">
+                  <span className="text-[#c6d8e3]" aria-hidden>
+                    &#8226;
+                  </span>
+                  <span>catan, red wine, &amp; trader joe&apos;s snacks</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#c6d8e3]" aria-hidden>
+                    &#8226;
+                  </span>
+                  <span>a doubles tennis crew in need of a fourth</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#c6d8e3]" aria-hidden>
+                    &#8226;
+                  </span>
+                  <span>bachelorette, candy, &amp; pajamas</span>
+                </li>
+              </ul>
+            </div>
+            <p className="text-[0.98rem] text-[#eee9e1]/88">
+              hosts choose who joins. guests choose what gatherings feel right.
+              small rooms, big napkins, low candlelight—somewhere between a
+              literary salon and your friend&apos;s living room.
+            </p>
+            <p>
+              <a
+                href="https://www.gathersocial.us/about"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#c6d8e3] underline decoration-[#c6d8e3]/40 underline-offset-[5px] transition hover:decoration-[#c6d8e3]"
+              >
+                see how it works
+              </a>{" "}
+              <span className="text-[#a98974]/90">on gathersocial.us</span>
+            </p>
+          </div>
         </section>
+      </main>
 
-        <div className="mt-6 border border-gather-teal bg-white/30 p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gather-charcoal">
-            Think
-          </p>
-          <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-gather-ink">
-            <li className="flex gap-2">
-              <span className="text-gather-teal" aria-hidden>
-                &#8226;
-              </span>
-              <span>Catan, red wine, and Trader Joe&apos;s snacks</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="text-gather-teal" aria-hidden>
-                &#8226;
-              </span>
-              <span>A doubles tennis crew in need of a fourth</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="text-gather-teal" aria-hidden>
-                &#8226;
-              </span>
-              <span>Bachelorette, candy, and pajamas</span>
-            </li>
-          </ul>
-          <p className="mt-5 text-sm leading-relaxed text-gather-charcoal">
-            Hosts choose who joins. Guests choose what gatherings feel right.
-            We&apos;ll handle the rest.
-          </p>
-          <p className="mt-3 text-sm italic leading-relaxed text-gather-charcoal/90">
-            No awkward Venmo moments, no &quot;should I be here?&quot;, just
-            more real gatherings.
-          </p>
-        </div>
-
-        <div className="mt-12 flex flex-col items-center gap-8 sm:flex-row sm:justify-center sm:gap-6">
-          <PolaroidStub
-            title="dinner at emily's"
-            subtitle="logan circle, 1.12"
-          />
-          <PolaroidStub title="game night!" subtitle="navy yard, 1.28" />
-        </div>
-
-        <p className="mt-14 text-center text-xs text-gather-charcoal/80">
-          Free to join during beta.
-        </p>
-
-        <div className="mt-8 flex flex-col items-center gap-3 border-t border-gather-line pt-8">
-          <a
-            href="https://www.gathersocial.us/about"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold uppercase tracking-[0.14em] text-gather-teal underline-offset-4 hover:underline"
-          >
-            see how it works
-          </a>
-          <p className="text-center text-[10px] text-gather-charcoal/60">
-            More on the Gather story lives on gathersocial.us
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PolaroidStub({
-  title,
-  subtitle,
-}: {
-  title: string;
-  subtitle: string;
-}) {
-  return (
-    <div className="w-[min(100%,220px)] -rotate-[1.5deg] shadow-md ring-1 ring-black/10 transition hover:rotate-0 sm:w-[200px]">
-      <div className="bg-white p-3 pb-8">
-        <div className="aspect-[4/3] w-full bg-gradient-to-br from-gather-peach/40 to-gather-teal/15" />
-        <p className="mt-3 font-handwriting text-lg leading-tight text-gather-ink">
-          {title}
-        </p>
-        <p className="mt-1 text-xs font-medium text-gather-teal">{subtitle}</p>
-      </div>
-    </div>
+      <footer className="mx-auto mt-16 w-full max-w-6xl border-t border-[#321308] pt-8 text-center text-xs text-[#a98974]/80">
+        free to join during beta.
+      </footer>
+    </CandlelitPageShell>
   );
 }

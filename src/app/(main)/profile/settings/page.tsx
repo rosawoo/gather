@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { signOutAction } from "@/app/actions/auth";
 import { billingPortalRedirect } from "@/app/actions/billing";
 import { isStripeConfigured } from "@/lib/stripe";
+import Link from "next/link";
 import { SmsToggle } from "./sms-toggle";
 import { DeleteAccountButton } from "./delete-account-button";
 import { SectionTitle } from "@/components/ui/page-header";
@@ -137,34 +138,28 @@ export default async function SettingsPage() {
         <Card>
           <ul className="space-y-2 text-sm">
             <li>
-              <a
-                href="https://www.gathersocial.us/terms-of-service"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/terms-of-service"
                 className="font-medium text-gather-brown underline-offset-4 hover:underline"
               >
                 Terms of service
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="https://www.gathersocial.us/privacy-policy"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/privacy-policy"
                 className="font-medium text-gather-brown underline-offset-4 hover:underline"
               >
                 Privacy policy
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="https://www.gathersocial.us/community-guidelines"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/community-guidelines"
                 className="font-medium text-gather-brown underline-offset-4 hover:underline"
               >
                 Community guidelines
-              </a>
+              </Link>
             </li>
           </ul>
         </Card>

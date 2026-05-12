@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import {
   Barlow,
+  Berkshire_Swash,
+  EB_Garamond,
   Geist_Mono,
   Libre_Caslon_Text,
   Outfit,
@@ -37,6 +39,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/** Candlelit marketing landing: swash display + book serif */
+const landingDisplay = Berkshire_Swash({
+  weight: "400",
+  variable: "--font-landing-display",
+  subsets: ["latin"],
+});
+
+const landingBody = EB_Garamond({
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-landing-body",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Gather",
   description: "Find local gatherings. Treat new friends like old ones.",
@@ -50,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${barlow.variable} ${outfit.variable} ${reenie.variable} ${caslon.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
+      className={`${barlow.variable} ${outfit.variable} ${reenie.variable} ${caslon.variable} ${geistMono.variable} ${landingDisplay.variable} ${landingBody.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
