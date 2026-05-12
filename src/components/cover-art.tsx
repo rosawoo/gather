@@ -82,7 +82,7 @@ export function TemplatePreview({
           {template.tagline}
         </span>
         <p
-          className="mt-2 line-clamp-3 font-serif text-[20px] font-light leading-tight tracking-tight"
+          className="mt-2 line-clamp-3 font-handwriting text-[22px] font-medium leading-tight tracking-tight"
           style={{ color: template.fg }}
         >
           {title || "Your gathering"}

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { nextAppPath } from "@/lib/onboarding";
-import { PERSONALITY_PROMPTS } from "@/lib/prompts";
+import { PersonalityPromptSlots } from "@/components/personality-prompt-slots";
 import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { redirect } from "next/navigation";
@@ -37,7 +37,7 @@ export default async function ProfileOnboardingPage() {
           <Field label="First name" required>
             <input name="firstName" required className={inputCls} />
           </Field>
-          <Field label="Date of birth" hint="Must be 18 or older." required>
+          <Field label="Date of birth" hint="Must be 21 or older." required>
             <input
               name="dateOfBirth"
               type="date"
@@ -79,17 +79,9 @@ export default async function ProfileOnboardingPage() {
 
         <Group
           title="Personality prompts"
-          hint="Answer at least two. These show on your profile."
+          hint="Pick a question for each line, then answer at least two."
         >
-          {PERSONALITY_PROMPTS.map((p) => (
-            <Field key={p.key} label={p.label}>
-              <textarea
-                name={`prompt_${p.key}`}
-                rows={2}
-                className={inputCls}
-              />
-            </Field>
-          ))}
+          <PersonalityPromptSlots inputClassName={inputCls} />
         </Group>
 
         <button

@@ -4,6 +4,7 @@ import { GatheringType } from "@prisma/client";
 import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { PageHeader, SectionTitle } from "@/components/ui/page-header";
+import { HostBudgetRange } from "@/components/host-budget-range";
 import { CoverEditor } from "@/components/cover-editor";
 
 const types: GatheringType[] = [
@@ -44,7 +45,7 @@ export default async function NewGatheringPage() {
         />
       </div>
 
-      <form action={createGathering} className="space-y-8">
+      <form id="new-gathering-form" action={createGathering} className="space-y-8">
         <Group title="The basics">
           <Field label="Title" required>
             <input name="title" required className={input} />
@@ -92,11 +93,12 @@ export default async function NewGatheringPage() {
           <Field label="Optional question for applicants">
             <input name="applicantQuestion" className={input} />
           </Field>
-          <Field label="Token cost" hint="0 for free." required>
+          <Field label="Token cost" hint="0 for free. Maximum 5 tokens per guest." required>
             <input
               name="tokenCost"
               type="number"
               min={0}
+              max={5}
               defaultValue={1}
               required
               className={input}
@@ -142,6 +144,13 @@ export default async function NewGatheringPage() {
             />
           </Field>
         </Group>
+
+        <HostBudgetRange formId="new-gathering-form" />
+
+        <p className="text-center text-xs italic text-neutral-600">
+          *By creating this gathering, I affirm that any funds collected are
+          intended solely for shared costs and not for personal profit.
+        </p>
 
         <button
           type="submit"

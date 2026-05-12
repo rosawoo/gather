@@ -95,7 +95,7 @@ export default async function GatheringDetailPage({
         </div>
         <div className="space-y-4 p-5">
           <div>
-            <h1 className="font-serif text-2xl font-light leading-tight tracking-tight text-gather-ink sm:text-3xl">
+            <h1 className="font-handwriting text-3xl font-medium leading-tight tracking-tight text-gather-ink sm:text-4xl">
               {g.title}
             </h1>
             <p className="mt-2 text-sm text-neutral-500">
@@ -112,12 +112,7 @@ export default async function GatheringDetailPage({
               <span className="font-semibold text-gather-brown">Address · </span>
               {g.addressSecret}
             </p>
-          ) : (
-            <ul className="space-y-1 text-sm italic text-neutral-500">
-              <li>Exact address shared after approval.</li>
-              <li>View list of other gatherers after approval.</li>
-            </ul>
-          )}
+          ) : null}
 
           <div className="grid grid-cols-2 gap-3 pt-1">
             <Fact label="Group size">
@@ -129,13 +124,6 @@ export default async function GatheringDetailPage({
                 : `${g.tokenCost} token${g.tokenCost === 1 ? "" : "s"}`}
             </Fact>
           </div>
-
-          <p className="text-xs text-neutral-500">
-            If the minimum group size isn&apos;t reached two hours before the
-            event, the gathering is automatically cancelled.
-          </p>
-
-          <TokenExplainer />
 
           {g.budgetExplanation ? (
             <p className="rounded-xl bg-gather-paper/70 px-3 py-2 text-sm text-neutral-700 ring-1 ring-neutral-200/60">
@@ -161,6 +149,26 @@ export default async function GatheringDetailPage({
               About the host →
             </Link>
           )}
+
+          <div className="space-y-3 border-t border-neutral-100 pt-4">
+            {!canSeePrivate && !isHost ? (
+              <ul className="space-y-1.5 text-sm italic text-neutral-500">
+                <li>
+                  Exact address and list of other gatherers shared after approval.
+                </li>
+                <li>
+                  Tokens are held while the host reviews. If approved, tokens are
+                  used — if not a match, they return. Tokens are for cost-sharing,
+                  not profit.
+                </li>
+              </ul>
+            ) : null}
+            <p className="text-xs text-neutral-500">
+              If the minimum group size isn&apos;t reached two hours before the
+              event, the gathering is automatically cancelled.
+            </p>
+            <TokenExplainer />
+          </div>
         </div>
       </div>
 

@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { PERSONALITY_PROMPTS } from "@/lib/prompts";
+import { parsePersonalitySlots } from "@/lib/prompts";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -29,7 +29,7 @@ export async function completeProfile(formData: FormData) {
   if (!firstName) throw new Error("First name required");
   const dateOfBirth = new Date(dobStr);
   if (Number.isNaN(dateOfBirth.getTime())) throw new Error("Invalid date");
-  if (ageFromDob(dateOfBirth) < 18) throw new Error("Must be 18+");
+  if (ageFromDob(dateOfBirth) < 21) throw new Error("Must be 21+");
 
   const photoUrls = photoUrlsRaw
     .split(/[\n,]/)
@@ -37,11 +37,7 @@ export async function completeProfile(formData: FormData) {
     .filter(Boolean);
   if (photoUrls.length < 1) throw new Error("At least one photo URL required");
 
-  const answers: { key: string; body: string }[] = [];
-  for (const p of PERSONALITY_PROMPTS) {
-    const body = String(formData.get(`prompt_${p.key}`) ?? "").trim();
-    if (body) answers.push({ key: p.key, body });
-  }
+  const answers = parsePersonalitySlots(formData);
   if (answers.length < 2) throw new Error("Answer at least 2 prompts");
 
   const userId = session.user.id;
@@ -111,7 +107,7 @@ export async function updateProfile(formData: FormData) {
   if (!firstName) throw new Error("First name required");
   const dateOfBirth = new Date(dobStr);
   if (Number.isNaN(dateOfBirth.getTime())) throw new Error("Invalid date");
-  if (ageFromDob(dateOfBirth) < 18) throw new Error("Must be 18+");
+  if (ageFromDob(dateOfBirth) < 21) throw new Error("Must be 21+");
 
   const photoUrls = photoUrlsRaw
     .split(/[\n,]/)
@@ -119,11 +115,7 @@ export async function updateProfile(formData: FormData) {
     .filter(Boolean);
   if (photoUrls.length < 1) throw new Error("At least one photo URL required");
 
-  const answers: { key: string; body: string }[] = [];
-  for (const p of PERSONALITY_PROMPTS) {
-    const body = String(formData.get(`prompt_${p.key}`) ?? "").trim();
-    if (body) answers.push({ key: p.key, body });
-  }
+  const answers = parsePersonalitySlots(formData);
   if (answers.length < 2) throw new Error("Answer at least 2 prompts");
 
   const userId = session.user.id;

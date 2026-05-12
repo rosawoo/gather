@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { updateProfile } from "@/app/actions/profile";
 import { prisma } from "@/lib/prisma";
-import { PERSONALITY_PROMPTS } from "@/lib/prompts";
+import { PersonalityPromptSlots } from "@/components/personality-prompt-slots";
 import { getUsedNeighborhoods } from "@/lib/neighborhoods";
 import { NeighborhoodInput } from "@/components/neighborhood-input";
 import { redirect } from "next/navigation";
@@ -47,7 +47,7 @@ export default async function EditProfilePage() {
               className={inputCls}
             />
           </Field>
-          <Field label="Date of birth" hint="Must be 18 or older." required>
+          <Field label="Date of birth" hint="Must be 21 or older." required>
             <input
               name="dateOfBirth"
               type="date"
@@ -104,23 +104,15 @@ export default async function EditProfilePage() {
 
         <Group
           title="Personality prompts"
-          hint="Answer at least two. These show on your profile."
+          hint="Pick a question for each line, then answer at least two."
         >
-          {PERSONALITY_PROMPTS.map((pr) => {
-            const existing = user.promptAnswers.find(
-              (a) => a.promptKey === pr.key,
-            );
-            return (
-              <Field key={pr.key} label={pr.label}>
-                <textarea
-                  name={`prompt_${pr.key}`}
-                  rows={2}
-                  defaultValue={existing?.body ?? ""}
-                  className={inputCls}
-                />
-              </Field>
-            );
-          })}
+          <PersonalityPromptSlots
+            inputClassName={inputCls}
+            initialAnswers={user.promptAnswers.map((a) => ({
+              key: a.promptKey,
+              body: a.body,
+            }))}
+          />
         </Group>
 
         <button

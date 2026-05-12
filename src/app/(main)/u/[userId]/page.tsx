@@ -134,6 +134,9 @@ export default async function PublicProfilePage({
                 hostFriendsCount={g.hostFriendsCount}
                 tokenCost={g.tokenCost}
                 hostImage={hostImage}
+                hostId={u.id}
+                hostFirstName={p.firstName}
+                hostDateOfBirth={p.dateOfBirth}
               />
             ))}
           </div>

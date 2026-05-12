@@ -115,6 +115,7 @@ export default async function DiscoverGatheringsPage({
     include: {
       host: {
         include: {
+          profile: true,
           photos: { where: { isPrimary: true }, take: 1 },
         },
       },
@@ -131,10 +132,6 @@ export default async function DiscoverGatheringsPage({
 
   return (
     <div className="pb-8">
-      <p className="mb-6 text-sm text-neutral-600">
-        Small gatherings open for requests this week.
-      </p>
-
       <DiscoverFilters neighborhoods={neighborhoods} />
 
       {visible.length === 0 ? (
@@ -163,6 +160,9 @@ export default async function DiscoverGatheringsPage({
               hostFriendsCount={g.hostFriendsCount}
               tokenCost={g.tokenCost}
               hostImage={g.host.photos[0]?.url ?? g.host.image}
+              hostId={g.hostId}
+              hostFirstName={g.host.profile?.firstName ?? null}
+              hostDateOfBirth={g.host.profile?.dateOfBirth ?? null}
             />
           ))}
         </div>

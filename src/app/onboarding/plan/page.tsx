@@ -98,6 +98,11 @@ export default async function PlanPage() {
         <>
           For the beta, only <strong>OG</strong> is available — free for your
           first month. Observer and Member arrive after beta.
+          <span className="mt-3 block text-xs font-normal text-neutral-600">
+            Paid plans renew automatically each billing cycle (you&apos;ll see
+            this at checkout). You can change tiers when a period ends so the new
+            plan starts on your next renewal date.
+          </span>
         </>
       }
     >

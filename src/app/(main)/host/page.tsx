@@ -43,24 +43,16 @@ export default async function HostHubPage() {
 
       <section className="mb-10">
         <SectionTitle title="Host a gathering" />
-        {canHost ? (
+      {canHost ? (
+        <div className="flex justify-center">
           <Link
             href="/host/new"
-            className="group flex items-center justify-between gap-3 rounded-2xl border border-gather-accent/40 bg-white p-4 shadow-sm ring-1 ring-gather-accent/10 transition hover:border-gather-accent hover:shadow-md"
+            className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-gather-brown px-6 py-3.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.99] sm:w-auto"
           >
-            <div>
-              <p className="text-sm font-semibold text-gather-ink">
-                Start a new gathering
-              </p>
-              <p className="mt-0.5 text-xs text-neutral-500">
-                Pick a template or upload your own cover — takes a minute.
-              </p>
-            </div>
-            <span className="shrink-0 rounded-full bg-gather-brown px-4 py-2 text-[13px] font-semibold text-gather-cream shadow-sm transition group-hover:bg-gather-brown-mid">
-              + New
-            </span>
+            Start a new gathering
           </Link>
-        ) : (
+        </div>
+      ) : (
           <div className="rounded-2xl border border-neutral-200/70 bg-white p-4 text-sm text-neutral-600 shadow-sm">
             Your plan doesn&apos;t include hosting yet. Upgrade when Member is
             available.

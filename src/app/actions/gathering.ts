@@ -47,6 +47,8 @@ export async function createGathering(formData: FormData) {
 
   if (!title || !description || !neighborhood || !addressSecret)
     throw new Error("Missing required fields");
+  if (tokenCost < 0 || tokenCost > 5 || !Number.isFinite(tokenCost))
+    throw new Error("Token cost must be between 0 and 5");
   if (Number.isNaN(startsAt.getTime())) throw new Error("Invalid date");
   if (minTotalSize < 1 || maxTotalSize < minTotalSize)
     throw new Error("Invalid capacity");

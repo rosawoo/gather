@@ -102,6 +102,44 @@ export default async function SettingsPage() {
       </section>
 
       <section>
+        <SectionTitle title="Legal" />
+        <Card>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <a
+                href="https://www.gathersocial.us/terms-of-service"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+              >
+                Terms of service
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.gathersocial.us/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+              >
+                Privacy policy
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.gathersocial.us/community-guidelines"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-gather-brown underline-offset-4 hover:underline"
+              >
+                Community guidelines
+              </a>
+            </li>
+          </ul>
+        </Card>
+      </section>
+
+      <section>
         <SectionTitle title="Policies" />
         <Card>
           <ul className="space-y-3 text-sm text-neutral-700">

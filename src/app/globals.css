@@ -18,6 +18,8 @@
   --color-gather-accent: var(--gather-accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-handwriting: var(--font-caveat), "Segoe Print", "Bradley Hand",
+    "Apple Chancery", cursive;
 }
 
 body {
