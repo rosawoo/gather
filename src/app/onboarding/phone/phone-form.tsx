@@ -11,7 +11,12 @@ function errMessage(e: unknown) {
   return e instanceof Error ? e.message : "Something went wrong";
 }
 
-export function PhoneForm() {
+type PhoneFormProps = {
+  /** True when Twilio env vars are missing on a production build (e.g. Vercel). */
+  showSmsConfigWarning?: boolean;
+};
+
+export function PhoneForm({ showSmsConfigWarning = false }: PhoneFormProps) {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
@@ -55,6 +60,35 @@ export function PhoneForm() {
 
   return (
     <div className="mt-8 space-y-6">
+      {showSmsConfigWarning ? (
+        <div
+          className="rounded-xl border border-amber-200/90 bg-amber-50/95 px-4 py-3 text-sm text-amber-950 shadow-sm"
+          role="status"
+        >
+          <p className="font-semibold">SMS isn’t enabled on this deployment</p>
+          <p className="mt-1.5 leading-relaxed text-amber-950/90">
+            This server is missing Twilio environment variables, so codes can’t
+            be sent. You can skip this step for now, or ask the team to add{" "}
+            <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs">
+              TWILIO_ACCOUNT_SID
+            </code>
+            ,{" "}
+            <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs">
+              TWILIO_AUTH_TOKEN
+            </code>
+            , and{" "}
+            <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs">
+              TWILIO_FROM_NUMBER
+            </code>{" "}
+            (or{" "}
+            <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs">
+              TWILIO_MESSAGING_SERVICE_SID
+            </code>
+            ) in Vercel Production and redeploy.
+          </p>
+        </div>
+      ) : null}
+
       <form onSubmit={onRequestCode} className="space-y-3">
         <label className="flex items-baseline gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
           Phone number

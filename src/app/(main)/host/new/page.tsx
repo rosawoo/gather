@@ -39,46 +39,81 @@ export default async function NewGatheringPage() {
       </Link>
 
       <form id="new-gathering-form" action={createGathering} className="mt-6 space-y-8">
-        <Group title="The basics">
-          <Field label="Title" required>
-            <input name="title" required className={input} />
-          </Field>
-          <Field label="Cover art" hint="Polaroid templates, stickers, or upload / paste an image or GIF URL.">
-            <CoverEditor />
-          </Field>
-          <Field label="Description" required>
-            <textarea name="description" required rows={4} className={input} />
-          </Field>
-          <Field label="Type" required>
-            <select name="gatheringType" required className={input}>
-              {types.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </Field>
+        <Group title="Gathering basics">
+          <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:items-start lg:gap-x-10 lg:gap-y-6">
+            <div className="order-2 w-full lg:sticky lg:top-24 lg:z-[1] lg:max-h-[calc(100dvh-8rem)] lg:overflow-y-auto lg:order-1 lg:self-start lg:justify-self-start lg:pr-1">
+              <Field
+                label="Cover art"
+                hint="Polaroid templates, stickers, or upload / paste an image or GIF URL."
+              >
+                <CoverEditor />
+              </Field>
+            </div>
+            <div className="order-1 space-y-4 lg:order-2 lg:min-w-0 lg:pb-10">
+              <Field label="Title" required>
+                <input name="title" required className={input} />
+              </Field>
+              <Field label="Neighborhood (public)" required>
+                <NeighborhoodInput
+                  name="neighborhood"
+                  required
+                  extras={usedNeighborhoods}
+                  className={input}
+                />
+              </Field>
+              <Field label="Starts at" required>
+                <input
+                  name="startsAt"
+                  type="datetime-local"
+                  required
+                  className={input}
+                />
+              </Field>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Min group size" required>
+                  <input
+                    name="minTotalSize"
+                    type="number"
+                    min={1}
+                    defaultValue={5}
+                    required
+                    className={input}
+                  />
+                </Field>
+                <Field label="Max group size" required>
+                  <input
+                    name="maxTotalSize"
+                    type="number"
+                    min={1}
+                    defaultValue={7}
+                    required
+                    className={input}
+                  />
+                </Field>
+              </div>
+              <Field label="Description" required>
+                <textarea name="description" required rows={4} className={input} />
+              </Field>
+              <Field label="Type" required>
+                <select name="gatheringType" required className={input}>
+                  {types.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            </div>
+          </div>
         </Group>
 
-        <Group title="Where & when">
-          <Field label="Neighborhood (public)" required>
-            <NeighborhoodInput
-              name="neighborhood"
-              required
-              extras={usedNeighborhoods}
-              className={input}
-            />
-          </Field>
-          <Field label="Full address" hint="Hidden until a guest is approved." required>
+        <Group title="Private address">
+          <Field
+            label="Full address"
+            hint="Hidden until a guest is approved."
+            required
+          >
             <input name="addressSecret" required className={input} />
-          </Field>
-          <Field label="Starts at" required>
-            <input
-              name="startsAt"
-              type="datetime-local"
-              required
-              className={input}
-            />
           </Field>
         </Group>
 
@@ -86,7 +121,11 @@ export default async function NewGatheringPage() {
           <Field label="Optional question for applicants">
             <input name="applicantQuestion" className={input} />
           </Field>
-          <Field label="Token cost" hint="0 for free. Maximum 5 tokens per guest." required>
+          <Field
+            label="Token cost"
+            hint="0 for free. Maximum 5 tokens per guest."
+            required
+          >
             <input
               name="tokenCost"
               type="number"
@@ -100,28 +139,6 @@ export default async function NewGatheringPage() {
           <Field label="Event budget explanation">
             <textarea name="budgetExplanation" rows={2} className={input} />
           </Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Min group size" required>
-              <input
-                name="minTotalSize"
-                type="number"
-                min={1}
-                defaultValue={5}
-                required
-                className={input}
-              />
-            </Field>
-            <Field label="Max group size" required>
-              <input
-                name="maxTotalSize"
-                type="number"
-                min={1}
-                defaultValue={7}
-                required
-                className={input}
-              />
-            </Field>
-          </div>
           <Field
             label="Friends already coming"
             hint="No tokens required from them."

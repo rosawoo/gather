@@ -172,7 +172,8 @@ export function CoverEditor({
       </p>
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-gather-teal/25 bg-white shadow-sm ring-1 ring-gather-teal/10">
-        <div className="aspect-[16/9] w-full bg-gather-line/40">
+        {/* Polaroid-sized preview — cap height so the rest of the form stays visible */}
+        <div className="cover-preview relative mx-auto aspect-[4/3] max-h-[280px] min-h-[200px] w-full max-w-[min(100%,22rem)] overflow-hidden bg-gather-line/40 sm:min-h-[220px]">
           {mode === "template" ? (
             <TemplatePreview
               template={activeTemplate}
