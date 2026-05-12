@@ -3,19 +3,24 @@ import { CandlelitSiteHeader } from "@/components/landing/candlelit-site-header"
 type Props = {
   children: React.ReactNode;
   headerSticky?: boolean;
+  /** Heavier espresso scrim + bottom-focused photo (about / manifesto pages). */
+  backdrop?: "default" | "manifesto";
 };
 
 /** Shared full-viewport candlelit backdrop + nav (landing, legal, etc.) */
 export function CandlelitPageShell({
   children,
   headerSticky = false,
+  backdrop = "default",
 }: Props) {
+  const bgClass =
+    backdrop === "manifesto"
+      ? "landing-candlelit-bg landing-candlelit-bg--manifesto"
+      : "landing-candlelit-bg";
+
   return (
     <div className="landing-candlelit relative min-h-[100dvh] overflow-x-hidden bg-[#160601]">
-      <div
-        className="landing-candlelit-bg fixed inset-0 -z-20 bg-[#160601]"
-        aria-hidden
-      />
+      <div className={`${bgClass} fixed inset-0 -z-20 bg-[#160601]`} aria-hidden />
       <div
         className="landing-candlelit-vignette fixed inset-0 -z-10"
         aria-hidden
