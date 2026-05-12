@@ -9,8 +9,7 @@ const guarded = auth((req) => {
   }
 });
 
-/** Function declaration export required by Next.js 16 Proxy Web Handler loader. */
-export async function proxy(request: NextRequest, event?: NextFetchEvent) {
+export default async function proxy(request: NextRequest, event?: NextFetchEvent) {
   return guarded(request, event);
 }
 
