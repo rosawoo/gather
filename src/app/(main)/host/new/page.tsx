@@ -50,7 +50,7 @@ export default async function NewGatheringPage() {
           <Field label="Title" required>
             <input name="title" required className={input} />
           </Field>
-          <Field label="Cover art" hint="Pick a template or paste a URL.">
+          <Field label="Cover art" hint="Polaroid templates, stickers, or upload / paste an image or GIF URL.">
             <CoverEditor />
           </Field>
           <Field label="Description" required>

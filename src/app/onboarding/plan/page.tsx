@@ -16,6 +16,7 @@ type PlanCardProps = {
   month: string[];
   cta: React.ReactNode;
   highlight?: boolean;
+  billingFootnote?: string;
 };
 
 const PLANS: Omit<PlanCardProps, "cta">[] = [
@@ -46,6 +47,8 @@ const PLANS: Omit<PlanCardProps, "cta">[] = [
     priceMain: "$4.99",
     priceSub: "per month",
     tagline: "Stay in the loop, zero pressure.",
+    billingFootnote:
+      "When available, Observer renews automatically each month. Cancel anytime in billing settings; plan changes take effect on your next renewal so the current period stays intact.",
     perks: [
       { label: "Access to free & 1-token events", included: true },
       { label: "No tokens included", included: true },
@@ -64,6 +67,8 @@ const PLANS: Omit<PlanCardProps, "cta">[] = [
     priceMain: "$11.99",
     priceSub: "per month",
     tagline: "Core plan for most people.",
+    billingFootnote:
+      "When available, Member renews automatically each month with your included token. Switch plans after your current period ends so perks stay predictable—manage it from Settings → Plan & tokens.",
     perks: [
       { label: "Access to all events", included: true },
       { label: "1 token per month", included: true },
@@ -99,9 +104,9 @@ export default async function PlanPage() {
           For the beta, only <strong>OG</strong> is available, free for your
           first month. Observer and Member arrive after beta.
           <span className="mt-3 block text-xs font-normal text-gather-charcoal">
-            Paid plans renew automatically each billing cycle (you&apos;ll see
-            this at checkout). You can change tiers when a period ends so the new
-            plan starts on your next renewal date.
+            Paid plans renew automatically each billing period. You can cancel
+            renewal or schedule a tier change from Settings → Plan & tokens; a
+            new plan typically starts when your current paid period ends.
           </span>
         </>
       }
@@ -148,6 +153,7 @@ function PlanCard({
   month,
   cta,
   highlight,
+  billingFootnote,
 }: PlanCardProps) {
   return (
     <div
@@ -220,6 +226,12 @@ function PlanCard({
             ))}
           </ul>
         </div>
+
+        {billingFootnote ? (
+          <p className="mt-4 text-xs leading-relaxed text-gather-charcoal/90">
+            {billingFootnote}
+          </p>
+        ) : null}
 
         <div className="mt-5">{cta}</div>
       </div>

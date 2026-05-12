@@ -39,7 +39,6 @@ export async function completeProfile(formData: FormData) {
   if (photoUrls.length < 1) throw new Error("At least one photo URL required");
 
   const answers = parsePersonalitySlots(formData);
-  if (answers.length < 2) throw new Error("Answer at least 2 prompts");
 
   const userId = session.user.id;
 
@@ -117,7 +116,6 @@ export async function updateProfile(formData: FormData) {
   if (photoUrls.length < 1) throw new Error("At least one photo URL required");
 
   const answers = parsePersonalitySlots(formData);
-  if (answers.length < 2) throw new Error("Answer at least 2 prompts");
 
   const moodBoardEnabled = formData.get("moodBoardEnabled") === "on";
   const moodBoardDecor = normalizeMoodBoardDecorJson(

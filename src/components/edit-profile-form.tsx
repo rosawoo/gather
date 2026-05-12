@@ -157,7 +157,7 @@ export function EditProfileForm({
 
       <ProfileFieldGroup
         title="Personality prompts"
-        hint="Pick a question for each line, then answer at least two."
+        hint="Three lines: pick a different question per dropdown, then answer at least two."
       >
         <PersonalityPromptSlots
           inputClassName={profileInputCls}

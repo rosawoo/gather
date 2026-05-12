@@ -1,7 +1,7 @@
 "use client";
 
 import { upload } from "@vercel/blob/client";
-import { useRef, useState } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 
 type Photo = { id: string; url: string };
 
@@ -38,8 +38,13 @@ export function PhotoUpload({
   const [notice, setNotice] = useState<string | null>(null);
   const [inlineMode, setInlineMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const hiddenRef = useRef<HTMLInputElement>(null);
 
   const value = photos.map((p) => p.url).join("\n");
+
+  useLayoutEffect(() => {
+    if (hiddenRef.current) hiddenRef.current.value = value;
+  }, [value]);
 
   function newId() {
     return typeof crypto !== "undefined" && crypto.randomUUID
@@ -219,7 +224,7 @@ export function PhotoUpload({
           Drop photos here or click to browse
         </p>
         <p className="text-xs text-gather-charcoal/80">
-          JPG, PNG, WEBP, GIF, or HEIC, up to 8 MB each.
+          JPG, PNG, WEBP, GIF, or HEIC, up to 8 MB each. Fun GIFs welcome.
         </p>
         <input
           ref={fileInputRef}
@@ -332,7 +337,7 @@ export function PhotoUpload({
         </ul>
       ) : null}
 
-      <input type="hidden" name={name} value={value} />
+      <input ref={hiddenRef} type="hidden" name={name} defaultValue={value} />
     </div>
   );
 }

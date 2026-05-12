@@ -3,7 +3,7 @@ import { PolaroidCard } from "@/components/polaroid-card";
 import { prisma } from "@/lib/prisma";
 import { GatheringStatus, GatheringType, Plan } from "@prisma/client";
 import { DiscoverFilters } from "@/components/discover-filters";
-import { getUsedNeighborhoods } from "@/lib/neighborhoods";
+import { getNeighborhoodFilterList } from "@/lib/neighborhoods";
 
 type SearchParams = {
   q?: string;
@@ -68,7 +68,7 @@ export default async function DiscoverGatheringsPage({
   });
 
   const sp = await searchParams;
-  const neighborhoods = await getUsedNeighborhoods();
+  const neighborhoods = await getNeighborhoodFilterList();
 
   const dateRange = parseDate(sp.date);
   const size = parseSize(sp.size);
@@ -134,7 +134,7 @@ export default async function DiscoverGatheringsPage({
     <div className="relative pb-10" dir="ltr">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-3xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.14)_0%,transparent_55%)] blur-xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 w-full bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.14)_0%,transparent_55%)] blur-xl"
       />
 
       <DiscoverFilters neighborhoods={neighborhoods} chrome="espresso" />

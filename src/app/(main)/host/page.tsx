@@ -37,30 +37,23 @@ export default async function HostHubPage() {
 
   return (
     <div className="pb-8">
-      <p className="mb-8 text-sm text-gather-charcoal">
-        Plan small, warm gatherings for your neighbors.
-      </p>
-
-      <section className="mb-10">
-        <SectionTitle title="Host a gathering" />
       {canHost ? (
-        <div className="flex justify-center">
+        <div className="flex justify-center pt-2">
           <Link
             href="/host/new"
-            className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-gather-brown px-6 py-3.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.99] sm:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-full bg-gather-brown px-6 py-3.5 text-sm font-semibold text-gather-cream shadow-sm transition hover:bg-gather-brown-mid active:scale-[0.99] sm:w-auto"
           >
             Start a new gathering
           </Link>
         </div>
       ) : (
-          <div className="rounded-2xl border border-gather-teal/25 bg-white p-4 text-sm text-gather-charcoal shadow-sm">
-            Your plan doesn&apos;t include hosting yet. Upgrade when Member is
-            available.
-          </div>
-        )}
-      </section>
+        <div className="rounded-2xl border border-gather-teal/25 bg-white p-4 text-sm text-gather-charcoal shadow-sm">
+          Your plan doesn&apos;t include hosting yet. Upgrade when Member is
+          available.
+        </div>
+      )}
 
-      <section className="mb-10">
+      <section className="mb-10 mt-10">
         <SectionTitle title="Current gatherings" />
         {upcoming.length === 0 ? (
           <EmptyState
@@ -150,6 +143,13 @@ export default async function HostHubPage() {
           </ul>
         )}
       </section>
+
+      {canHost ? (
+        <p className="mt-10 text-center text-xs italic text-gather-charcoal/85">
+          *By creating a gathering, you affirm that any funds collected are
+          intended solely for shared costs and not for personal profit.
+        </p>
+      ) : null}
     </div>
   );
 }

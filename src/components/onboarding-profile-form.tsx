@@ -102,7 +102,7 @@ export function OnboardingProfileForm({
 
       <ProfileFieldGroup
         title="Personality prompts"
-        hint="Pick a question for each line, then answer at least two."
+        hint="Three lines: pick a different question in each dropdown, then write answers for at least two."
       >
         <PersonalityPromptSlots inputClassName={profileInputCls} />
       </ProfileFieldGroup>

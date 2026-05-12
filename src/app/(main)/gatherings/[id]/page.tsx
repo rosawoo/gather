@@ -72,7 +72,7 @@ export default async function GatheringDetailPage({
     <div className="relative pb-10">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.12)_0%,transparent_58%)] blur-2xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 w-full bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.12)_0%,transparent_58%)] blur-2xl"
       />
       <Link
         href="/gatherings"
@@ -155,26 +155,6 @@ export default async function GatheringDetailPage({
               About the host →
             </Link>
           )}
-
-          <div className="space-y-3 border-t border-gather-line/50 pt-4">
-            {!canSeePrivate && !isHost ? (
-              <ul className="space-y-1.5 text-sm italic text-gather-charcoal/80">
-                <li>
-                  Exact address and list of other gatherers shared after approval.
-                </li>
-                <li>
-                  Tokens are held while the host reviews. If approved, tokens are
-                  used. If not a match, they return. Tokens are for cost-sharing,
-                  not profit.
-                </li>
-              </ul>
-            ) : null}
-            <p className="text-xs text-gather-charcoal/80">
-              If the minimum group size isn&apos;t reached two hours before the
-              event, the gathering is automatically cancelled.
-            </p>
-            <TokenExplainer />
-          </div>
         </div>
       </div>
       </ScrapbookFrame>
@@ -184,46 +164,61 @@ export default async function GatheringDetailPage({
           <SectionTitle title="Who's coming" variant="onDark" />
           <div className="rounded-2xl border border-gather-teal/25 bg-white p-4 shadow-sm ring-1 ring-gather-teal/10">
             <ul className="space-y-2.5 text-sm">
-              <li className="flex items-center gap-2.5">
-                {g.host.photos[0]?.url || g.host.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={g.host.photos[0]?.url ?? g.host.image!}
-                    alt=""
-                    className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
-                  />
-                ) : (
-                  <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
-                )}
-                <span>
-                  {g.host.profile?.firstName ?? g.host.name}{" "}
-                  <span className="text-xs font-medium text-gather-brown-mid">
-                    (host)
+              <li>
+                <Link
+                  href={`/u/${g.hostId}`}
+                  className="flex items-center gap-2.5 rounded-lg py-0.5 transition hover:bg-gather-paper/80"
+                >
+                  {g.host.photos[0]?.url || g.host.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={g.host.photos[0]?.url ?? g.host.image!}
+                      alt=""
+                      className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+                    />
+                  ) : (
+                    <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
+                  )}
+                  <span>
+                    {g.host.profile?.firstName ?? g.host.name}{" "}
+                    {g.host.profile?.dateOfBirth ? (
+                      <span className="text-xs text-gather-charcoal/80">
+                        · {ageFromDob(g.host.profile.dateOfBirth)}
+                      </span>
+                    ) : null}{" "}
+                    <span className="text-xs font-medium text-gather-brown-mid">
+                      (host)
+                    </span>
                   </span>
-                </span>
+                </Link>
               </li>
               {g.requests.map((r) => {
                 const gp = r.guest.profile;
                 const ph = r.guest.photos[0];
                 if (!gp) return null;
                 return (
-                  <li key={r.id} className="flex items-center gap-2.5">
-                    {ph?.url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={ph.url}
-                        alt=""
-                        className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
-                      />
-                    ) : (
-                      <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
-                    )}
-                    <span>
-                      {gp.firstName}{" "}
-                      <span className="text-xs text-gather-charcoal/80">
-                        · {ageFromDob(gp.dateOfBirth)}
+                  <li key={r.id}>
+                    <Link
+                      href={`/u/${r.guestId}`}
+                      className="flex items-center gap-2.5 rounded-lg py-0.5 transition hover:bg-gather-paper/80"
+                    >
+                      {ph?.url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={ph.url}
+                          alt=""
+                          className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+                        />
+                      ) : (
+                        <div className="h-9 w-9 rounded-full bg-gather-line/50 ring-2 ring-white" />
+                      )}
+                      <span>
+                        {gp.firstName}{" "}
+                        <span className="text-xs text-gather-charcoal/80">
+                          · {ageFromDob(gp.dateOfBirth)}
+                        </span>
                       </span>
-                    </span>
+                    </Link>
                   </li>
                 );
               })}
@@ -263,6 +258,24 @@ export default async function GatheringDetailPage({
             )}
           </div>
         )}
+
+      <footer className="mt-10 space-y-3 rounded-2xl border border-gather-teal/25 bg-gather-paper/90 p-4 text-sm text-gather-charcoal shadow-sm ring-1 ring-gather-teal/10">
+        <ul className="space-y-2 italic text-gather-charcoal/90">
+          <li>
+            Exact address and list of other gatherers shared after approval.
+          </li>
+          <li>
+            Tokens are held while the host reviews. If approved, tokens are used
+            — if not a match, they return. Tokens are for cost-sharing not
+            profit.
+          </li>
+        </ul>
+        <p className="text-xs not-italic text-gather-charcoal/80">
+          If the minimum group size isn&apos;t reached two hours before the event,
+          the gathering is automatically cancelled.
+        </p>
+        <TokenExplainer />
+      </footer>
 
       <div className="mt-10 text-center">
         <Link

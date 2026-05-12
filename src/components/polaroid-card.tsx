@@ -56,32 +56,20 @@ export function PolaroidCard(props: PolaroidCardProps) {
         />
       ) : null}
       <div className="rounded-xl bg-white p-3 pb-14 shadow-lg shadow-black/10 ring-1 ring-black/[0.07] transition duration-300 hover:shadow-xl hover:ring-gather-accent/25">
-        <Link href={`/gatherings/${props.id}`} className="group block">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gather-line/50">
-            <CoverArt cover={props.coverImageUrl} title={props.title} />
-            <span className="absolute bottom-2 right-2 inline-flex rounded-full bg-gather-cream/95 px-2.5 py-0.5 text-[11px] font-semibold text-gather-brown shadow-sm ring-1 ring-black/5">
-              {tokenLabel}
-            </span>
-          </div>
-          <div className="mt-3 space-y-1.5 px-0.5">
-            <h3 className="font-handwriting line-clamp-2 text-[17px] font-medium leading-snug text-gather-ink transition-colors group-hover:text-gather-brown-mid">
-              {props.title}
-            </h3>
-            <p className="text-xs font-medium text-gather-brown-mid/90">{dateStr}</p>
-            <p className="text-xs text-gather-charcoal">{props.neighborhood}</p>
-            <p className="text-xs text-gather-charcoal/80">
-              {capacityLine(
-                props.minTotalSize,
-                props.maxTotalSize,
-                props.hostFriendsCount,
-              )}
-            </p>
-          </div>
-        </Link>
-        <div className="mt-2.5 border-t border-gather-line/50 pt-2.5">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gather-line/50">
+          <CoverArt cover={props.coverImageUrl} title={props.title} />
+          <Link
+            href={`/gatherings/${props.id}`}
+            className="absolute inset-0 z-0"
+            aria-label={`Open gathering: ${props.title}`}
+          />
+          <span className="pointer-events-auto absolute bottom-2 right-2 z-[2] inline-flex rounded-full bg-gather-cream/95 px-2.5 py-0.5 text-[11px] font-semibold text-gather-brown shadow-sm ring-1 ring-black/5">
+            {tokenLabel}
+          </span>
           <Link
             href={`/u/${props.hostId}`}
-            className="flex items-center gap-2 rounded-lg px-0.5 py-1 transition hover:bg-gather-paper/80"
+            className="pointer-events-auto absolute bottom-2 left-2 z-[2] flex max-w-[min(100%,13rem)] items-center gap-2 rounded-lg bg-gather-cream/95 py-1 pl-1 pr-2 shadow-sm ring-1 ring-black/8 transition hover:bg-white"
+            aria-label={`View ${hostLabel}'s profile`}
           >
             {props.hostImage ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -90,19 +78,39 @@ export function PolaroidCard(props: PolaroidCardProps) {
                 alt=""
                 width={28}
                 height={28}
-                className="h-7 w-7 rounded-full object-cover ring-2 ring-white shadow-sm"
+                className="h-7 w-7 shrink-0 rounded-full object-cover ring-2 ring-white"
               />
             ) : (
-              <div className="h-7 w-7 rounded-full bg-gather-line/55 ring-2 ring-white" />
+              <div className="h-7 w-7 shrink-0 rounded-full bg-gather-line/55 ring-2 ring-white" />
             )}
-            <span className="text-xs font-medium text-gather-ink">
+            <span className="min-w-0 truncate text-left text-xs font-medium text-gather-ink">
               {hostLabel}
               {hostAge != null ? (
-                <span className="font-normal text-gather-charcoal/80"> · {hostAge}</span>
+                <span className="font-normal text-gather-charcoal/80">
+                  {" "}
+                  · {hostAge}
+                </span>
               ) : null}
             </span>
           </Link>
         </div>
+        <Link
+          href={`/gatherings/${props.id}`}
+          className="group mt-3 block space-y-1.5 px-0.5"
+        >
+          <h3 className="font-handwriting line-clamp-2 text-[17px] font-medium leading-snug text-gather-ink transition-colors group-hover:text-gather-brown-mid">
+            {props.title}
+          </h3>
+          <p className="text-xs font-medium text-gather-brown-mid/90">{dateStr}</p>
+          <p className="text-xs text-gather-charcoal">{props.neighborhood}</p>
+          <p className="text-xs text-gather-charcoal/80">
+            {capacityLine(
+              props.minTotalSize,
+              props.maxTotalSize,
+              props.hostFriendsCount,
+            )}
+          </p>
+        </Link>
       </div>
     </div>
   );

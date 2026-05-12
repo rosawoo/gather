@@ -24,7 +24,7 @@ export default async function SettingsPage() {
   const stripeOk = isStripeConfigured();
 
   return (
-    <div className="space-y-8 pb-10">
+    <div className="space-y-8 pb-10 font-sans">
       <p className="text-sm text-gather-charcoal">
         Account, plan, and notification preferences.
       </p>
@@ -78,8 +78,10 @@ export default async function SettingsPage() {
                 Manage billing & invoices
               </button>
               <p className="mt-2 text-[11px] text-gather-charcoal/80">
-                Opens Stripe&apos;s customer portal (payment methods, history).
-                Configure subscription products there if you use recurring plans.
+                Opens Stripe&apos;s customer portal (payment methods, history,
+                cancellations). Subscription changes and downgrades usually take
+                effect at the end of the current billing period—see Stripe for
+                your dates.
               </p>
             </form>
           ) : stripeOk ? (
@@ -107,6 +109,8 @@ export default async function SettingsPage() {
               </p>
               <p className="mt-0.5 text-xs text-gather-charcoal/80">
                 Receive texts for join requests, approvals, and cancellations.
+                Hosts also get SMS nudges to submit reimbursements after a
+                gathering when expenses are pending.
               </p>
             </div>
             <SmsToggle optedOut={user.smsOptOut} />
@@ -117,7 +121,8 @@ export default async function SettingsPage() {
                 In-app notifications
               </p>
               <p className="mt-0.5 text-xs text-gather-charcoal/80">
-                Always on. Check the Notifications tab for updates.
+                Always on. Includes join and approval updates, plus reimbursement
+                reminders for hosts after events.
               </p>
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-charcoal/55">
@@ -127,7 +132,7 @@ export default async function SettingsPage() {
         </Card>
       </section>
 
-      <section>
+      <section className="font-sans">
         <SectionTitle title="Legal" />
         <Card>
           <ul className="space-y-2 text-sm">
@@ -165,7 +170,7 @@ export default async function SettingsPage() {
         </Card>
       </section>
 
-      <section>
+      <section className="font-sans">
         <SectionTitle title="Policies" />
         <Card>
           <ul className="space-y-3 text-sm text-gather-ink">

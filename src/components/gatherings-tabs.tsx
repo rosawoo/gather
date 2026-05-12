@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const tabs = [
-  { href: "/gatherings", label: "Discover", match: (p: string) => p === "/gatherings" || (p.startsWith("/gatherings/") && !p.startsWith("/gatherings/upcoming")) },
-  { href: "/gatherings/upcoming", label: "Upcoming", match: (p: string) => p.startsWith("/gatherings/upcoming") },
+  { href: "/gatherings", label: "discover", match: (p: string) => p === "/gatherings" || (p.startsWith("/gatherings/") && !p.startsWith("/gatherings/upcoming")) },
+  { href: "/gatherings/upcoming", label: "upcoming", match: (p: string) => p.startsWith("/gatherings/upcoming") },
 ] as const;
 
 export function GatheringsTabs() {
