@@ -46,7 +46,7 @@ prisma/*.db-journal
 *.tsbuildinfo
 next-env.d.ts
 
-# Claude Code (local overrides; project settings live in .claude/settings.json)
-.claude/settings.local.json
+# Claude Code (local tooling; do not commit)
+.claude/
 
 .env*.local
