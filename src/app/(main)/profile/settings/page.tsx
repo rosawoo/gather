@@ -33,9 +33,9 @@ export default async function SettingsPage() {
         <SectionTitle title="Account" />
         <Card>
           <Row label="Name">
-            {user.profile?.firstName ?? user.name ?? "—"}
+            {user.profile?.firstName ?? user.name ?? "None"}
           </Row>
-          <Row label="Email">{user.email ?? "—"}</Row>
+          <Row label="Email">{user.email ?? "None"}</Row>
           <Row label="Phone">
             <span>{user.phone ?? "Not set"}</span>
             {user.phoneVerified ? (
@@ -85,7 +85,7 @@ export default async function SettingsPage() {
           ) : stripeOk ? (
             <p className="pt-1 text-xs text-neutral-500">
               Complete a token purchase with card checkout to link a Stripe
-              customer — then you can manage payment methods and receipts here.
+              customer. Then you can manage payment methods and receipts here.
             </p>
           ) : (
             <p className="pt-1 text-xs text-neutral-500">

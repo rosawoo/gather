@@ -219,7 +219,7 @@ export function PhotoUpload({
           Drop photos here or click to browse
         </p>
         <p className="text-xs text-neutral-500">
-          JPG, PNG, WEBP, GIF, or HEIC — up to 8 MB each.
+          JPG, PNG, WEBP, GIF, or HEIC, up to 8 MB each.
         </p>
         <input
           ref={fileInputRef}
@@ -319,7 +319,7 @@ export function PhotoUpload({
                       label="Make primary"
                       onClick={() => makePrimary(ph.id)}
                     >
-                      ★
+                      P
                     </IconBtn>
                   ) : null}
                 </div>

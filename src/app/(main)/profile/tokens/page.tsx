@@ -115,7 +115,7 @@ export default async function BuyTokensPage({ searchParams }: Props) {
           className="mt-6 rounded-xl border border-emerald-200/90 bg-emerald-50 px-4 py-3 text-sm text-emerald-900"
           role="status"
         >
-          Checkout completed — your tokens will appear once payment is confirmed (usually within a
+          Checkout completed. Your tokens will appear once payment is confirmed (usually within a
           few seconds).
         </p>
       ) : checkoutStatus === "cancelled" ? (
@@ -123,7 +123,7 @@ export default async function BuyTokensPage({ searchParams }: Props) {
           className="mt-6 rounded-xl border border-amber-200/90 bg-amber-50 px-4 py-3 text-sm text-amber-950"
           role="status"
         >
-          Checkout was cancelled — you have not been charged.
+          Checkout was cancelled. You have not been charged.
         </p>
       ) : null}
 

@@ -137,7 +137,7 @@ export default async function PublicProfilePage({
         <section>
           <SectionTitle title="Upcoming gatherings" />
           <p className="mb-6 text-sm text-neutral-600">
-            Open postings they&apos;re hosting — tap a card to view or request to
+            Open postings they&apos;re hosting. Tap a card to view or request to
             join.
           </p>
           <div className="flex flex-col items-center gap-10">

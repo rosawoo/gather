@@ -26,7 +26,7 @@ export async function selectOgPlan() {
         userId,
         delta: 1,
         type: TokenLedgerType.GRANT,
-        note: "OG beta — 1 welcome token",
+        note: "OG beta: 1 welcome token",
       },
     });
   });

@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
-/** Auth.js prefers AUTH_GOOGLE_ID; some docs use GOOGLE_CLIENT_ID — accept both. */
+/** Auth.js prefers AUTH_GOOGLE_ID; some docs use GOOGLE_CLIENT_ID. Accept both. */
 const googleClientId =
   process.env.AUTH_GOOGLE_ID || process.env.GOOGLE_CLIENT_ID || "";
 const googleClientSecret =

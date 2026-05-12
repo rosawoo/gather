@@ -21,7 +21,7 @@ type PlanCardProps = {
 const PLANS: Omit<PlanCardProps, "cta">[] = [
   {
     id: "og",
-    eyebrow: "OG — Original Gatherer",
+    eyebrow: "OG: Original Gatherer",
     name: "OG",
     priceMain: "Free",
     priceSub: "for 1 month",
@@ -33,8 +33,8 @@ const PLANS: Omit<PlanCardProps, "cta">[] = [
       { label: "Beta access", included: true },
     ],
     month: [
-      "Unlimited casual hangs — knitting circles, pickleball, neighborhood plans, an easy run.",
-      "1 included hosted gathering where tokens help cover food or drinks — dinner parties, game nights, or football watch parties.",
+      "Unlimited casual hangs: knitting circles, pickleball, neighborhood plans, an easy run.",
+      "1 included hosted gathering where tokens help cover food or drinks: dinner parties, game nights, or football watch parties.",
       "Full access to join or host any gathering on Gather.",
     ],
     highlight: true,
@@ -53,7 +53,7 @@ const PLANS: Omit<PlanCardProps, "cta">[] = [
       { label: "Cannot host events", included: false },
     ],
     month: [
-      "Unlimited casual hangs — knitting circles, pickleball, neighborhood plans, an easy run.",
+      "Unlimited casual hangs: knitting circles, pickleball, neighborhood plans, an easy run.",
       "Browsing tokened hosted gatherings and joining one when the timing feels right.",
     ],
   },
@@ -71,8 +71,8 @@ const PLANS: Omit<PlanCardProps, "cta">[] = [
       { label: "Tokens roll over", included: true },
     ],
     month: [
-      "Unlimited casual hangs — knitting circles, pickleball, neighborhood plans, an easy run.",
-      "1 included hosted gathering each month where tokens help cover food or drinks — dinner parties, game nights, or football watch parties.",
+      "Unlimited casual hangs: knitting circles, pickleball, neighborhood plans, an easy run.",
+      "1 included hosted gathering each month where tokens help cover food or drinks: dinner parties, game nights, or football watch parties.",
       "Full access to join or host any gathering on Gather.",
     ],
   },
@@ -96,7 +96,7 @@ export default async function PlanPage() {
       title="Choose your plan"
       subtitle={
         <>
-          For the beta, only <strong>OG</strong> is available — free for your
+          For the beta, only <strong>OG</strong> is available, free for your
           first month. Observer and Member arrive after beta.
           <span className="mt-3 block text-xs font-normal text-neutral-600">
             Paid plans renew automatically each billing cycle (you&apos;ll see
@@ -194,7 +194,7 @@ function PlanCard({
                     : "bg-neutral-200 text-neutral-400"
                 }`}
               >
-                {perk.included ? "✓" : "✕"}
+                {perk.included ? "+" : "\u2212"}
               </span>
               <span
                 className={perk.included ? "" : "text-neutral-500 line-through"}

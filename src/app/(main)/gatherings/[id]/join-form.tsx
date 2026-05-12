@@ -39,7 +39,7 @@ export function JoinRequestForm({
           {tokenCost} token{tokenCost === 1 ? "" : "s"}
         </strong>
         . Tokens are held while the host reviews. If approved, tokens are
-        used — if not a match, they return.
+        used. If not a match, they return.
       </p>
       <div>
         <label className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-gather-brown-mid">
@@ -49,7 +49,7 @@ export function JoinRequestForm({
           name="comment"
           rows={3}
           className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm text-gather-ink outline-none transition placeholder:text-neutral-400 focus:border-gather-accent focus:ring-2 focus:ring-gather-accent/40"
-          placeholder="e.g. My friend Ava is also requesting — we’d love to come together."
+          placeholder="e.g. My friend Ava is also requesting; we'd love to come together."
         />
       </div>
       {err ? (

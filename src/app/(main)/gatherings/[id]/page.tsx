@@ -164,7 +164,7 @@ export default async function GatheringDetailPage({
                 </li>
                 <li>
                   Tokens are held while the host reviews. If approved, tokens are
-                  used — if not a match, they return. Tokens are for cost-sharing,
+                  used. If not a match, they return. Tokens are for cost-sharing,
                   not profit.
                 </li>
               </ul>

@@ -41,7 +41,7 @@ export function HostBudgetRange({ formId }: { formId: string }) {
       );
 
       if (!Number.isFinite(tokenCost) || tokenCost <= 0) {
-        setLabel("No token budget — this gathering is free to join.");
+        setLabel("No token budget. This gathering is free to join.");
         return;
       }
 
@@ -53,7 +53,7 @@ export function HostBudgetRange({ formId }: { formId: string }) {
       const low = min * tokenCost * DOLLARS_PER_TOKEN;
       const high = max * tokenCost * DOLLARS_PER_TOKEN;
       setLabel(
-        `If the group fills, tokens could cover on the order of $${low.toFixed(0)}–$${high.toFixed(0)} in shared costs (about $${DOLLARS_PER_TOKEN} per token per spot — not profit).`,
+        `If the group fills, tokens could cover on the order of $${low.toFixed(0)}–$${high.toFixed(0)} in shared costs (about $${DOLLARS_PER_TOKEN} per token per spot, not profit).`,
       );
     }
 

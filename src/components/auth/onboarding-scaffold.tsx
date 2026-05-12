@@ -54,7 +54,24 @@ export function OnboardingScaffold({
                         : "bg-neutral-200 text-neutral-500"
                   }`}
                 >
-                  {state === "done" ? "✓" : i + 1}
+                  {state === "done" ? (
+                    <svg
+                      className="h-3 w-3"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden
+                    >
+                      <path
+                        d="M2.5 6 5 8.5 9.5 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    i + 1
+                  )}
                 </span>
                 <span
                   className={`truncate text-[11px] font-semibold uppercase tracking-[0.14em] ${

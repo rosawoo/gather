@@ -13,7 +13,7 @@ import { NextResponse } from "next/server";
  * Sends one in-app notification + SMS per user (host + approved guests)
  * when startsAt is within the next 24 hours, idempotent via reminderNotifiedAt.
  *
- * On Vercel Hobby, crons may run at most once per day — schedule accordingly in
+ * On Vercel Hobby, crons may run at most once per day. Schedule accordingly in
  * vercel.json (a daily sweep still catches every gathering in the window).
  */
 async function handler(req: Request) {
@@ -61,7 +61,7 @@ async function handler(req: Request) {
     });
 
     const body = `"${g.title}" starts ${timeStr}. Open the app for address and details.`;
-    const smsBody = `Gather: Reminder — "${g.title}" starts ${timeStr}. Open the app for address and details.`;
+    const smsBody = `Gather: Reminder: "${g.title}" starts ${timeStr}. Open the app for address and details.`;
 
     await prisma.notification.createMany({
       data: recipientIds.map((userId) => ({

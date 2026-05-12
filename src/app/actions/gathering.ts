@@ -114,8 +114,8 @@ export async function finalizeGatheringWithRefunds(
                 requestId: r.id,
                 note:
                   finalStatus === GatheringStatusEnum.AUTO_CANCELLED
-                    ? "Auto-cancelled — minimum not met — held tokens returned"
-                    : "Host cancelled — held tokens returned",
+                    ? "Auto-cancelled: minimum not met; held tokens returned"
+                    : "Host cancelled: held tokens returned",
               },
             });
           } else {
@@ -132,8 +132,8 @@ export async function finalizeGatheringWithRefunds(
                 requestId: r.id,
                 note:
                   finalStatus === GatheringStatusEnum.AUTO_CANCELLED
-                    ? "Auto-cancelled — minimum not met — tokens refunded"
-                    : "Host cancelled — used tokens refunded",
+                    ? "Auto-cancelled: minimum not met; tokens refunded"
+                    : "Host cancelled: used tokens refunded",
               },
             });
           }
@@ -163,7 +163,7 @@ export async function finalizeGatheringWithRefunds(
 
   const reason =
     finalStatus === GatheringStatusEnum.AUTO_CANCELLED
-      ? "was cancelled — the minimum group size wasn't met in time."
+      ? "was cancelled: the minimum group size wasn't met in time."
       : "was cancelled by the host.";
 
   await prisma.notification.createMany({
@@ -193,7 +193,7 @@ export async function finalizeGatheringWithRefunds(
 
   const smsNote =
     finalStatus === GatheringStatusEnum.AUTO_CANCELLED
-      ? "cancelled — minimum group size wasn't met in time."
+      ? "cancelled: minimum group size wasn't met in time."
       : "cancelled by the host.";
   void sendSmsToUser(
     g.hostId,

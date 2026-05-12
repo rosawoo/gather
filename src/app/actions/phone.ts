@@ -33,7 +33,7 @@ export async function requestPhoneCode(
     },
   });
 
-  const otpBody = `Welcome to Gather — a cozier way to meet people. Your verification code is ${code} (expires in 10 minutes). We’ll only text you about things that matter. Reply STOP to opt out.`;
+  const otpBody = `Welcome to Gather. A cozier way to meet people. Your verification code is ${code} (expires in 10 minutes). We'll only text you about things that matter. Reply STOP to opt out.`;
 
   if (isSmsConfigured()) {
     const result = await sendSmsToE164(phoneE164, otpBody, false);
@@ -48,7 +48,7 @@ export async function requestPhoneCode(
 
   if (process.env.NODE_ENV !== "production") {
     console.info(
-      `[dev] No Twilio — OTP for ${phoneE164}: ${code} (or use bypass 202600)`,
+      `[dev] No Twilio. OTP for ${phoneE164}: ${code} (or use bypass 202600)`,
     );
     return {
       ok: true,

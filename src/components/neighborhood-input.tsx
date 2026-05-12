@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useMemo } from "react";
 
-/** Curated fallback — a few neighborhoods and many cities. Used when offline
+/** Curated fallback: a few neighborhoods and many cities. Used when offline
  *  or before the user types, and to seed the first characters. */
 const WASHINGTON_DC_NEIGHBORHOODS = [
   "Adams Morgan, Washington, DC",
@@ -161,7 +161,7 @@ type NominatimResult = {
 const USA = new Set(["us", "gb", "ca", "au", "nz", "ie"]);
 
 function stateAbbr(state: string, country?: string): string {
-  // Very small mapping — fine when Nominatim returns full state names for US.
+  // Very small mapping; fine when Nominatim returns full state names for US.
   const map: Record<string, string> = {
     Alabama: "AL",
     Alaska: "AK",
@@ -460,7 +460,7 @@ export function NeighborhoodInput({
           ))}
           {error ? (
             <li className="px-4 py-1.5 text-[11px] text-neutral-500">
-              Live search unavailable — suggestions from your local list only.
+              Live search unavailable. Suggestions from your local list only.
             </li>
           ) : null}
         </ul>

@@ -10,7 +10,7 @@ const PHONE_E164 = "+17866317778";
 const PHONE_LOCAL = "7866317778";
 const EMAIL = "rc6272005@gmail.com";
 const TITLE = "Test notification";
-const BODY = "This is a test from scripts/send-test-notification.js — if you see this in-app and on your phone, both channels are working.";
+const BODY = "This is a test from scripts/send-test-notification.js. If you see this in-app and on your phone, both channels are working.";
 
 /** E.164 destination for SMS. Must differ from TWILIO_FROM_NUMBER (Twilio error 21266). */
 const SMS_TO_E164 =
@@ -86,7 +86,7 @@ async function sendSmsAwsSns(toE164, body) {
 async function sendSms(toE164, body) {
   if (isSmsConfigured()) return sendSmsTwilio(toE164, body);
   if (isAwsSnsConfigured()) return sendSmsAwsSns(toE164, body);
-  console.log("[sms] No Twilio/AWS creds — falling back to TextBelt");
+  console.log("[sms] No Twilio/AWS creds. Falling back to TextBelt");
   return sendSmsTextBelt(toE164, body);
 }
 
@@ -131,10 +131,10 @@ async function main() {
     console.log(`[in-app] created notification id=${notif.id}`);
 
     if (user.smsOptOut) {
-      console.warn("[sms] user.smsOptOut=true — real app would skip. Sending anyway for this test.");
+      console.warn("[sms] user.smsOptOut=true. Real app would skip. Sending anyway for this test.");
     }
     if (!user.phoneVerified) {
-      console.warn("[sms] user.phoneVerified=false — real app (sendSmsToUser) would skip. Sending direct for this test.");
+      console.warn("[sms] user.phoneVerified=false. Real app (sendSmsToUser) would skip. Sending direct for this test.");
     }
 
     console.log("[sms] sending to", SMS_TO_E164);

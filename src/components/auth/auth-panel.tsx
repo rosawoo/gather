@@ -7,7 +7,7 @@ const COPY: Record<Mode, { eyebrow: string; title: string; sub: string; cta: str
   "sign-in": {
     eyebrow: "Welcome back",
     title: "Sign in",
-    sub: "Pick up where you left off — browse gatherings and RSVP.",
+    sub: "Pick up where you left off: browse gatherings and RSVP.",
     cta: "Continue with Google",
     switchLabel: "New to Gather?",
     switchHref: "/sign-up",

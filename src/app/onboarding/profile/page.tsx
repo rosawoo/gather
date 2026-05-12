@@ -23,7 +23,7 @@ export default async function ProfileOnboardingPage() {
     <OnboardingScaffold
       step="profile"
       title="Your profile"
-      subtitle="A few thoughtful details — like a dating app, but for gatherings."
+      subtitle="A few thoughtful details, like a dating app, but for gatherings."
     >
       <OnboardingProfileForm usedNeighborhoods={usedNeighborhoods} />
     </OnboardingScaffold>

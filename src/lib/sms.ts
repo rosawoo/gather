@@ -10,7 +10,7 @@ export function isSmsConfigured(): boolean {
 }
 
 const gatherFooter =
-  "\n\n— Gather · Reply STOP to opt out of non-critical SMS.";
+      "\n\nGather. Reply STOP to opt out of non-critical SMS.";
 
 /**
  * Low-level send. Use `sendSmsToUser` for product messages (respects opt-out).

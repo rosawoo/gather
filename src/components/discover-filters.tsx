@@ -5,7 +5,7 @@ import { useMemo, useState, useTransition } from "react";
 
 type Options = {
   neighborhoods: string[];
-  /** Espresso discover background — light controls on dark chrome */
+  /** Espresso discover background. Light controls on dark chrome. */
   chrome?: "light" | "espresso";
 };
 

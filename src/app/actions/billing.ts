@@ -6,7 +6,7 @@ import { getSiteUrl } from "@/lib/site-url";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import { redirect } from "next/navigation";
 
-/** Stripe Customer Portal — configure products/proration in the Stripe Dashboard. */
+/** Stripe Customer Portal. Configure products/proration in the Stripe Dashboard. */
 export async function billingPortalRedirect() {
   if (!isStripeConfigured()) {
     throw new Error("Stripe is not configured");
@@ -22,7 +22,7 @@ export async function billingPortalRedirect() {
 
   if (!user?.stripeCustomerId) {
     throw new Error(
-      "No billing account yet — buy tokens once with card checkout to open the portal.",
+      "No billing account yet. Buy tokens once with card checkout to open the portal.",
     );
   }
 

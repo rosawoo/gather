@@ -111,7 +111,7 @@ export function CoverEditor({
       setUploadErr(
         e instanceof Error
           ? e.message
-          : "Upload failed — paste a public image or GIF URL instead.",
+          : "Upload failed. Paste a public image or GIF URL instead.",
       );
     } finally {
       setUploading(false);
@@ -258,7 +258,7 @@ export function CoverEditor({
             Stickers (optional, max 4)
           </p>
           <p className="mt-1 text-xs text-neutral-500">
-            Tap to add tiny accents on the polaroid template — great with GIFs in
+            Tap to add tiny accents on the polaroid template, great with GIFs in
             upload mode too.
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
@@ -294,7 +294,7 @@ export function CoverEditor({
             Image or GIF overlays (optional, max 3)
           </p>
           <p className="mt-1 text-xs text-neutral-500">
-            Layer small graphics on the template — logos, memes, or transparent
+            Layer small graphics on the template: logos, memes, or transparent
             PNGs. Paste a URL or upload.
           </p>
           {([0, 1, 2] as const).map((slot) => (

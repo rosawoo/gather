@@ -11,7 +11,7 @@ const POS = [
   "right-[16%] bottom-[-6%] rotate-[14deg]",
 ] as const;
 
-/** Decorative emoji layer around the profile hero (mood board mode). */
+/** Decorative sticker layer around the profile hero (mood board mode). */
 export function MoodBoardAura({ decorJson }: { decorJson: string | null }) {
   const slots = parseMoodBoardSlots(decorJson);
   const hasAny = slots.some(Boolean);

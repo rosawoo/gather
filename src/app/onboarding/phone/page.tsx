@@ -20,7 +20,7 @@ export default async function PhonePage() {
     <OnboardingScaffold
       step="phone"
       title="Add your phone (optional)"
-      subtitle="US numbers only. Adds SMS alerts for requests and reminders — you'll still get everything in-app without it."
+      subtitle="US numbers only. Adds SMS alerts for requests and reminders. You'll still get everything in-app without it."
     >
       <PhoneForm />
       <div className="mt-6 text-center">

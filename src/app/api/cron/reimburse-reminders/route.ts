@@ -79,7 +79,7 @@ async function handler(req: Request) {
     }
 
     const title = "Submit gathering reimbursement";
-    const body = `Your gathering “${g.title}” has wrapped — add receipts and payout details from the Host tab when you’re ready.`;
+    const body = `Your gathering "${g.title}" has wrapped. Add receipts and payout details from the Host tab when you're ready.`;
 
     await prisma.notification.create({
       data: {
@@ -93,7 +93,7 @@ async function handler(req: Request) {
 
     void sendSmsToUser(
       g.hostId,
-      `Gather: "${g.title}" — time to submit shared-cost receipts in the app when you're ready.`,
+      `Gather: "${g.title}". Time to submit shared-cost receipts in the app when you're ready.`,
     ).catch((e) => console.error("[sms:reimburse-reminder]", g.id, e));
 
     results.push({ id: g.id, action: "notified" });

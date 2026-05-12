@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 /**
- * Twilio inbound SMS webhook — configure in Twilio Console for your number.
+ * Twilio inbound SMS webhook. Configure in Twilio Console for your number.
  * When a user texts STOP, we opt them out of non-OTP SMS.
  */
 export async function POST(req: Request) {

@@ -145,7 +145,7 @@ export default async function HostManageGatheringPage({
           {g.minTotalSize > 1 && (
             <p className="mt-4 text-center text-xs text-neutral-500">
               Min {g.minTotalSize} needed
-              {attending < g.minTotalSize ? " — not yet met" : " — met"}
+              {attending < g.minTotalSize ? "; not yet met" : "; met"}
               {g.hostFriendsCount > 0 &&
                 ` · incl. ${g.hostFriendsCount} host friend${g.hostFriendsCount > 1 ? "s" : ""}`}
             </p>
@@ -297,7 +297,7 @@ export default async function HostManageGatheringPage({
                 {g.expenseSubmissions[0].status === "SENT"
                   ? "Reimbursement sent"
                   : g.expenseSubmissions[0].status === "SUBMITTED"
-                    ? "Expense submitted — awaiting payout"
+                    ? "Expense submitted, awaiting payout"
                     : "Reimbursement pending"}
               </p>
             ) : (

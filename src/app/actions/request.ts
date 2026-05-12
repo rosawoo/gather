@@ -74,7 +74,7 @@ export async function requestToJoin(gatheringId: string, comment: string) {
         delta: -cost,
         type: TokenLedgerType.HOLD,
         gatheringId,
-        note: "Request pending — tokens held",
+        note: "Request pending; tokens held",
       },
     });
     await tx.gatheringRequest.create({
@@ -138,7 +138,7 @@ export async function approveRequest(requestId: string) {
         type: TokenLedgerType.USE,
         gatheringId: req.gatheringId,
         requestId: req.id,
-        note: `Approved — ${cost} token(s) applied to event budget`,
+        note: `Approved: ${cost} token(s) applied to event budget`,
       },
     });
     await tx.gatheringRequest.update({
@@ -158,7 +158,7 @@ export async function approveRequest(requestId: string) {
 
   void sendSmsToUser(
     req.guestId,
-    `Gather: You're in! "${req.gathering.title}" — check the app for address and details.`,
+    `Gather: You're in! "${req.gathering.title}". Check the app for address and details.`,
   ).catch((e) => console.error("[sms:approved]", e));
 
   revalidatePath("/host");
@@ -197,7 +197,7 @@ export async function denyRequest(requestId: string) {
         type: TokenLedgerType.RELEASE,
         gatheringId: req.gatheringId,
         requestId: req.id,
-        note: "Not selected — tokens returned",
+        note: "Not selected; tokens returned",
       },
     });
     await tx.gatheringRequest.update({
@@ -217,7 +217,7 @@ export async function denyRequest(requestId: string) {
 
   void sendSmsToUser(
     req.guestId,
-    `Gather: Update on "${req.gathering.title}" — the host chose other guests. Held tokens were returned.`,
+    `Gather: Update on "${req.gathering.title}". The host chose other guests. Held tokens were returned.`,
   ).catch((e) => console.error("[sms:not-selected]", e));
 
   revalidatePath("/host");
@@ -302,7 +302,7 @@ export async function guestCancelRequest(gatheringId: string) {
           type: TokenLedgerType.REFUND,
           gatheringId,
           requestId: req.id,
-          note: "Guest withdrew >24h — tokens returned",
+          note: "Guest withdrew >24h; tokens returned",
         },
       });
       await tx.gatheringRequest.update({

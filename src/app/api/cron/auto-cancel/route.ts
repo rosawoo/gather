@@ -7,7 +7,7 @@ import {
 import { NextResponse } from "next/server";
 
 /**
- * Run on a schedule via Vercel Cron (configured in vercel.json) — Vercel
+ * Run on a schedule via Vercel Cron (configured in vercel.json). Vercel
  * attaches `Authorization: Bearer ${CRON_SECRET}` automatically when the
  * CRON_SECRET env var is set. Also works as a manual POST for testing.
  *

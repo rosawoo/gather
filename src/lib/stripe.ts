@@ -7,7 +7,7 @@ export function getStripe(): Stripe {
     const key = process.env.STRIPE_SECRET_KEY?.trim();
     if (!key?.startsWith("sk_")) {
       throw new Error(
-        "STRIPE_SECRET_KEY is missing or invalid — use your dashboard secret key (sk_test_… or sk_live_…).",
+        "STRIPE_SECRET_KEY is missing or invalid. Use your dashboard secret key (sk_test_… or sk_live_…).",
       );
     }
     stripeClient = new Stripe(key);

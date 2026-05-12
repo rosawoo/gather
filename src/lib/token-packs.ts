@@ -18,7 +18,7 @@ export const TOKEN_PACKS: readonly TokenPack[] = [
     amountCents: 1000,
     priceLabel: "$10",
     perTokenLabel: "$10 per token",
-    description: "1 Gather token — shared costs for gatherings",
+    description: "1 Gather token, shared costs for gatherings",
   },
   {
     pack: 3,
@@ -26,7 +26,7 @@ export const TOKEN_PACKS: readonly TokenPack[] = [
     amountCents: 2600,
     priceLabel: "$26",
     perTokenLabel: "~$8.67 per token",
-    description: "3 Gather tokens — shared costs for gatherings",
+    description: "3 Gather tokens, shared costs for gatherings",
     tag: "Best value",
     highlight: true,
   },

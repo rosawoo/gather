@@ -135,7 +135,7 @@ export function EditProfileForm({
 
       <ProfileFieldGroup
         title="Mood board (optional)"
-        hint="Scatter stickers around your name on your public profile — or keep the classic layout off."
+        hint="Scatter stickers around your name on your public profile, or keep the classic layout off."
       >
         <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-neutral-200/80 bg-gather-paper/40 px-3 py-3">
           <input

@@ -3,19 +3,20 @@
 import { useMemo, useState } from "react";
 import { MOOD_SLOT_COUNT, parseMoodBoardSlots } from "@/lib/mood-board";
 
+/** Same dingbat vocabulary as template stickers (no emoji). */
 const PALETTE = [
-  "❤️",
-  "⭐",
-  "✨",
-  "🌸",
-  "☕",
-  "🎉",
-  "🌙",
-  "☀️",
-  "🍕",
-  "🎵",
-  "📷",
-  "✏️",
+  "\u2665",
+  "\u2605",
+  "\u2726",
+  "\u266A",
+  "\u273F",
+  "\u263C",
+  "\u263D",
+  "\u2736",
+  "\u2299",
+  "\u25C6",
+  "\u22A1",
+  "\u2710",
 ];
 
 export function MoodBoardEditor({
@@ -68,7 +69,7 @@ export function MoodBoardEditor({
               setSlot(i, "");
             }}
             className="flex aspect-square items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-gather-paper/60 text-xl transition hover:border-gather-accent/50 hover:bg-white"
-            title="Click to change · right-click or long-press to clear"
+            title="Click to change. Right-click or long-press to clear."
           >
             {val || <span className="text-xs text-neutral-400">+</span>}
           </button>
