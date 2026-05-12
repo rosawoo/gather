@@ -35,14 +35,23 @@ export function SectionTitle({
   title,
   action,
   className = "",
+  variant = "default",
 }: {
   title: string;
   action?: React.ReactNode;
   className?: string;
+  /** `onDark`: cream typography for espresso / mood-board backgrounds */
+  variant?: "default" | "onDark";
 }) {
+  const labelClass =
+    variant === "onDark"
+      ? "text-gather-cream/80"
+      : "text-gather-brown-mid";
   return (
     <div className={`mb-4 flex items-center justify-between gap-3 ${className}`}>
-      <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-gather-brown-mid">
+      <h2
+        className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] ${labelClass}`}
+      >
         <span
           className="h-1 w-4 rounded-full bg-gather-accent/80"
           aria-hidden

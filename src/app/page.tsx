@@ -15,7 +15,7 @@ export default async function LandingPage() {
   }
 
   return (
-    <div className="relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-gather-brown px-6 py-16 text-gather-cream">
+    <div className="relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-gather-espresso px-6 py-16 text-gather-cream">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.18]"

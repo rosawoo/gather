@@ -72,11 +72,11 @@ export default async function GatheringDetailPage({
     <div className="relative pb-10">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.9)_0%,transparent_58%)] blur-2xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.12)_0%,transparent_58%)] blur-2xl"
       />
       <Link
         href="/gatherings"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-gather-brown-mid transition hover:text-gather-brown"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-gather-cream/70 transition hover:text-gather-cream"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -181,7 +181,7 @@ export default async function GatheringDetailPage({
 
       {(canSeePrivate || isHost) && (
         <section className="mt-8">
-          <SectionTitle title="Who's coming" />
+          <SectionTitle title="Who's coming" variant="onDark" />
           <div className="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm ring-1 ring-black/[0.02]">
             <ul className="space-y-2.5 text-sm">
               <li className="flex items-center gap-2.5">
@@ -267,7 +267,7 @@ export default async function GatheringDetailPage({
       <div className="mt-10 text-center">
         <Link
           href={`/report?type=gathering&id=${g.id}`}
-          className="text-xs text-neutral-500 transition hover:text-gather-ink hover:underline"
+          className="text-xs text-gather-cream/45 transition hover:text-gather-cream hover:underline"
         >
           Report this gathering
         </Link>

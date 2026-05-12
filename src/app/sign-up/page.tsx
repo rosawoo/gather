@@ -29,7 +29,7 @@ export default async function SignUpPage({ searchParams }: Props) {
   const callbackUrl = normalizeCallback(sp.callbackUrl);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col bg-gather-brown px-6 py-12 text-gather-cream sm:py-16">
+    <div className="flex min-h-full flex-1 flex-col bg-gather-espresso px-6 py-12 text-gather-cream sm:py-16">
       <AuthPanel mode="sign-up" callbackUrl={callbackUrl} />
     </div>
   );

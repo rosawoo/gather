@@ -50,16 +50,16 @@ export default async function UpcomingGatheringsPage() {
     <div className="relative pb-8">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.9)_0%,transparent_58%)] blur-2xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-2xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.12)_0%,transparent_58%)] blur-2xl"
       />
-      <p className="mb-8 text-sm text-neutral-600">
+      <p className="mb-8 text-sm text-gather-cream/65">
         Requests, confirmed plans, and past gatherings.
       </p>
 
       <section className="mb-10">
-        <SectionTitle title="Pending requests" />
+        <SectionTitle title="Pending requests" variant="onDark" />
         {pending.length === 0 ? (
-          <p className="text-sm text-neutral-500">None right now.</p>
+          <p className="text-sm text-gather-cream/50">None right now.</p>
         ) : (
           <ul className="space-y-8">
             {pending.map((r) => (
@@ -93,9 +93,9 @@ export default async function UpcomingGatheringsPage() {
       </section>
 
       <section className="mb-10">
-        <SectionTitle title="Approved" />
+        <SectionTitle title="Approved" variant="onDark" />
         {approved.length === 0 ? (
-          <p className="text-sm text-neutral-500">Nothing on your calendar yet.</p>
+          <p className="text-sm text-gather-cream/50">Nothing on your calendar yet.</p>
         ) : (
           <ul className="space-y-10">
             {approved.map((r) => {
@@ -200,9 +200,9 @@ export default async function UpcomingGatheringsPage() {
       </section>
 
       <section>
-        <SectionTitle title="Past" />
+        <SectionTitle title="Past" variant="onDark" />
         {past.length === 0 ? (
-          <p className="text-sm text-neutral-500">No past gatherings yet.</p>
+          <p className="text-sm text-gather-cream/50">No past gatherings yet.</p>
         ) : (
           <ul className="space-y-2">
             {past.map((r) => (

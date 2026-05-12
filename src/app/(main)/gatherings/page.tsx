@@ -134,17 +134,17 @@ export default async function DiscoverGatheringsPage({
     <div className="relative pb-10" dir="ltr">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-3xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(250,246,242,0.95)_0%,transparent_55%)] blur-xl"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-72 max-w-3xl bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,160,108,0.14)_0%,transparent_55%)] blur-xl"
       />
 
-      <DiscoverFilters neighborhoods={neighborhoods} />
+      <DiscoverFilters neighborhoods={neighborhoods} chrome="espresso" />
 
       {visible.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-5 py-10 text-center">
-          <p className="text-sm font-semibold text-gather-ink">
+        <div className="rounded-2xl border border-dashed border-white/20 bg-white/8 px-5 py-10 text-center backdrop-blur-[2px]">
+          <p className="text-sm font-semibold text-gather-cream">
             {hasActiveFilters ? "No gatherings match" : "Nothing open right now"}
           </p>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-gather-cream/55">
             {hasActiveFilters
               ? "Try loosening your filters."
               : "New gatherings drop regularly. Or host one from the Host tab."}
