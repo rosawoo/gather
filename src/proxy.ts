@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
  * exports, requests 500. Auth is enforced in `(main)/layout.tsx`; this is a no-op
  * pass-through for the previous matcher scope.
  */
-export default async function proxy() {
+export default function proxy() {
   return NextResponse.next();
 }
 
