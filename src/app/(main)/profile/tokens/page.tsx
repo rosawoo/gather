@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { purchaseTokensCheckout } from "@/app/actions/tokens";
 import {
-  TOKEN_PACKS,
-  type TokenPack,
   displayPackPerTokenLine,
   displayPackPriceLabel,
   isStripeCheckoutAmountOverridden,
+  isStripeTestOneCentPackEnabled,
+  tokenPacksForListing,
+  type TokenPack,
 } from "@/lib/token-packs";
 import { isStripeConfigured } from "@/lib/stripe";
 import { TokenExplainer } from "@/components/token-explainer";
@@ -34,9 +35,12 @@ function TokenPackOffer({
   pack: TokenPack;
   stripeOk: boolean;
 }) {
-  const outerRing = p.highlight
-    ? "ring-gather-brown/35 focus-visible:ring-gather-brown/55"
-    : "ring-lc-muted-tan/25 focus-visible:ring-lc-muted-tan/45";
+  const outerRing =
+    p.pack === 99
+      ? "ring-amber-400/45 focus-visible:ring-amber-300/65"
+      : p.highlight
+        ? "ring-gather-brown/35 focus-visible:ring-gather-brown/55"
+        : "ring-lc-muted-tan/25 focus-visible:ring-lc-muted-tan/45";
 
   const inner = (
     <div className={`${parchmentSurface} px-5 py-4 transition`}>
@@ -50,7 +54,13 @@ function TokenPackOffer({
               token{p.tokens === 1 ? "" : "s"}
             </span>
             {p.tag ? (
-              <span className="rounded-full bg-gather-brown/12 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gather-brown">
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] ${
+                  p.pack === 99
+                    ? "bg-amber-500/20 text-amber-950 ring-1 ring-amber-800/35"
+                    : "bg-gather-brown/12 text-gather-brown"
+                }`}
+              >
                 {p.tag}
               </span>
             ) : null}
@@ -103,6 +113,7 @@ export default async function BuyTokensPage({ searchParams }: Props) {
   const checkoutStatus = firstParam(sp.checkout);
   const stripeOk = isStripeConfigured();
   const stripeTestCharge = isStripeCheckoutAmountOverridden();
+  const showOneCentPack = isStripeTestOneCentPackEnabled();
 
   const mutedFootnote =
     "text-[14px] leading-relaxed text-lc-caption-warm/82 sm:text-[15px]";
@@ -130,12 +141,7 @@ export default async function BuyTokensPage({ searchParams }: Props) {
         </ol>
       </nav>
 
-      <PageHeader
-        variant="espresso"
-        title="Buy tokens"
-        subtitle="Tokens cover shared costs like food, drinks, or materials."
-        className="mb-10"
-      />
+      <PageHeader variant="espresso" title="Buy tokens" className="mb-10" />
 
       {checkoutStatus === "success" ? (
         <p
@@ -180,6 +186,27 @@ export default async function BuyTokensPage({ searchParams }: Props) {
         </p>
       ) : null}
 
+      {stripeOk && showOneCentPack && !stripeTestCharge ? (
+        <p
+          className={`mt-8 ${statusBannerBase} border-amber-300/42 bg-black/34 text-[14px] text-amber-100/94 sm:text-[15px]`}
+          role="status"
+        >
+          <span className="font-semibold">1¢ test pack is available.</span> Shown automatically in{" "}
+          <code className="rounded bg-black/38 px-1.5 py-0.5 font-mono text-xs text-amber-50">
+            development
+          </code>{" "}
+          or when{" "}
+          <code className="rounded bg-black/38 px-1.5 py-0.5 font-mono text-xs text-amber-50">
+            ENABLE_STRIPE_TEST_PACK=true
+          </code>{" "}
+          — use Stripe test cards. Hide with{" "}
+          <code className="rounded bg-black/38 px-1 py-0.5 font-mono text-xs text-amber-50">
+            ENABLE_STRIPE_TEST_PACK=false
+          </code>{" "}
+          locally if you prefer.
+        </p>
+      ) : null}
+
       {stripeOk && stripeTestCharge ? (
         <p
           className={`mt-8 ${statusBannerBase} border-amber-200/48 bg-black/38 text-[14px] text-amber-100/98 sm:text-[15px]`}
@@ -198,16 +225,12 @@ export default async function BuyTokensPage({ searchParams }: Props) {
         <SectionTitle title="Token packs" variant="hostShell" className="mb-5 max-w-xl" />
 
         <div className="space-y-5">
-          {TOKEN_PACKS.map((p) => (
+          {tokenPacksForListing().map((p) => (
             <TokenPackOffer key={p.pack} pack={p} stripeOk={stripeOk} />
           ))}
         </div>
 
-        <p className={`mx-auto mt-8 max-w-xl ${mutedFootnote}`}>
-          Checkout runs through Stripe. Payments fund host reimbursements (Venmo or bank transfer).
-        </p>
-
-        <p className={`mx-auto mt-5 mb-10 max-w-xl border-t border-white/[0.08] pt-6 ${mutedFootnote} text-[13px] text-lc-earth-muted`}>
+        <p className={`mx-auto mt-8 mb-10 max-w-xl border-t border-white/[0.08] pt-6 ${mutedFootnote} text-[13px] text-lc-earth-muted`}>
           Need help? Visit{" "}
           <Link
             href="/profile/settings"

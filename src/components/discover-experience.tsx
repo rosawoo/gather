@@ -185,12 +185,6 @@ export function DiscoverExperience({
 
       <DiscoverFilters neighborhoods={neighborhoods} chrome="candlelit" />
 
-      {!empty ? (
-        <p className="mb-1 font-handwriting text-center text-[1.05rem] leading-snug lowercase tracking-[0.02em] text-lc-cream/[0.78] sm:text-[1.1rem]">
-          flip through postcards left to right
-        </p>
-      ) : null}
-
       {empty ? (
         <div className="rounded-2xl border border-dashed border-lc-pale-blue-border/20 bg-lc-chip-surface px-5 py-12 text-center backdrop-blur-[2px]">
           <p className={`text-sm font-medium ${lcChrome.body}`}>

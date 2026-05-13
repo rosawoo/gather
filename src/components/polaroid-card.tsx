@@ -12,8 +12,6 @@ import {
 import { CoverArt } from "@/components/cover-art";
 import {
   PolaroidDeckledPaperEdge,
-  PolaroidFrameCornerTapes,
-  PolaroidPhotoCornerTapes,
   PolaroidScrapbookBrads,
 } from "@/components/polaroid-corner-tapes";
 import type { GatheringType } from "@prisma/client";
@@ -112,11 +110,9 @@ export function PolaroidCard(props: PolaroidCardProps) {
       >
         <PolaroidScrapbookBrads seed={tapeSeed ^ 3} />
         <div className={`relative overflow-visible ${POLAROID_FRAME}`}>
-          <PolaroidFrameCornerTapes seed={tapeSeed} />
           <PolaroidDeckledPaperEdge seed={tapeSeed ^ 137} />
           <div className="relative aspect-square w-full overflow-hidden rounded-[2px] bg-lc-photo-placeholder">
             <CoverArt cover={props.coverImageUrl} title={props.title} />
-            <PolaroidPhotoCornerTapes seed={tapeSeed ^ 23} />
             <Link
               href={`/gatherings/${props.id}`}
               className="absolute inset-0 z-0"
@@ -212,11 +208,9 @@ export function PolaroidCard(props: PolaroidCardProps) {
             onKeyDown={onCardKeyDown}
             className={`polaroid-backface absolute inset-0 cursor-pointer overflow-visible ${POLAROID_FRAME}`}
           >
-            <PolaroidFrameCornerTapes seed={tapeSeed ^ 53} />
             <PolaroidDeckledPaperEdge seed={tapeSeed ^ 241} />
             <div className="relative aspect-square w-full overflow-hidden rounded-[2px] bg-lc-photo-placeholder">
               <CoverArt cover={props.coverImageUrl} title={props.title} />
-              <PolaroidPhotoCornerTapes seed={tapeSeed ^ 11} />
             </div>
             <div className="mt-4 space-y-1 px-0.5">
               <p className="font-handwriting text-[1.2rem] leading-snug text-lc-writing-ink">
@@ -253,10 +247,6 @@ export function PolaroidCard(props: PolaroidCardProps) {
 
           {/* Back: readable scroll region + pinned CTAs */}
           <div className="polaroid-face-back polaroid-backface absolute inset-0 flex flex-col overflow-hidden rounded-sm bg-lc-polaroid-shell text-lc-writing-ink shadow-[0_20px_44px_rgba(0,0,0,0.35)] ring-1 ring-black/10">
-            <PolaroidFrameCornerTapes
-              seed={tapeSeed ^ 71}
-              placement="flipBack"
-            />
             <PolaroidDeckledPaperEdge
               seed={tapeSeed ^ 409}
               surface="flipBack"
