@@ -56,13 +56,15 @@ const STRIPE_TEST_ONE_CENT_PACK: TokenPack = {
 /**
  * Shows the 1¢ pack on /profile/tokens when:
  * - `ENABLE_STRIPE_TEST_PACK=true` (or `1` / `yes`), or
- * - `NODE_ENV===development` unless `ENABLE_STRIPE_TEST_PACK=false` / `0`.
+ * - `NODE_ENV===development`, or `VERCEL_ENV===preview`,
+ * - unless explicitly disabled with `ENABLE_STRIPE_TEST_PACK=false` / `0`.
  */
 export function isStripeTestOneCentPackEnabled(): boolean {
   const v = process.env.ENABLE_STRIPE_TEST_PACK?.trim().toLowerCase();
   if (v === "false" || v === "0") return false;
   if (v === "true" || v === "1" || v === "yes") return true;
-  return process.env.NODE_ENV === "development";
+  if (process.env.NODE_ENV === "development") return true;
+  return process.env.VERCEL_ENV === "preview";
 }
 
 export const TOKEN_PACKS: readonly TokenPack[] = [

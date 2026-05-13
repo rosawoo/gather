@@ -81,19 +81,27 @@ export default async function ProfilePage() {
           ) : null}
         </header>
 
-        <div className="mx-auto mt-20 w-[min(19rem,min(74vw,20rem))] shrink-0 sm:mt-[5.25rem] sm:w-[min(21rem,80vw)]">
-          {primary?.url || u.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={primary?.url ?? u.image!}
-              alt=""
-              className="aspect-square w-full rounded-full object-cover shadow-[0_24px_60px_rgba(0,0,0,0.42)] ring-1 ring-lc-cream/[0.14]"
-            />
-          ) : (
-            <div className="flex aspect-square w-full items-center justify-center rounded-full bg-lc-disk-plum font-serif text-sm lowercase italic text-lc-tab-muted ring-1 ring-lc-cream/[0.1]">
-              add a portrait from edit profile
-            </div>
-          )}
+        <div className="mx-auto mt-20 flex w-[min(19rem,min(74vw,20rem))] shrink-0 flex-col items-center gap-3 sm:mt-[5.25rem] sm:w-[min(21rem,80vw)]">
+          <div className="w-full">
+            {primary?.url || u.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={primary?.url ?? u.image!}
+                alt=""
+                className="aspect-square w-full rounded-full object-cover shadow-[0_24px_60px_rgba(0,0,0,0.42)] ring-1 ring-lc-cream/[0.14]"
+              />
+            ) : (
+              <div className="flex aspect-square w-full items-center justify-center rounded-full bg-lc-disk-plum font-serif text-sm lowercase italic text-lc-tab-muted ring-1 ring-lc-cream/[0.1]">
+                add a portrait from edit profile
+              </div>
+            )}
+          </div>
+          <Link
+            href="/profile/edit#profile-photos"
+            className="font-serif text-sm font-light lowercase tracking-[0.12em] text-lc-earth-muted underline decoration-from-font underline-offset-[5px] transition hover:text-lc-caption-warm"
+          >
+            change photo
+          </Link>
         </div>
 
         {p.bio?.trim() ? (

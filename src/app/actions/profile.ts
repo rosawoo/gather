@@ -84,9 +84,14 @@ export async function completeProfile(formData: FormData) {
       })),
     });
 
+    const portraitUrl = photoUrls[0];
     await tx.user.update({
       where: { id: userId },
-      data: { profileComplete: true, name: firstName },
+      data: {
+        profileComplete: true,
+        name: firstName,
+        ...(portraitUrl ? { image: portraitUrl } : {}),
+      },
     });
   });
 
@@ -160,9 +165,13 @@ export async function updateProfile(formData: FormData) {
       })),
     });
 
+    const portraitUrl = photoUrls[0];
     await tx.user.update({
       where: { id: userId },
-      data: { name: firstName },
+      data: {
+        name: firstName,
+        ...(portraitUrl ? { image: portraitUrl } : {}),
+      },
     });
   });
 

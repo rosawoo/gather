@@ -113,8 +113,8 @@ export function OnboardingProfileForm({
       </ProfileFieldGroup>
 
       <ProfileFieldGroup
-        title="Photos (optional)"
-        hint="Add a face—or skip for now and upload later from your profile. First photo becomes primary."
+        title="Profile photo (optional)"
+        hint="Add a face—or skip for now and upload later from your profile. First photo becomes your portrait."
       >
         <PhotoUpload key={photoBlockKey} initialUrls={photoUrls} />
       </ProfileFieldGroup>

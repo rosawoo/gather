@@ -86,12 +86,14 @@ export function EditProfileForm({
         </ProfileField>
       </ProfileFieldGroup>
 
-      <ProfileFieldGroup
-        title="Photos (optional)"
-        hint="Add or reorder images. Clearing all photos is allowed—you can upload again anytime."
-      >
-        <PhotoUpload initialUrls={photoUrls} />
-      </ProfileFieldGroup>
+      <div id="profile-photos" className="scroll-mt-28">
+        <ProfileFieldGroup
+          title="Profile photo"
+          hint="Shown as your portrait on Gather and in your scrapbook rhythm. Upload more circles to shuffle through—drag order so the face you want stays first."
+        >
+          <PhotoUpload initialUrls={photoUrls} />
+        </ProfileFieldGroup>
+      </div>
 
       <ProfileFieldGroup title="Optional">
         <ProfileField label="Neighborhood">

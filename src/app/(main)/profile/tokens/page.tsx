@@ -191,19 +191,27 @@ export default async function BuyTokensPage({ searchParams }: Props) {
           className={`mt-8 ${statusBannerBase} border-amber-300/42 bg-black/34 text-[14px] text-amber-100/94 sm:text-[15px]`}
           role="status"
         >
-          <span className="font-semibold">1¢ test pack is available.</span> Shown automatically in{" "}
+          <span className="font-semibold">1¢ test pack is available.</span> Shown automatically when{" "}
+          <code className="rounded bg-black/38 px-1.5 py-0.5 font-mono text-xs text-amber-50">
+            NODE_ENV
+          </code>{" "}
+          is{" "}
           <code className="rounded bg-black/38 px-1.5 py-0.5 font-mono text-xs text-amber-50">
             development
           </code>{" "}
-          or when{" "}
+          or{" "}
+          <code className="rounded bg-black/38 px-1.5 py-0.5 font-mono text-xs text-amber-50">
+            VERCEL_ENV
+          </code>{" "}
+          is Preview, or force with{" "}
           <code className="rounded bg-black/38 px-1.5 py-0.5 font-mono text-xs text-amber-50">
             ENABLE_STRIPE_TEST_PACK=true
-          </code>{" "}
+          </code>
           — use Stripe test cards. Hide with{" "}
           <code className="rounded bg-black/38 px-1 py-0.5 font-mono text-xs text-amber-50">
             ENABLE_STRIPE_TEST_PACK=false
-          </code>{" "}
-          locally if you prefer.
+          </code>
+          .
         </p>
       ) : null}
 
